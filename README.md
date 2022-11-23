@@ -9,6 +9,6 @@ SE project semester 5
 3. Create virtual environment `python -m venv .`
 4. Enable virtual environment `.\Scripts\Activate.ps1`
 5. Download Flask `pip install flask`
-6. Run the site `flask -app flaskr --debug run`
+6. Run the site `flask --app flaskr --debug run`
 
 The site will be on http://127.0.0.1:5000/
