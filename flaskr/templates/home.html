@@ -1,16 +1,24 @@
-<!DOCTYPE html>
+<!DOCTYPE>
 <html>
-<head>
-    <title>Home</title>
-</head>
 
-<body>
+	<head>
+		<title>Home</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+	</head>
 
-    <h1>Home</h1>
-
-    <a href="/auth/login">Login</a>
-    <br>
-    <a href="/auth/register">Register</a>
-
-</body>
+	<body>
+		<div class="upperBar">
+			<a href="/auth/register">Sign-up</a>
+			<a href="/auth/login">Login</a>				
+		</div>
+		
+		<div class="mainFrame">	
+			<div class="picContainer">
+				<img src="{{ url_for('static', filename='resources/1.jpg') }}" class="pic1">
+				<img src="{{ url_for('static', filename='resources/2.jpg') }}" class="pic2">
+				<img src="{{ url_for('static', filename='resources/3.jpg') }}" class="pic3">
+			</div>
+		</div>
+	</body>
+	
 </html>

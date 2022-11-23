@@ -18,3 +18,5 @@ Lib/
 include/
 
 pyvenv.cfg
+
+var/
