@@ -13,4 +13,4 @@ SE project semester 5
 
 The site will be on http://127.0.0.1:5000/
 
-If the site errors about missing a database table run `flask -app flaskr init-db`
+If the site errors about missing a database table run `flask --app flaskr init-db`
