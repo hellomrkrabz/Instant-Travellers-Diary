@@ -19,4 +19,5 @@ include/
 
 pyvenv.cfg
 
-var/.env/
+var/
+.env/
