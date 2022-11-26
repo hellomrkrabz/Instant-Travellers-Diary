@@ -3,7 +3,7 @@
 From inside the main directory run:
 ```
 mypy flaskr
-flake flaskr
+flake8 flaskr
 pytest tests
 ```
 
