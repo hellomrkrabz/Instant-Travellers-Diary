@@ -19,4 +19,4 @@ include/
 
 pyvenv.cfg
 
-var/
+var/.env/
