@@ -60,3 +60,10 @@ ul
 	justify-content: center;
 	border-radius: 6px;
 }
+
+.errors
+{
+	position:relative;
+	right:20px;
+	width:170px;
+}

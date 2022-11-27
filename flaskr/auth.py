@@ -33,8 +33,15 @@ def register():
                     (username, email, generate_password_hash(password)),
                 )
                 db.commit()
-            except db.IntegrityError:
-                error = f"User {username} is already registered."
+            except db.IntegrityError as regError:
+                errMsg = str(regError)
+                error = ""
+                if errMsg.endswith('users.email'):
+                    error = f"E-mail {email} is already taken"
+                elif errMsg.endswith('users.username'):
+                    error = f"Username {username} is already taken"
+                else:
+                    error = "Unknown error :P"
             else:
                 return redirect(url_for("auth.login"))
 
