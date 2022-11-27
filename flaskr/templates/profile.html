@@ -1,4 +1,4 @@
-<!DOCTYPE>
+<!DOCTYPE html>
 <html>
 	<head>
 		<title>Profile</title>
@@ -19,20 +19,22 @@
                     <p1>Edit profile {{data.username}} </p1>
 				
 					<br>
-					<li><label for="image">Change profile picture:</label><br><br>
-						<input type="file" id="image" name="image" accept="image/*" value={data.pic_url}><br><br>
-						<img src={data.pic_url} alt="sus.gif"></li>
+					<li>
+						<input type="checkbox" id="imageCheckBox" name="imageCheckBox">
+						<label for="image">Change profile picture:</label><br><br>
+						<input type="file" id="image" name="image" accept="image/*" value={{data.pic_url}}><br><br>
+						<img src={{data.pic_url}} alt="sus.gif"></li>
 						<br>
 						
-					<li><label for="bio">Change bio:</label><br>
+					<li>
+						<input type="checkbox" id="bioCheckBox" name="bioCheckBox">
+						<label for="bio">Change bio:</label><br>
                         <input type="text" id="bio" name="bio" value={{data.bio}}></li>
 						<br>
-
-					<li><label for="oldPassword">Old password:</label><br>
-                        <input type="password" id="oldPassword" name="oldPassword"></li>
-						<br>
 	
-					<li><label for="password">Change password:</label><br>
+					<li>
+						<input type="checkbox" id="passwordCheckBox" name="passwordCheckBox">
+						<label for="password">Change password:</label><br>
                         <input type="password" id="password" name="password"></li>
 						<br>
 						
@@ -40,7 +42,9 @@
                         <input type="password" id="confirmPassword" name="confirmPassword"></li>
 						<br>
 						
-					<li><label for="username">Change username</label><br>
+					<li>
+						<input type="checkbox" id="usernameCheckBox" name="usernameCheckBox">
+						<label for="username">Change username</label><br>
                         <input type="text" id="username" name="username" value="{{data.username}}"></li>
 						<br>
 									
