@@ -1,2 +1,3 @@
 class Profile:
+    pass
     

@@ -16,7 +16,7 @@
 					
 					<ul>
 									
-					<p1>Edit profile {data username} </p1>
+                    <p1>Edit profile {{data.username}} </p1>
 				
 					<br>
 					<li><label for="image">Change profile picture:</label><br><br>
@@ -25,19 +25,23 @@
 						<br>
 						
 					<li><label for="bio">Change bio:</label><br>
-						<input type="text" id="bio" name="bio" value={data.bio}></li>
+                        <input type="text" id="bio" name="bio" value={{data.bio}}></li>
+						<br>
+
+					<li><label for="oldPassword">Old password:</label><br>
+                        <input type="password" id="oldPassword" name="oldPassword"></li>
 						<br>
 	
 					<li><label for="password">Change password:</label><br>
-						<input type="password" id="password" name="password" value={data.password} required></li>
+                        <input type="password" id="password" name="password"></li>
 						<br>
 						
 					<li><label for="confirmPassword">Confirm password:</label><br>
-						<input type="password" id="confirmPassword" name="confirmPassword" value={data.password} required></li>
+                        <input type="password" id="confirmPassword" name="confirmPassword"></li>
 						<br>
 						
 					<li><label for="username">Change username</label><br>
-						<input type="text" id="username" name="username" value="data.username"></li>
+                        <input type="text" id="username" name="username" value="{{data.username}}"></li>
 						<br>
 									
 						

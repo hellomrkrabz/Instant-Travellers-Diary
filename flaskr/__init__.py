@@ -32,6 +32,9 @@ def create_app(test_config=None):
     def home():
         return render_template('home.html')
 
+    from . import profile
+    app.register_blueprint(profile.bp)
+
     from . import db
     db.init_app(app)
 
