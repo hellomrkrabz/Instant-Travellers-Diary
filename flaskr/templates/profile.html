@@ -1,0 +1,68 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<title>Profile</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+	</head>
+
+<body>
+
+	<div class="mainFrame">
+	
+			<div class="form">
+			
+				<form method="POST" class="scrollable">
+					
+					
+					<ul>
+									
+					<p1>Edit profile {data username} </p1>
+				
+					<br>
+					<li><label for="image">Change profile picture:</label><br><br>
+						<input type="file" id="image" name="image" accept="image/*" value={data.pic_url}><br><br>
+						<img src={data.pic_url} alt="sus.gif"></li>
+						<br>
+						
+					<li><label for="bio">Change bio:</label><br>
+						<input type="text" id="bio" name="bio" value={data.bio}></li>
+						<br>
+	
+					<li><label for="password">Change password:</label><br>
+						<input type="password" id="password" name="password" value={data.password} required></li>
+						<br>
+						
+					<li><label for="confirmPassword">Confirm password:</label><br>
+						<input type="password" id="confirmPassword" name="confirmPassword" value={data.password} required></li>
+						<br>
+						
+					<li><label for="username">Change username</label><br>
+						<input type="text" id="username" name="username" value="data.username"></li>
+						<br>
+									
+						
+						
+					<br><br>
+					<div class="errors">
+						{% with messages = get_flashed_messages() %}
+						  {% if messages %}
+							<ul class=flashes>
+							{% for message in messages %}
+							  <li>{{ message }}</li>
+							{% endfor %}
+							</ul>
+						  {% endif %}
+						{% endwith %}
+					</div>
+					<br>
+					<input type="submit" value="Save" class="btn">
+					
+					</ul>
+				</form>
+				
+			</div>
+			
+	</div>
+
+</body>
+</html> 
