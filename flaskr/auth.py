@@ -9,6 +9,11 @@ from flaskr.db import get_db
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
+def convertToBinaryData(filename):
+    # Convert digital data to binary format
+    with open(filename, 'rb') as file:
+        blobData = file.read()
+    return blobData
 
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
@@ -16,6 +21,7 @@ def register():
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
+        image = convertToBinaryData("default.png")
         db = get_db()
         error = None
 
@@ -29,8 +35,8 @@ def register():
         if error is None:
             try:
                 db.execute(
-                    "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
-                    (username, email, generate_password_hash(password)),
+                    "INSERT INTO users (username, email, password, image) VALUES (?, ?, ?, ?)",
+                    (username, email, generate_password_hash(password), image),
                 )
                 db.commit()
             except db.IntegrityError as regError:
