@@ -47,6 +47,7 @@ ul
 	position:relative;
 	top:40px;
 	align-items: center;
+	border-radius:10px;
 }
 
 .form

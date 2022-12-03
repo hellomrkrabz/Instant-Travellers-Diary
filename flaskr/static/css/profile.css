@@ -2,14 +2,23 @@ body
 {
 	background-color:#A769B6;
 	display:flex;
-	justify-content:center;
+	justify-content: center;
+	align-items: center;
 }
 
 p1
 {
+	
 	color:#A769B6;
 	font-size:35px;
-	width:170px;
+	position:relative;
+	//bottom:45px;
+	left:33px;
+	width:100%;
+	overflow-wrap:anywhere;
+	width:100px;
+	display:flex;
+	justify-content: center;
 }
 
 li
@@ -17,47 +26,14 @@ li
 	list-style-type:none;
 	font-size:15px;
 	position:relative;
-	right:5px;
+	left:10%;
+	width:170px;
+	text-overflow: ellipsis;
 }
 
 ul
 {
-	margin-right:30px;
-	padding-left:70px;
-}
-
-img
-{
-	width:100px;
-	height:100px;
-	position:relative;
-	left:35px;
-}
-
-input
-{
-	width:170px;
-}
-
-input[type='checkbox']
-{
-	width:10px;
-}
-
-::-webkit-scrollbar {
-	width:10px;
-}
-
-::-webkit-scrollbar-track {
-	background: #e6e3e5; 
-}
- 
-::-webkit-scrollbar-thumb {
-	background: #A769B6; 
-}
-
-::-webkit-scrollbar-thumb:hover {
-	background: #f2bff0; 
+	//margin-right:30px;
 }
 
 .btn
@@ -67,51 +43,48 @@ input[type='checkbox']
 	border-radius: 25px;
 	width:120px;
 	position:relative;
-	left:20px;
+	left:20%;
 }
 
 .mainFrame
 {
-	width:100%;
 	height:80%;
+	width:100%;
 	background-color:#C49DCD;
-	display: flex;
+	display:flex;
 	justify-content: center;
-	position:relative;
-	top:40px;
 	align-items: center;
-	border-radius:25px;
-
+	border-radius:10px;	
 }
 
 .form
 {
-	background-color:white;
 	height:80%;
 	width:300px;
+	background-color:white;
 	display:flex;
-	align-items:center;
-	flex-wrap:nowrap;
 	justify-content: center;
+	align-items: center;
+	flex-wrap:nowrap;
 	border-radius: 6px;
 }
 
 .errors
 {
-	position:relative;
-	right:20px;
-	width:170px;
+	//position:relative;
+	//right:20px;
+	//width:170px;
 }
 
 .scrollable
 {
-	height:470px;
-	overflow:auto;
+	height:80%;
+	overflow-x:hidden;
+	width:inherit;
 }
 
 #image
 {
-	position:relative;
-	right:15px;
-	width:200px;
+	//width:inherit;
+	
 }

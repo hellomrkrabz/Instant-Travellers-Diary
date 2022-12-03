@@ -1,52 +1,74 @@
-<!DOCTYPE html>
 <html>
 	<head>
-		<title>Profile</title>
-		<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='/css/profile.css') }}">
+		
+		<script>
+			function changeInputWidth()
+			{
+			console.log("Hello world!1");
+				if(document.getElementById("image").files[0] || document.getElementById("image").files[0]!={{data.username}})//I would change this to pic_url if I had one
+				{
+					console.log("Hello world!2");
+					document.getElementById("image").style.width="inherit"
+				}
+			}
+		</script>
 	</head>
 
-<body>
-
-	<div class="mainFrame">
-	
+	<body>
+		<div class="mainFrame">
 			<div class="form">
-			
 				<form method="POST" class="scrollable" enctype="multipart/form-data">
 					
 					
 					<ul>
 									
-                    <p1>Edit profile {{data.username}} </p1>
+                    <li><p1>Edit profile {{data.username}} </p1></li>
+					
 				
+					<br><br><br>
+					
+					<li>
+						<input type="checkbox" id="usernameCheckBox" name="usernameCheckBox">
+						<label for="username">Change username</label><br>
+                        <input type="text" id="username" name="username" value="{{data.username}}">
+					</li>	
 					<br>
+					
 					<li>
 						<input type="checkbox" id="imageCheckBox" name="imageCheckBox">
-						<label for="image">Change profile picture:</label><br><br>
-						<input type="file" id="image" name="image" accept="image/*" value={{data.pic_url}}><br><br>
-						<img src={{data.pic_url}} alt="sus.gif"></li>
-						<br>
+						<label for="image" class="image">Change profile picture:</label><br><br>
+						<input type="file" id="image" name="image" accept="image/*" value={{data.username}} onchange="changeInputWidth()"><br><br><!-->to tyż<!-->
+						<img src={{data.pic_url}} alt="sus.gif">
+					</li>
+					<br>
 						
 					<li>
 						<input type="checkbox" id="bioCheckBox" name="bioCheckBox">
 						<label for="bio">Change bio:</label><br>
-                        <input type="text" id="bio" name="bio" value={{data.bio}}></li>
-						<br>
-	
+                        <input type="text" id="bio" name="bio" value={{data.bio}}>
+					</li>
+					<br>	
+						
+					<li>
+						<input type="checkbox" id="emailCheckBox" name="emailCheckBox">
+						<label for="email">Change email:</label><br>
+						<input type="email" id="email" name="email">
+					</li>
+					<br>
+					
+					
 					<li>
 						<input type="checkbox" id="passwordCheckBox" name="passwordCheckBox">
 						<label for="password">Change password:</label><br>
-                        <input type="password" id="password" name="password"></li>
-						<br>
+                        <input type="password" id="password" name="password">
+					</li>
+					<br>
 						
 					<li><label for="confirmPassword">Confirm password:</label><br>
-                        <input type="password" id="confirmPassword" name="confirmPassword"></li>
-						<br>
-						
-					<li>
-						<input type="checkbox" id="usernameCheckBox" name="usernameCheckBox">
-						<label for="username">Change username</label><br>
-                        <input type="text" id="username" name="username" value="{{data.username}}"></li>
-						<br>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required>
+					</li>
+					<br>
 									
 						
 						
@@ -65,12 +87,8 @@
 					<br>
 					<input type="submit" value="Save" class="btn">
 					
-					</ul>
 				</form>
-				
 			</div>
-			
-	</div>
-
-</body>
-</html> 
+		</div>
+	</body>
+</html>
