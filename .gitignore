@@ -21,3 +21,4 @@ pyvenv.cfg
 
 var/
 .env/
+data-dev.sqlite

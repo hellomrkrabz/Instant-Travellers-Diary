@@ -11,8 +11,8 @@ class User(db.Model):
     name = db.Column(db.String(64))
     bio = db.Column(db.Text())
     avatar_hash = db.Column(db.String(32))
-    journeys = db.relationship('Journey', backref='author', lazy='dynamic')
-    events = db.relationship('Event', backref='author', lazy='dynamic')
+    # journeys = db.relationship('Journey', backref='author', lazy='dynamic')
+    # events = db.relationship('Event', backref='author', lazy='dynamic')
     # def __init__(self, username: str, profile: Profile):
     #     self.username = username
     #     self.profile = profile

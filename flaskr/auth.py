@@ -6,8 +6,6 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-# from flaskr.db import get_db
-
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 
@@ -28,19 +26,11 @@ def register():
 
         if error is None:
             try:
-                # user = User(username = username,
-                #             email = email, 
-                #             password_hash = generate_password_hash(password))
-                user = User(username = "abcdef",
-                            email = "abd@abd.abd",
-                            password_hash = generate_password_hash("abc"))
+                user = User(username = username,
+                            email = email, 
+                            password_hash = generate_password_hash(password))
                 db.session.add(user)
                 db.session.commit()
-                # db.execute(
-                #     "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
-                #     (username, email, generate_password_hash(password)),
-                # )
-                # db.commit()
             except Exception as e:
                 errMsg = str(e)
                 print(errMsg)
@@ -50,7 +40,8 @@ def register():
                 elif errMsg.endswith('user.username:'):
                     error = "Username {username} is already taken"
                 else:
-                    error = "Unknown error :P"
+                    # db.create_all()
+                    error = "Unknown error :P\n" + errMsg
             else:
                 return redirect(url_for("auth.login"))
 
