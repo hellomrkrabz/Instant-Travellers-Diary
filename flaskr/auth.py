@@ -31,16 +31,15 @@ def register():
                             password_hash = generate_password_hash(password))
                 db.session.add(user)
                 db.session.commit()
-            except Exception as e:
-                errMsg = str(e)
+            except db.IntegrityError as ie:
+                errMsg = str(ie)
                 print(errMsg)
                 error = ""
-                if errMsg.endswith('user.email'):
+                if 'user.email' in errMsg:
                     error = "E-mail {email} is already taken"
-                elif errMsg.endswith('user.username:'):
+                elif 'user.username:' in errMsg:
                     error = "Username {username} is already taken"
                 else:
-                    # db.create_all()
                     error = "Unknown error :P\n" + errMsg
             else:
                 return redirect(url_for("auth.login"))

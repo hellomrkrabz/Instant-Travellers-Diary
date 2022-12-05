@@ -24,18 +24,3 @@ class User(db.Model):
     def __repr__(self):
         return '<User %r>' % self.username
 
-
-app = Flask(__name__, instance_relative_config=True)
-app.config.from_object(config['development'])
-db = SQLAlchemy(app)
-
-with app.app_context():
-    db.create_all()
-
-    db.session.add(User(username = 'test1', email = 'test1@example.com', password_hash = "test"))
-    db.session.add(User(username = 'test2', email = 'test2@example.com', password_hash = "test"))
-
-    db.session.commit()
-
-    users = User.query.all()
-    print(users)
