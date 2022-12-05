@@ -5,6 +5,7 @@ from .config import config
 
 db = SQLAlchemy()
 
+
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
@@ -28,7 +29,7 @@ def create_app(test_config=None):
     @app.route('/index')
     def index():
         return render_template('index.html')
-    
+
     @app.route('/')
     def home():
         return render_template('home.html')
@@ -45,4 +46,3 @@ def create_app(test_config=None):
         db.create_all()
 
     return app
-

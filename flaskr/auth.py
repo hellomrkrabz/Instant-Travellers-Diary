@@ -26,14 +26,13 @@ def register():
 
         if error is None:
             try:
-                user = User(username = username,
-                            email = email, 
-                            password_hash = generate_password_hash(password))
+                user = User(username=username,
+                            email=email,
+                            password_hash=generate_password_hash(password))
                 db.session.add(user)
                 db.session.commit()
             except Exception as e:
                 errMsg = str(e)
-                print(errMsg)
                 error = ""
                 if 'users.email' in errMsg:
                     error = f"E-mail {email} is already taken"
@@ -55,7 +54,7 @@ def login():
         username = request.form['username']
         password = request.form['password']
         error = None
-        user = User.query.filter_by(username = username).first()
+        user = User.query.filter_by(username=username).first()
         if user is None:
             error = 'Incorrect username.'
         elif not user.verify_password(password):
@@ -63,7 +62,7 @@ def login():
 
         if error is None:
             session.clear()
-            session['user_id'] = user.get_id()            
+            session['user_id'] = user.get_id()
             return redirect(url_for('index'))
 
         flash(error)
@@ -74,11 +73,11 @@ def login():
 @bp.before_app_request
 def load_logged_in_user():
     user_id = session.get('user_id')
-    
+
     if user_id is None:
         g.user = None
     else:
-        g.user = User.query.filter_by(id = user_id).first()
+        g.user = User.query.filter_by(id=user_id).first()
 
 
 @bp.route('/logout')
