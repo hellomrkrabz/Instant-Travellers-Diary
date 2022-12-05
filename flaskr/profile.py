@@ -7,13 +7,16 @@ from flask import (
     session,
     url_for
 )
-from flaskr.db import get_db
-from flaskr.auth import convertToBinaryData
+
+# from flaskr.db import get_db
+# from flaskr.auth import convertToBinaryData
 
 bp = Blueprint("profile", __name__, url_prefix="/profile")
 
 @bp.route("/edit", methods=("GET", "POST"))
 def edit():
+    pass
+
     db = get_db()
     user_id = session.get("user_id")
     if request.method == "POST":

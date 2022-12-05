@@ -5,23 +5,18 @@ from flask import (
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from flaskr.db import get_db
+# from flaskr.db import get_db
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
-def convertToBinaryData(filename):
-    # Convert digital data to binary format
-    with open(filename, 'rb') as file:
-        blobData = file.read()
-    return blobData
 
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
+    pass
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
         email = request.form['email']
-        image = convertToBinaryData("default.png")
         db = get_db()
         error = None
 
@@ -35,17 +30,17 @@ def register():
         if error is None:
             try:
                 db.execute(
-                    "INSERT INTO users (username, email, password, image) VALUES (?, ?, ?, ?)",
-                    (username, email, generate_password_hash(password), image),
+                    "INSERT INTO users (username, email, password) VALUES (?, ?, ?)",
+                    (username, email, generate_password_hash(password)),
                 )
                 db.commit()
             except db.IntegrityError as regError:
                 errMsg = str(regError)
                 error = ""
-                if errMsg.endswith('users.email'):
-                    error = f"E-mail {email} is already taken"
-                elif errMsg.endswith('users.username'):
-                    error = f"Username {username} is already taken"
+                if errMsg.endswith('user.email'):
+                    error = "E-mail {email} is already taken"
+                elif errMsg.endswith('user.username:'):
+                    error = "Username {username} is already taken"
                 else:
                     error = "Unknown error :P"
             else:
@@ -58,6 +53,7 @@ def register():
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():
+    pass
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
