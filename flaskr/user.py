@@ -6,6 +6,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from .config import config
 
+from werkzeug.security import generate_password_hash, check_password_hash
+
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
@@ -23,4 +25,10 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.username
+
+    def verify_password(self, password) -> bool:
+        return check_password_hash(self.password_hash, password)
+
+    def get_id(self):
+        return self.id
 

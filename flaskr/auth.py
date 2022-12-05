@@ -58,12 +58,12 @@ def login():
         user = User.query.filter_by(username = username).first()
         if user is None:
             error = 'Incorrect username.'
-        elif not check_password_hash(user['password'], password):
+        elif not user.verify_password(password):
             error = 'Incorrect password.'
 
         if error is None:
             session.clear()
-            session['user_id'] = user['id']
+            session['user_id'] = user.get_id()            
             return redirect(url_for('index'))
 
         flash(error)
@@ -78,7 +78,7 @@ def load_logged_in_user():
     if user_id is None:
         g.user = None
     else:
-        g.user = User.query.filter_by(user_id).first()
+        g.user = User.query.filter_by(id = user_id).first()
 
 
 @bp.route('/logout')
