@@ -31,14 +31,14 @@ def register():
                             password_hash = generate_password_hash(password))
                 db.session.add(user)
                 db.session.commit()
-            except db.IntegrityError as ie:
-                errMsg = str(ie)
+            except Exception as e:
+                errMsg = str(e)
                 print(errMsg)
                 error = ""
-                if 'user.email' in errMsg:
-                    error = "E-mail {email} is already taken"
-                elif 'user.username:' in errMsg:
-                    error = "Username {username} is already taken"
+                if 'users.email' in errMsg:
+                    error = f"E-mail {email} is already taken"
+                elif 'users.username:' in errMsg:
+                    error = f"Username {username} is already taken"
                 else:
                     error = "Unknown error :P\n" + errMsg
             else:
