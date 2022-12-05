@@ -1,3 +1,0 @@
-class Journey:
-    pass
-    
