@@ -30,29 +30,32 @@ def edit():
         # avatar = convertToBinaryData(image.filename)
 
         error = None
-        if not username:
-            error = "Username is required."
-        elif not password:
-            error = "Password is required."
-        elif not email:
-            error = "E-mail is required."
 
         if error is None:
             try:
                 user = User.query.filter_by(id=user_id).first()
-                if request.form.get('userNameCheckBox'):
-                    user.username = username
+                if request.form.get('usernameCheckBox'):
+                    if not username:
+                        error = "Username is required."
+                    else:
+                        user.username = username
                 if request.form.get('imageCheckBox'):
                     pass
                 if request.form.get('bioCheckBox'):
                     user.bio = bio
                 if request.form.get('emailCheckBox'):
-                    user.email = email
-                if request.form.get('passwordCheckBox'):
-                    if password == confirm_password:
-                        user.password = password
+                    if not email:
+                        error = "E-mail is required."
                     else:
-                        error = "Passwords are not the same."
+                        user.email = email
+                if request.form.get('passwordCheckBox'):
+                    if not password:
+                        error = "Password is required."
+                    else:
+                        if password == confirm_password:
+                            user.password = password
+                        else:
+                            error = "Passwords are not the same."
 
                 db.session.commit()
             except Exception as e:
@@ -63,7 +66,7 @@ def edit():
                 elif 'users.username:' in errMsg:
                     error = f"Username {username} is already taken"
                 else:
-                    error = "Unknown error :P\n" + errMsg
+                    error = "Unknown error:\n" + errMsg
             else:
                 return redirect(url_for("auth.login"))
 
