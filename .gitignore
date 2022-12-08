@@ -22,3 +22,7 @@ pyvenv.cfg
 var/
 .env/
 data-dev.sqlite
+
+node_modules/
+.vs/
+*cache
