@@ -1,9 +1,5 @@
-# Instant-Travellers-Diary
-SE project semester 5
-
-## How to run the backend
+# BACKEND
 ### Steps 3 and 5 are done **ONLY ONCE**
-
 1. Open powershell and get to the **Instant-Travellers-Diary** folder
 2. Type the command `Set-ExecutionPolicy Unrestricted -Scope Process`
 3. Create virtual environment `python -m venv .venv`
