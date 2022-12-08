@@ -1,0 +1,8 @@
+flask
+flake8
+mypy
+Flask-SQLAlchemy
+gunicorn
+SQLAlchemy
+pymysql
+psycopg2-binary

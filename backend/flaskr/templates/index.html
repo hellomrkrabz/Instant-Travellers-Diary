@@ -1,0 +1,29 @@
+<!DOCTYPE>
+<html>
+
+	<head>
+		<title>Home</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+	</head>
+
+	<body>
+		
+		<div class="mainFrame" style="position:relative; top:10%;">
+			<div class="logged">
+				
+				<br><br><br>
+				<p4 align="center">You are logged in!</p4><hr>
+				
+				<p style="text-align:center">
+					<a href="/auth/logout" style="text-align:center">Log out</a>
+				</p>
+
+				<p style="text-align:center">
+					<a href="/profile/edit" style="text-align:center">Edit profile</a>
+				</p>
+
+			</div>
+		</div>
+	</body>
+	
+</html>
