@@ -1,0 +1,64 @@
+<!DOCTYPE>
+<html>
+
+	<head>
+		<title>Home</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+		<script>
+			function animation()
+			{
+				var id = null;
+				
+				  let img = document.getElementById("img1");
+				  let style = window.getComputedStyle(img);
+				  let pos = style.getPropertyValue('left');
+				  let posY = style.getPropertyValue('bottom');
+				  
+				  clearInterval(id);
+				  id = setInterval(frame, 25);
+				  
+				  function frame() {
+					if (pos <= 0) {
+					  clearInterval(id);
+					} else {
+
+					  let pos = style.getPropertyValue('left');
+					  let posY = style.getPropertyValue('bottom');
+					  let pos1=pos.slice(0, pos.length-2);
+					  let posY1=posY.slice(0, posY.length-2);
+					  let pos11=Number(pos1);
+					  let posY11=Number(posY1);
+
+					  pos11=pos11/1.15;
+					  posY11=posY11/1.15;
+						  
+					  img1.style.left = pos11 + 'px';
+					  img2.style.left = pos11 + 'px';
+					  img3.style.left = pos11 + 'px';
+					  
+					  img1.style.bottom = posY11 + 'px';
+					  img2.style.bottom = posY11 + 'px';
+					  img3.style.bottom = posY11 + 'px';
+
+					}
+				  }
+			}
+		</script>
+	</head>
+
+	<body onload="animation()">
+		<div class="upperBar">
+			<a href="/auth/register">Sign-up</a>
+			<a href="/auth/login">Login</a>				
+		</div>
+		
+		<div class="mainFrame">	
+			<div class="picContainer">
+				<img src="{{ url_for('static', filename='resources/1.jpg') }}" class="pic1" id="img1">
+				<img src="{{ url_for('static', filename='resources/2.jpg') }}" class="pic2" id="img2">
+				<img src="{{ url_for('static', filename='resources/3.jpg') }}" class="pic3" id="img3">
+			</div>
+		</div>
+	</body>
+	
+</html>

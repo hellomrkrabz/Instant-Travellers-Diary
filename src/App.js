@@ -2,7 +2,9 @@ import './App.css';
 import Navbar from './components/Navbar';
 import {  BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import Home from'./components/pages/Home';
-import Auth from './components/Auth';
+import Register from './components/Register';
+import Login from './components/Login';
+import Profile from './components/Profile';
 
 import { useState, useEffect } from "react";
 import axios, {isCancel, AxiosError} from 'axios';
@@ -23,12 +25,24 @@ function App() {
         alert(error)
       })
   }, [])
+  
+  
+  
 
   return (
     <div>
-      <h1>Test</h1>
-      <p>{data.msg1}</p>
-      <p>{data.msg2}</p>
+	
+		<Router>
+        <Navbar/>
+        <Switch>
+          <Route path="/" exact component={Home}/>
+		  <Route path="/Register" exact component={Register}/>
+		  <Route path="/Login" exact component={Login}/>
+		  <Route path="/Profile" exact component={Profile}/>
+        </Switch>
+      </Router>
+	  
+      
     </div>
   );
 }

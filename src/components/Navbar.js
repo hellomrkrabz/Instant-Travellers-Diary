@@ -7,6 +7,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { Link } from "react-router-dom";
 import './Navbar.css';
+import logo from './logo.png';
 
 function Navbar() {
     const [click, setClick] = useState(false);
@@ -36,7 +37,7 @@ function Navbar() {
         
             <div className='navbar-container'>
             <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
-                Logo 
+                <img src={logo} width="280" height="50"/>
                 </Link>
                 
                 <div className='menu-icon' onClick={handleClick}>
@@ -51,17 +52,12 @@ function Navbar() {
                         </Link>
                     </li>
                     <li className='nav-item'>
-                        <Link to= '/products' className='nav-links' onClick={closeMobileMenu}>
-                            Products
-                        </Link>
-                    </li>
-                    <li className='nav-item'>
                         <Link to= '/Login' className='nav-links' onClick={closeMobileMenu}>
                             Login
                         </Link>
                     </li>
                 </ul>
-                {button && <Button buttonStyle='btn--outline'>SIGN UP</Button>}
+                {button && <Button buttonStyle='btn--outline' path="/Register">Register</Button>}
             </div>
 
         </nav>
