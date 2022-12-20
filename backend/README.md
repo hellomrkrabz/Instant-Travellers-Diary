@@ -4,7 +4,7 @@
 2. Type the command `Set-ExecutionPolicy Unrestricted -Scope Process`
 3. Create virtual environment `python -m venv .venv`
 4. Enable virtual environment `.\.venv\Scripts\Activate.ps1`
-5. Download dependencies `pip install -r requirements.txt`
+5. Download dependencies `pip install -r backend\requirements.txt`
 6. Run the site with `flask --app backend\flaskr --debug run`
 
 To run frontend you will have to open another powershell window and run it from there

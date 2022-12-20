@@ -22,7 +22,7 @@ function App() {
         setData(data)
       })
       .catch(error => {
-        alert(error)
+        // alert(error)
       })
   }, [])
   
@@ -36,9 +36,9 @@ function App() {
         <Navbar/>
         <Switch>
           <Route path="/" exact component={Home}/>
-		  <Route path="/Register" exact component={Register}/>
-		  <Route path="/Login" exact component={Login}/>
-		  <Route path="/Profile" exact component={Profile}/>
+		      <Route path="/Register" exact component={Register}/>
+		      <Route path="/Login" exact component={Login}/>
+		      <Route path="/Profile" exact component={Profile}/>
         </Switch>
       </Router>
 	  

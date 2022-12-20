@@ -2,6 +2,7 @@ import os
 from flask import Flask, render_template
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+
 from .config import config
 
 db = SQLAlchemy()
@@ -27,30 +28,25 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    # a simple page that says hello
-    # @app.route('/index')
-    # def index():
-    #     return render_template('index.html')
-
-    # @app.route('/')
-    # def home():
-    #     return render_template('home.html')
-
-    @app.route('/api/test')
+    @app.route('/api/test', methods=['GET'])
     def test():
+        print('entering /api/test')
         return {
             "msg1": "This is the field of msg1 :o",
             "msg2": "This is the field of msg2 :]"
         }
 
+    # blueprint responsible for registering and logging
+    from . import auth
+    app.register_blueprint(auth.bp)
+
+    # blueprint responsible for profile manipulation
     from . import profile
     app.register_blueprint(profile.bp)
 
     db.init_app(app)
 
-    from . import auth
-    app.register_blueprint(auth.bp)
-
+    #create database tables
     with app.app_context():
         db.create_all()
 

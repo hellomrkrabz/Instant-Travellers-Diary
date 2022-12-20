@@ -2,51 +2,63 @@ import functools
 from .user import User
 from . import db
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
+    Blueprint, flash, g, redirect, render_template, request, session, url_for, jsonify
 )
 from werkzeug.security import check_password_hash, generate_password_hash
 
-bp = Blueprint('auth', __name__, url_prefix='/auth')
+bp = Blueprint('auth', __name__)
 
 
-@bp.route('/register', methods=('GET', 'POST'))
-def register():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        email = request.form['email']
-        error = None
+@bp.route('/Register', methods=['POST'])
+def Register():
+    data = request.get_json()
 
-        if not username:
-            error = 'Username is required.'
-        elif not password:
-            error = 'Password is required.'
-        elif not email:
-            error = 'E-mail is required.'
+    username = data['username']
+    password = data['password']
+    email = data['email']
 
-        if error is None:
-            try:
-                user = User(username=username,
-                            email=email,
-                            password_hash=generate_password_hash(password))
-                db.session.add(user)
-                db.session.commit()
-            except Exception as e:
-                errMsg = str(e)
-                error = ""
-                if 'users.email' in errMsg:
-                    error = f"E-mail {email} is already taken"
-                elif 'users.username:' in errMsg:
-                    error = f"Username {username} is already taken"
-                else:
-                    error = "Unknown error :P\n" + errMsg
+    error = None
+
+    if not username:
+        error = 'Username is required.'
+    elif not password:
+        error = 'Password is required.'
+    elif not email:
+        error = 'E-mail is required.'
+
+    if error is None:
+        try:
+            user = User(username=username,
+                        email=email,
+                        password_hash=generate_password_hash(password))
+            db.session.add(user)
+            db.session.commit()
+            print('[INFO] User created successfully')
+            print('> User details:')
+            print('  > email:   ', email)
+            print('  > username:', username)
+            print('  > password:', password)
+            return jsonify({"msg": "register successful"})
+        except Exception as e:
+            errMsg = str(e)
+            error = ""
+            if 'users.email' in errMsg:
+                error = f"E-mail {email} is already taken"
+            elif 'users.username:' in errMsg:
+                error = f"Username {username} is already taken"
             else:
-                return redirect(url_for("/Login"))
+                error = "Unknown error :P\n" + errMsg
+                print('error:', error)
+        else:
+            return jsonify({"msg": "register failed"})
+            # return redirect(url_for("/Login"))
 
-        flash(error)
+    print('error:', error)
+    flash(error)
+    return jsonify({"msg": "register failed"})
 
 
-@bp.route('/login', methods=('GET', 'POST'))
+@bp.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
