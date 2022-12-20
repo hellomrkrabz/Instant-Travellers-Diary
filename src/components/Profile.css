@@ -1,15 +1,15 @@
 body
 {
-	background-image:url("background2.png");
+	background: linear-gradient(150deg, rgb(9, 5, 110) 0%, rgb(46, 43, 43) 100%);
 	background-size: 1400px 600px;
 	background-repeat: no-repeat;
 }
 
-.sign-up-form{
+.sign-up-form2{
     
     display: flex;
     flex-direction: column;
-    max-width: 400px;
+    max-width: 800px;
     align-items: center;
     justify-content: center;
     margin: 0 auto;
@@ -18,8 +18,16 @@ body
     border-radius: 5px;
     box-shadow: 5px 5px 5px #ccc;
 	background-color:white;
-    
+	overflow-x:hidden;
+	height:80%;
 }
+
+.sign-up-form2>*
+{
+	position:relative;
+	top:60px;
+}
+
 
 .typography{
     padding: 10px;

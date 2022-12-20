@@ -1,6 +1,6 @@
 body
 {
-	background-image:url("background2.png");
+	background: linear-gradient(150deg, rgb(9, 5, 110) 0%, rgb(46, 43, 43) 100%);
 	background-size: 1400px 600px;
 	background-repeat: no-repeat;
 }

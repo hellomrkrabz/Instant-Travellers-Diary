@@ -41,7 +41,7 @@ def register():
                 else:
                     error = "Unknown error :P\n" + errMsg
             else:
-                return redirect(url_for("auth.login"))
+                return redirect(url_for("/Login"))
 
         flash(error)
 
