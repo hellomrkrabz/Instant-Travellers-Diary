@@ -47,35 +47,35 @@ def Register():
             elif 'users.username:' in errMsg:
                 error = f"Username {username} is already taken"
             else:
-                error = "Unknown error :P\n" + errMsg
+                error = "Unknown error:\n" + errMsg
                 print('error:', error)
-        else:
-            return jsonify({"msg": "register failed"})
-            # return redirect(url_for("/Login"))
+                return jsonify({"msg": error})
 
     print('error:', error)
-    flash(error)
-    return jsonify({"msg": "register failed"})
+    return jsonify({"msg": error})
 
 
 @bp.route('/login', methods=['POST'])
 def login():
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
-        error = None
-        user = User.query.filter_by(username=username).first()
-        if user is None:
-            error = 'Incorrect username.'
-        elif not user.verify_password(password):
-            error = 'Incorrect password.'
+    data = request.get_json()
 
-        if error is None:
-            session.clear()
-            session['user_id'] = user.get_id()
-            return redirect(url_for('index'))
+    username = data['username']
+    password = data['password']
+    email = data['email']
 
-        flash(error)
+    error = None
+    user = User.query.filter_by(username=username).first()
+    if user is None:
+        error = 'Incorrect username.'
+    elif not user.verify_password(password):
+        error = 'Incorrect password.'
+
+    if error is None:
+        session.clear()
+        session['user_id'] = user.get_id()
+        return jsonify({"msg": "register successful"})
+
+    return jsonify({"msg": error})
 
 
 @bp.before_app_request
