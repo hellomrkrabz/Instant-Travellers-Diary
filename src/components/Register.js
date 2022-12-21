@@ -12,21 +12,17 @@ function handleSubmit() {
     email: document.getElementById("email").value,
     username: document.getElementById("username").value, 
     password: document.getElementById("password").value
-  }).then((response) => {setTimeout(redirect(response.data.msg), 1000)})
+  }).then((response) => { setTimeout(redirect(response.data.msg), 1000) })
     .catch((error) => console.error('[FAIL] :: ' + error))
 }
 
-//amazing
-function redirect(error)
-{
-	console.log(error)
-	if(error=='register successful')
-	{
+function redirect(msg) {
+	console.log(msg)
+	if(msg === "success") {
 		window.location.href = "/Login"
 	}
-	else
-	{
-		window.alert("something wong")
+	else {
+		window.alert(msg)
 	}
 }
 

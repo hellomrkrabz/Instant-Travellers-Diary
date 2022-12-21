@@ -32,3 +32,9 @@ class User(db.Model):
 
     def get_id(self):
         return self.id
+
+    def get_username(self):
+        return self.username
+
+    def get_email(self):
+        return self.email

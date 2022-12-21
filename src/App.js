@@ -13,18 +13,18 @@ function App() {
 
   const [data, setData] = useState([])
 
-  useEffect(() => {
-    axios.get("/api/test")
-      .then((response) => {
-        console.log(response)
-        const data = response.data
-        console.log(data)
-        setData(data)
-      })
-      .catch(error => {
-        // alert(error)
-      })
-  }, [])
+  // useEffect(() => {
+  //   axios.get("/api/test")
+  //     .then((response) => {
+  //       console.log(response)
+  //       const data = response.data
+  //       console.log(data)
+  //       setData(data)
+  //     })
+  //     .catch(error => {
+  //       // alert(error)
+  //     })
+  // }, [])
   
   
   

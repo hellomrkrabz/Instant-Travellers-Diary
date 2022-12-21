@@ -28,12 +28,12 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    @app.route('/api/test', methods=['GET'])
-    def test():
-        print('entering /api/test')
+    @app.route('/api/users/<id>', methods=['GET'])
+    def test(id):
+        user = User.query.filter_by(id=id).first()
         return {
-            "msg1": "This is the field of msg1 :o",
-            "msg2": "This is the field of msg2 :]"
+            "username": user.get_username(),
+            "email": user.get_email()
         }
 
     # blueprint responsible for registering and logging

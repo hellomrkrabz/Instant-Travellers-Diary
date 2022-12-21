@@ -16,8 +16,15 @@ from .user import User
 
 bp = Blueprint("profile", __name__, url_prefix="/profile")
 
+@bp.route('/get_data/<id>', methods=['GET'])
+def test(id):
+    user = User.query.filter_by(id=id).first()
+    return {
+        "username": user.get_username(),
+        "email": user.get_email()
+    }
 
-@bp.route("/edit", methods=("GET", "POST"))
+@bp.route("/Edit", methods=["POST"])
 def edit():
     user_id = session.get("user_id")
     if request.method == "POST":

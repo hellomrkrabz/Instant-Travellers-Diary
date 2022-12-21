@@ -33,12 +33,8 @@ def Register():
                         password_hash=generate_password_hash(password))
             db.session.add(user)
             db.session.commit()
-            print('[INFO] User created successfully')
-            print('> User details:')
-            print('  > email:   ', email)
-            print('  > username:', username)
-            print('  > password:', password)
-            return jsonify({"msg": "register successful"})
+            print(f"[INFO] User {username} created successfully")
+            return jsonify({"msg": "success"})
         except Exception as e:
             errMsg = str(e)
             error = ""
@@ -55,15 +51,17 @@ def Register():
     return jsonify({"msg": error})
 
 
-@bp.route('/login', methods=['POST'])
-def login():
+@bp.route('/Login', methods=['POST'])
+def Login():
     data = request.get_json()
 
     username = data['username']
     password = data['password']
-    email = data['email']
+
+    print(f"Logging in user {username}...")
 
     error = None
+
     user = User.query.filter_by(username=username).first()
     if user is None:
         error = 'Incorrect username.'
@@ -73,8 +71,10 @@ def login():
     if error is None:
         session.clear()
         session['user_id'] = user.get_id()
-        return jsonify({"msg": "register successful"})
+        print(f"user id: {user.get_id()}")
+        return jsonify({"msg": "success"})
 
+    print(f"error: {error}")
     return jsonify({"msg": error})
 
 

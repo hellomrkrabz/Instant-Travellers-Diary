@@ -6,24 +6,20 @@ import './Login.css'
 import axios, {isCancel, AxiosError} from 'axios';
 
 function handleSubmit() {
-  axios.post("http://127.0.0.1:5000/Register", {
-    email: document.getElementById("email").value,
+  axios.post("http://127.0.0.1:5000/Login", {
     username: document.getElementById("username").value, 
     password: document.getElementById("password").value
-  }).then((response) => {setTimeout(redirect(response.data.msg), 1000)})
+  }).then((response) => { setTimeout(redirect(response.data.msg), 1000) })
     .catch((error) => console.error('[FAIL] :: ' + error))
 }
 
-function redirect(error)
-{
-	console.log(error)
-	if(error=='THIS_IS_THE_CORRECT_MESSEGE')
-	{
+function redirect(msg) {
+	console.log(msg)
+	if(msg === "success") {
 		window.location.href = "/Profile"
 	}
-	else
-	{
-		window.alert("somthing wong")
+	else {
+		window.alert(msg)
 	}
 }
 
@@ -34,10 +30,10 @@ function Login() {
             <Box className='sign-up-form'>
                 <Typography className='typography' variant='h2'>Login</Typography>
                 <TextField margin='normal' id="username" type={'username'} variant='outlined' placeholder='Username'/>
-                <TextField margin='normal' id="password" type={'password'} variant='outlined'placeholder='Password'/>
+                <TextField margin='normal' id="password" type={'password'} variant='outlined' placeholder='Password'/>
                 <Button onClick={handleSubmit} variant='contained' color='warning' style={{
-								backgroundColor: "#e64381",
-							}}>Login</Button>
+								  backgroundColor: "#e64381",
+							  }}>Login</Button>
             </Box>
         </form>
     </div>
