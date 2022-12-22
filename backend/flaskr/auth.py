@@ -74,7 +74,7 @@ def Login():
         session['user_id'] = user.get_id()
         print(f"user id: {user.get_id()}")
 
-        response = make_response({'msg': 'success'})
+        response = make_response({'user_ud': user.get_id()})
         response.headers['Access-Control-Allow-Credentials'] = True
         response.set_cookie(b'user_id', value=json.dumps(user.get_id()), domain='127.0.0.1:3000')
         return response, 200
