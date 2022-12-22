@@ -74,19 +74,15 @@ def Login():
         session['user_id'] = user.get_id()
         print(f"user id: {user.get_id()}")
 
-        response = make_response({'user_ud': user.get_id()})
+        resp = jsonify({'user_id': user.get_id(), 'msg': 'success'})
+
+        response = make_response(resp)
         response.headers['Access-Control-Allow-Credentials'] = True
         response.set_cookie(b'user_id', value=json.dumps(user.get_id()), domain='127.0.0.1:3000')
         return response, 200
 
     print(f"error: {error}")
     return jsonify({"msg": error})
-
-
-@bp.route('/GetSession',methods=['GET'])
-def GetSession():
-    user_id = session.get('user_id')
-    return jsonify({'user_id': user_id})
 
 
 @bp.before_app_request

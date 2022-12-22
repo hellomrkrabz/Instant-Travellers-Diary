@@ -14,19 +14,7 @@ import setAvatar from './setAvatar'
 function Profile() {
 	
 	const [data, setData] = useState([])
-	
-  useEffect(() => {
-    axios.get("/api/test")
-      .then((response) => {
-        console.log(response)
-        const data = response.data
-        console.log(data)
-        setData(data)
-      })
-      .catch(error => {
-        alert(error)
-      })
-  }, [])	
+		
 
   
   avatar=setAvatar(data.avatarUrl);
@@ -56,8 +44,19 @@ function Profile() {
 	  }
 	};
 
-	//ustawcie sesje
-	var userId=3;
+	var name='user_id',userId;
+	var i, c, ca, nameEQ = name + "=";
+    ca = document.cookie.split(';');
+    for(i=0;i < ca.length;i++) {
+        c = ca[i];
+        while (c.charAt(0)==' ') {
+            c = c.substring(1,c.length);
+        }
+        if (c.indexOf(nameEQ) == 0) {
+            userId= c.substring(nameEQ.length,c.length);
+        }
+    }
+	
 	let url="http://localhost:5000/profile/get_data/"+userId.toString();
 
 	xhr.open('GET', url, true);
