@@ -70,17 +70,23 @@ def Login():
         error = 'Incorrect password.'
 
     if error is None:
-        response = make_response("success")
+        session.clear()
+        session['user_id'] = user.get_id()
+        print(f"user id: {user.get_id()}")
+
+        response = make_response({'msg': 'success'})
         response.headers['Access-Control-Allow-Credentials'] = True
         response.set_cookie(b'user_id', value=json.dumps(user.get_id()), domain='127.0.0.1:3000')
         return response, 200
-        # session.clear()
-        # session['user_id'] = user.get_id()
-        # print(f"user id: {user.get_id()}")
-        # return jsonify({"msg": "success"})
 
     print(f"error: {error}")
     return jsonify({"msg": error})
+
+
+@bp.route('/GetSession',methods=['GET'])
+def GetSession():
+    user_id = session.get('user_id')
+    return jsonify({'user_id': user_id})
 
 
 @bp.before_app_request

@@ -50,11 +50,14 @@ function Profile() {
   }, [])	
   
   
-  avatar=setAvatar(data.avatarUrl);
+	avatar=setAvatar(data.avatarUrl);
   
-  var someSession = '<%= Session["user_id"].ToString() %>';
-alert(someSession)
-  
+	
+	var id = '<%=session.getAttribute("user_id")%>';
+	console.log(id);
+	alert(id)
+	
+	
 	var xhr = new XMLHttpRequest();
 
 	xhr.onreadystatechange = function() {
