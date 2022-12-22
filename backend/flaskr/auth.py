@@ -2,9 +2,10 @@ import functools
 from .user import User
 from . import db
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for, jsonify
+    Blueprint, flash, g, redirect, render_template, request, make_response, session, url_for, jsonify
 )
 from werkzeug.security import check_password_hash, generate_password_hash
+import json
 
 bp = Blueprint('auth', __name__)
 
@@ -69,10 +70,10 @@ def Login():
         error = 'Incorrect password.'
 
     if error is None:
-        response = make_response({'msg': 'success'})
+        response = make_response("success")
         response.headers['Access-Control-Allow-Credentials'] = True
-        response.set_cookie('user_id', value=user.get_id(), domain='127.0.0.1:3000')
-        return jsonify({'response': response.json}), 200
+        response.set_cookie(b'user_id', value=json.dumps(user.get_id()), domain='127.0.0.1:3000')
+        return response, 200
         # session.clear()
         # session['user_id'] = user.get_id()
         # print(f"user id: {user.get_id()}")
