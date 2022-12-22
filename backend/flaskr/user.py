@@ -38,3 +38,6 @@ class User(db.Model):
 
     def get_email(self):
         return self.email
+
+    def set_password_hash(self, new_password):
+        self.password_hash = generate_password_hash(new_password)

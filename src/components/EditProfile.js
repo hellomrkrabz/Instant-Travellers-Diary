@@ -11,8 +11,15 @@ import axios, {isCancel, AxiosError} from 'axios';
 import reScale from './func'
 import setAvatar from './setAvatar'
 
-  function handleSubmit() {
-  axios.post("http://127.0.0.1:5000/EditProfile", {
+function handleSubmit() {
+  const IDCookie = document
+  	.cookie
+	.split('; ')
+	.find((row) => row.startsWith('user_id='))
+	?.split('=')[1];
+
+  axios.post("http://127.0.0.1:5000/profile/EditProfile", {
+    userID: IDCookie,
     email: document.getElementById("email").value,
     username: document.getElementById("username").value, 
     password: document.getElementById("password").value,
@@ -23,7 +30,8 @@ import setAvatar from './setAvatar'
 
 function redirect(response) {
 	console.log(response)
-	if(response.msg === "success") {
+	if(response.msg === "User edited successfully") {
+		window.alert(response.msg)
 		window.location.href = "/Profile"
 	}
 	else {
