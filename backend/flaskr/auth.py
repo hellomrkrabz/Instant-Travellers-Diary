@@ -69,10 +69,14 @@ def Login():
         error = 'Incorrect password.'
 
     if error is None:
-        session.clear()
-        session['user_id'] = user.get_id()
-        print(f"user id: {user.get_id()}")
-        return jsonify({"msg": "success"})
+        response = make_response({'msg': 'success'})
+        response.headers['Access-Control-Allow-Credentials'] = True
+        response.set_cookie('user_id', value=user.get_id(), domain='127.0.0.1:3000')
+        return jsonify({'response': response.json}), 200
+        # session.clear()
+        # session['user_id'] = user.get_id()
+        # print(f"user id: {user.get_id()}")
+        # return jsonify({"msg": "success"})
 
     print(f"error: {error}")
     return jsonify({"msg": error})
