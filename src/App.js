@@ -5,6 +5,8 @@ import Home from'./components/pages/Home';
 import Register from './components/Register';
 import Login from './components/Login';
 import Profile from './components/Profile';
+import EditProfile from './components/EditProfile';
+
 
 import { useState, useEffect } from "react";
 import axios, {isCancel, AxiosError} from 'axios';
@@ -39,6 +41,7 @@ function App() {
 		      <Route path="/Register" exact component={Register}/>
 		      <Route path="/Login" exact component={Login}/>
 		      <Route path="/Profile" exact component={Profile}/>
+			  <Route path="/EditProfile" exact component={EditProfile}/>
         </Switch>
       </Router>
 	  

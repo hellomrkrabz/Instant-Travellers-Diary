@@ -1,0 +1,52 @@
+body
+{
+	background: linear-gradient(150deg, rgb(9, 5, 110) 0%, rgb(46, 43, 43) 100%);
+	background-size: 1400px 600px;
+	background-repeat: no-repeat;
+}
+
+.sign-up-form2{
+    
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    margin-top: 50px;
+    padding: 5px;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px #ccc;
+	background-color:white;
+	overflow-x:hidden;
+	height:80%;
+}
+
+.sign-up-form2>*
+{
+	position:relative;
+	top:100px;
+}
+
+
+.typography{
+    padding: 10px;
+    text-align: center;
+    
+
+}
+
+
+/*
+
+sx= {{":hover": {
+boxShadow: "10px 10px 10px #ccc"
+}}}
+
+display={"flex"} 
+            flexDirection={"column"} 
+            maxWidth={400} 
+            alignContent={"center"} 
+            justifyContent={"center"}
+            margin="auto"
+*/
