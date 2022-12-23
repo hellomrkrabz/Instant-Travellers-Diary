@@ -1,3 +1,31 @@
-class Stage:
-    pass
-    
+from . import db
+from datetime import datetime
+
+
+class Stage(db.Model):
+    __tablename__ = 'stages'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.Integer)
+    body = db.Column(db.Text)
+    body_html = db.Column(db.Text)
+    journey_id = db.Column(db.Integer, db.ForeignKey('journeys.id'))
+    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    # comments = db.relationship('Comment', backref='post', lazy='dynamic')
+
+    def __repr__(self):
+        return '<Stage %r>' % self.id
+
+    def get_id(self):
+        return self.id
+
+    def get_name(self):
+        return self.name
+
+    def get_body(self):
+        return self.body
+
+    def get_body_html(self):
+        return self.body_html
+
+    def get_journey_id(self):
+        return self.journey_id

@@ -1,11 +1,7 @@
 from flask import (
     Blueprint,
-    flash,
-    redirect,
-    render_template,
     request,
     session,
-    url_for,
     jsonify
 )
 
@@ -17,22 +13,24 @@ from .user import User
 
 bp = Blueprint("profile", __name__, url_prefix="/profile")
 
+
 @bp.route('/get_data/<id>', methods=['GET'])
-def test(id):
+def get_user_data(id):
     user = User.query.filter_by(id=id).first()
-    return {
-        "username": user.get_username(),
-        "email": user.get_email()
-    }
+    return jsonify({
+        'username': user.get_username(),
+        'email': user.get_email()
+    })
+
 
 @bp.route("/EditProfile", methods=["POST"])
 def EditProfile():
-    data         = request.get_json()
-    username     = data['username']
-    email        = data['email']
-    password     = data['password']
+    data = request.get_json()
+    username = data['username']
+    email = data['email']
+    password = data['password']
     new_password = data['newPassword']
-    user_id      = session.get("user_id") or data['userID']
+    user_id = session.get("user_id") or data['userID']
 
     if user_id is None:
         return jsonify({'msg': f"Couldn\'t find user with id {user_id}"})

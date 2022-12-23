@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template
+from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
@@ -28,13 +28,9 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    @app.route('/api/users/<id>', methods=['GET'])
-    def test(id):
-        user = User.query.filter_by(id=id).first()
-        return {
-            "username": user.get_username(),
-            "email": user.get_email()
-        }
+    # blueprint responsible for fetching some data from the API
+    from . import api
+    app.register_blueprint(api.bp)
 
     # blueprint responsible for registering and logging
     from . import auth
@@ -46,7 +42,7 @@ def create_app(test_config=None):
 
     db.init_app(app)
 
-    #create database tables
+    # create database tables
     with app.app_context():
         db.create_all()
 

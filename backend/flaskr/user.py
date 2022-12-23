@@ -1,10 +1,10 @@
-from profile import Profile
+# from profile import Profile
 from . import db
-from datetime import datetime
+# from datetime import datetime
 
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from .config import config
+# from flask import Flask
+# from flask_sqlalchemy import SQLAlchemy
+# from .config import config
 
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -18,7 +18,10 @@ class User(db.Model):
     name = db.Column(db.String(64))
     bio = db.Column(db.Text())
     avatar_hash = db.Column(db.String(32))
-    # journeys = db.relationship('Journey', backref='author', lazy='dynamic')
+    journeys = db.relationship('Journey',
+                               backref='author',
+                               lazy='dynamic',
+                               cascade="all, delete")
     # events = db.relationship('Event', backref='author', lazy='dynamic')
     # def __init__(self, username: str, profile: Profile):
     #     self.username = username

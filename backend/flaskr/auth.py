@@ -1,10 +1,16 @@
-import functools
 from .user import User
 from . import db
 from flask import (
-    Blueprint, flash, g, redirect, render_template, request, make_response, session, url_for, jsonify
+    Blueprint,
+    g,
+    redirect,
+    request,
+    make_response,
+    session,
+    url_for,
+    jsonify
 )
-from werkzeug.security import check_password_hash, generate_password_hash
+from werkzeug.security import generate_password_hash
 import json
 
 bp = Blueprint('auth', __name__)
@@ -20,36 +26,33 @@ def Register():
 
     error = None
 
-    if not username:
+    if username == '' or not username:
         error = 'Username is required.'
-    elif not password:
+    elif password == '' or not password:
         error = 'Password is required.'
-    elif not email:
+    elif email == '' or not email:
         error = 'E-mail is required.'
+    if error is not None:
+        print('error:', error)
+        return jsonify({"msg": error})
 
-    if error is None:
-        try:
-            user = User(username=username,
-                        email=email,
-                        password_hash=generate_password_hash(password))
-            db.session.add(user)
-            db.session.commit()
-            print(f"[INFO] User {username} created successfully")
-            return jsonify({"msg": "success"})
-        except Exception as e:
-            errMsg = str(e)
-            error = ""
-            if 'users.email' in errMsg:
-                error = f"E-mail {email} is already taken"
-            elif 'users.username:' in errMsg:
-                error = f"Username {username} is already taken"
-            else:
-                error = "Unknown error:\n" + errMsg
-                print('error:', error)
-                return jsonify({"msg": error})
-
-    print('error:', error)
-    return jsonify({"msg": error})
+    try:
+        user = User(username=username,
+                    email=email,
+                    password_hash=generate_password_hash(password))
+        db.session.add(user)
+        db.session.commit()
+        print(f"[INFO] User {username} created successfully")
+        return jsonify({"msg": "success"})
+    except Exception as e:
+        error = str(e)
+        if 'users.email' in error:
+            error = f"E-mail {email} is already taken"
+        elif 'users.username:' in error:
+            error = f"Username {username} is already taken"
+        else:
+            print('[ERROR] ::', error)
+            return jsonify({"msg": error})
 
 
 @bp.route('/Login', methods=['POST'])
@@ -78,7 +81,9 @@ def Login():
 
         response = make_response(resp)
         response.headers['Access-Control-Allow-Credentials'] = True
-        response.set_cookie(b'user_id', value=json.dumps(user.get_id()), domain='127.0.0.1:3000')
+        response.set_cookie(b'user_id',
+                            value=json.dumps(user.get_id()),
+                            domain='127.0.0.1:3000')
         return response, 200
 
     print(f"error: {error}")
