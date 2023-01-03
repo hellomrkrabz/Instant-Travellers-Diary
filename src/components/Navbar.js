@@ -31,38 +31,76 @@ function Navbar() {
 
       window.addEventListener('resize', showButton);
 
-  return (
-    <>
-        <nav className='navbar'>
-        
-            <div className='navbar-container'>
-            <Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
-                <img src={logo} width="280" height="50"/>
-                </Link>
-                
-                <div className='menu-icon' onClick={handleClick}>
-                
-                  {click ? <CloseIcon className='fa-times'/> : <MenuIcon className='fa-bars'/>}
+	console.log(document.URL);
 
-                </div>
-                <ul className={click ? 'nav-menu active' : 'nav-menu'}>
-                    <li className='nav-item'>
-                        <Link to= '/' className='nav-links' onClick={closeMobileMenu}>
-                            Home
-                        </Link>
-                    </li>
-                    <li className='nav-item'>
-                        <Link to= '/Login' className='nav-links' onClick={closeMobileMenu}>
-                            Login
-                        </Link>
-                    </li>
-                </ul>
-                {button && <Button buttonStyle='btn--outline' path="/Register">Register</Button>}
-            </div>
+	if(document.URL=='http://localhost:3000/' || document.URL=='http://localhost:3000/Login' || document.URL=='http://localhost:3000/Register')
+	{
+	  return (
+		<>
+			<nav className='navbar'>
+			
+				<div className='navbar-container'>
+				<Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
+					<img src={logo} width="280" height="50"/>
+					</Link>
+					
+					<div className='menu-icon' onClick={handleClick}>
+					
+					  {click ? <CloseIcon className='fa-times'/> : <MenuIcon className='fa-bars'/>}
 
-        </nav>
-    </>
-  )
+					</div>
+					<ul className={click ? 'nav-menu active' : 'nav-menu'}>
+						<li className='nav-item'>
+							<Link to= '/' className='nav-links' onClick={closeMobileMenu}>
+								Home
+							</Link>
+						</li>
+						<li className='nav-item'>
+							<Link to= '/Login' className='nav-links' onClick={closeMobileMenu}>
+								Login
+							</Link>
+						</li>
+					</ul>
+					{button && <Button buttonStyle='btn--outline' path="/Register">Register</Button>}
+				</div>
+
+			</nav>
+		</>
+	  )
+	}else
+	{
+		return (
+		<>
+			<nav className='navbar'>
+			
+				<div className='navbar-container'>
+				<Link to='/Profile' className='navbar-logo' onClick={closeMobileMenu}>
+					<img src={logo} width="280" height="50"/>
+					</Link>
+					
+					<div className='menu-icon' onClick={handleClick}>
+					
+					  {click ? <CloseIcon className='fa-times'/> : <MenuIcon className='fa-bars'/>}
+
+					</div>
+					<ul className={click ? 'nav-menu active' : 'nav-menu'}>
+						<li className='nav-item'>
+							<Link to= '/Journeys' className='nav-links' onClick={closeMobileMenu}>
+								Journeys
+							</Link>
+						</li>
+						<li className='nav-item'>
+							<Link to= '/Logout' className='nav-links' onClick={closeMobileMenu}>
+								Logout
+							</Link>
+						</li>
+					</ul>
+				</div>
+
+			</nav>
+		</>
+	  )
+	}
 }
 
 export default Navbar

@@ -31,7 +31,6 @@ function handleSubmit() {
 function redirect(response) {
 	console.log(response)
 	if(response.msg === "User edited successfully") {
-		window.alert(response.msg)
 		window.location.href = "/Profile"
 	}
 	else {
