@@ -6,7 +6,8 @@ from flask_sqlalchemy import SQLAlchemy
 from .config import config
 
 db = SQLAlchemy()
-
+IMAGE_UPLOAD_FOLDER = '../public/images'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 def create_app(test_config=None):
     # create and configure the app
@@ -14,6 +15,7 @@ def create_app(test_config=None):
     CORS(app)
     app.config.from_object(config['development'])
     config['development'].init_app(app)
+    app.config['IMAGE_UPLOAD_FOLDER'] = IMAGE_UPLOAD_FOLDER
 
     if test_config is None:
         # load the instance config, if it exists, when not testing
@@ -47,3 +49,17 @@ def create_app(test_config=None):
         db.create_all()
 
     return app
+
+@app.route('/upload', methods=['POST'])
+def fileUpload():
+    target=os.path.join(UPLOAD_FOLDER,'test_docs')
+    if not os.path.isdir(target):
+        os.mkdir(target)
+    logger.info("welcome to upload`")
+    file = request.files['file']
+    filename = secure_filename(file.filename)
+    destination="/".join([target, filename])
+    file.save(destination)
+    session['uploadFilePath']=destination
+    response="Whatever you wish too return"
+    return response

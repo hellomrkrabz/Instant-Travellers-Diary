@@ -11,10 +11,12 @@ from flask import (
     jsonify
 )
 from werkzeug.security import generate_password_hash
+import re
 import json
 
 bp = Blueprint('auth', __name__)
 
+regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
 
 @bp.route('/Register', methods=['POST'])
 def Register():
@@ -30,7 +32,7 @@ def Register():
         error = 'Username is required.'
     elif password == '' or not password:
         error = 'Password is required.'
-    elif email == '' or not email:
+    elif email == '' or not re.fullmatch(regex, email):
         error = 'E-mail is required.'
     if error is not None:
         print('error:', error)

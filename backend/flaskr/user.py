@@ -7,12 +7,12 @@ from . import db
 # from .config import config
 
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from sqlalchemy_utils import EmailType
 
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(64), unique=True, index=True)
+    email = db.Column(EmailType, unique=True, index=True)
     username = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(128))
     name = db.Column(db.String(64))
