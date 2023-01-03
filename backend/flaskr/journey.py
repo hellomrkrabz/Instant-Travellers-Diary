@@ -10,6 +10,14 @@ class Journey(db.Model):
     body_html = db.Column(db.Text)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    stages = db.relationship('Stage',
+                             backref='journey',
+                             lazy='dynamic',
+                             cascade="all, delete")
+    # images = db.relationship('Images',
+    #                          backref='journey',
+    #                          lazy='dynamic',
+    #                          cascade="all, delete")
     # comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
     def __repr__(self):

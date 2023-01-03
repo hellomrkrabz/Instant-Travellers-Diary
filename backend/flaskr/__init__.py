@@ -41,6 +41,10 @@ def create_app(test_config=None):
     # blueprint responsible for profile manipulation
     from . import profile
     app.register_blueprint(profile.bp)
+    
+    # blueprint responsible for profile manipulation
+    from . import file_upload
+    app.register_blueprint(file_upload.bp)
 
     db.init_app(app)
 
@@ -50,16 +54,3 @@ def create_app(test_config=None):
 
     return app
 
-@app.route('/upload', methods=['POST'])
-def fileUpload():
-    target=os.path.join(UPLOAD_FOLDER,'test_docs')
-    if not os.path.isdir(target):
-        os.mkdir(target)
-    logger.info("welcome to upload`")
-    file = request.files['file']
-    filename = secure_filename(file.filename)
-    destination="/".join([target, filename])
-    file.save(destination)
-    session['uploadFilePath']=destination
-    response="Whatever you wish too return"
-    return response

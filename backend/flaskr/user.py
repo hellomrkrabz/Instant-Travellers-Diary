@@ -22,6 +22,10 @@ class User(db.Model):
                                backref='author',
                                lazy='dynamic',
                                cascade="all, delete")
+    avatar = db.relationship('Avatar',
+                             backref='user',
+                             lazy='dynamic',
+                             cascade="all, delete")
     # events = db.relationship('Event', backref='author', lazy='dynamic')
     # def __init__(self, username: str, profile: Profile):
     #     self.username = username

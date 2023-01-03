@@ -5,11 +5,18 @@ from datetime import datetime
 class Stage(db.Model):
     __tablename__ = 'stages'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Integer)
     body = db.Column(db.Text)
     body_html = db.Column(db.Text)
     journey_id = db.Column(db.Integer, db.ForeignKey('journeys.id'))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    events = db.relationship('Event',
+                              backref='stage',
+                              lazy='dynamic',
+                              cascade="all, delete")
+    # images = db.relationship('Images',
+    #                          backref='stage',
+    #                          lazy='dynamic',
+    #                          cascade="all, delete")
     # comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
     def __repr__(self):

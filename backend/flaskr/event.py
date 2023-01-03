@@ -9,4 +9,8 @@ class Event(db.Model):
     body_html = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    journey_id = db.Column(db.Integer, db.ForeignKey('posts.id'))
+    stage_id = db.Column(db.Integer, db.ForeignKey('stages.id'))
+    # images = db.relationship('Images',
+    #                          backref='event',
+    #                          lazy='dynamic',
+    #                          cascade="all, delete")
