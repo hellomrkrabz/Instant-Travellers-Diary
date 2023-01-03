@@ -40,36 +40,55 @@ function redirect(response) {
 
 
 function Profile() {
-	
+
 	const [data, setData] = useState([])
-  
-  
-	avatar=setAvatar(data.avatarUrl);
-	
-	
+
+
+	avatar = setAvatar(data.avatarUrl);
+
+
 	var xhr = new XMLHttpRequest();
 
-	xhr.onreadystatechange = function() {
-	  if (this.readyState == 4 && this.status == 200) {
-		var response = this.responseText;
-		
-		let email = /[a-zA-Z0-9]{1,}[@]{1}[a-z0-9]{1,}[.]{1}[a-z0-9]{1,}/.exec(response);
-		document.getElementById('email').value=email;
-		
-		var res=response.replace(/"/,'d');
-		var res=res.replace(/"/,'d');
-		var res=res.replace(/"/,'d');
-		var res=res.replace(/"/,'d');
-		var res=res.replace(/"/,'d');
-		var res=res.replace(/"/,'d');
-		var begin = res.search(/"/);
-		var res=res.replace(/"/,'d');
-		var end = res.search(/"/);
-		var username=res.slice(begin+1,end);
-		
-		document.getElementById('username').value=username;
-	  }
+	xhr.onreadystatechange = function () {
+		if (this.readyState == 4 && this.status == 200) {
+			var response = this.responseText;
+
+			let email = /[a-zA-Z0-9]{1,}[@]{1}[a-z0-9]{1,}[.]{1}[a-z0-9]{1,}/.exec(response);
+			document.getElementById('email').value = email;
+
+			var res = response.replace(/"/, 'd');
+			var res = res.replace(/"/, 'd');
+			var res = res.replace(/"/, 'd');
+			var res = res.replace(/"/, 'd');
+			var res = res.replace(/"/, 'd');
+			var res = res.replace(/"/, 'd');
+			var begin = res.search(/"/);
+			var res = res.replace(/"/, 'd');
+			var end = res.search(/"/);
+			var username = res.slice(begin + 1, end);
+
+			document.getElementById('username').value = username;
+		}
 	};
+
+	function handleUploadImage(ev)
+	{
+		ev.preventDefault();
+
+		const data = new FormData();
+		data.append('file', this.uploadInput.files[0]);
+		data.append('filename', this.fileName.value);
+
+		fetch('http://localhost:8000/upload', {
+			method: 'POST',
+			body: data,
+		}).then((response) => {
+			response.json().then((body) => {
+				this.setState({imageURL: `http://localhost:8000/${body.file}`});
+			});
+		});
+	}
+
 
 	var name='user_id',userId;
 	var i, c, ca, nameEQ = name + "=";
@@ -90,6 +109,7 @@ function Profile() {
 
 	
   return (
+
     <div>
         <form method="POST" style={{height: reScale()+'px'}}>
             <Box className='sign-up-form2'>
@@ -98,10 +118,15 @@ function Profile() {
                 <TextField margin='normal' id='email' type={'email'} variant='outlined' placeholder='Email' value={data.email}/>
 				<TextField margin='normal' id='newPassword' type={'password'} variant='outlined' placeholder='New password'/>
 				<TextField margin='normal' id='password' type={'password'} variant='outlined' placeholder='Password (required)'/>
-                
 				<Button onClick={handleSubmit} buttonStyle='btn--2' buttonSize="btn--medium">Save changes</Button>
+				<div>
+				<input type="file" name="file" onChange={handleUploadImage} />
+				</div>
+				<div>
+				<Button onClick={handleSubmit} buttonStyle='btn--2' buttonSize="btn--medium">Change picture</Button>
+				</div>
             </Box>
-        </form>
+       </form>
     </div>
   )
 }
