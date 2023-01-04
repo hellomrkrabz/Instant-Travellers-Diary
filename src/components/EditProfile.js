@@ -74,24 +74,23 @@ function Profile() {
 
 	function handleUploadImage(ev)
 	{
-		console.log("handled");
-	
-		let data = new FormData();
-		data.append('file',document.getElementById("image").files[0]);
-		console.log("=====");
-		console.log(data);
+        const IDCookie = document
+              .cookie
+	          .split('; ')
+	          .find((row) => row.startsWith('user_id='))?.split('=')[1];
+		// console.log("handled");
 
-		
-		
-		axios.post('http://localhost:5000/image', data)
-    .then(response => {
-        console.log(response);
-    })
-    .catch(error => {
-        console.log(error);
-    });
-	
-	
+		let data = new FormData();
+		data.append('file', document.getElementById("image").files[0]);
+        data.append('userID', IDCookie)
+		// console.log("=====");
+		// console.log(data);
+
+		axios.post('http://localhost:5000/api/upload/avatar', data).then(response => {
+            console.log(response);
+        }).catch(error => {
+            console.log(error);
+        });
 	}
 
 

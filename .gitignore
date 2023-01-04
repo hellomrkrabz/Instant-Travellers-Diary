@@ -26,3 +26,6 @@ data-dev.sqlite
 node_modules/
 .vs/
 *cache
+
+public/avatars/*
+public/images/*

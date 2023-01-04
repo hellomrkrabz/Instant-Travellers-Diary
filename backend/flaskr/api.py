@@ -14,9 +14,9 @@ def body_to_html(body: str) -> str:
 bp = Blueprint("api", __name__, url_prefix='/api')
 
 
-@bp.route('/users/<id>', methods=['GET'])
-def get_user_data(id):
-    user = User.query.filter_by(id=id).first()
+@bp.route('/users/<u_id>', methods=['GET'])
+def get_user_data(u_id):
+    user = User.query.filter_by(id=u_id).first()
     if user is None:
         return jsonify({'msg': 'Specified user does not exist'})
     return jsonify({
@@ -106,10 +106,10 @@ def get_avatar(user_id):
     avatar = Avatar.query.filter_by(
         user_id=user_id,
     ).first()
-    
+
     if avatar is None:
         return jsonify({'msg': 'Avatar for this user does not exist'})
-    
+
     return jsonify({'msg': avatar.get_full_filename()})
 
 @bp.route('/get_image_names', methods=['GET'])
@@ -119,17 +119,17 @@ def get_image_names():
     j_id = data['journeyID']
     s_id = data['stageID']
     e_id = data['eventID']
-    
+
     images = Image.query.filter_by(
         user_id=u_id,
         journey_id=j_id,
         stage_id=s_id,
         event_id=e_id
     ).all()
-    
+
     if images is None:
         return jsonify({'msg': 'Specified image does not exist'})
-    
+
     images_json = [{'u_id': i.get_user_id(),
                     'j_id': i.get_journey_id(),
                     's_id': i.get_stage_id(),
@@ -137,4 +137,3 @@ def get_image_names():
                     'filename': i.get_full_filename} for i in images]
 
     return jsonify({'images': images_json})
-    
