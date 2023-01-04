@@ -12,6 +12,7 @@ import reScale from './func'
 import setAvatar from './setAvatar'
 
 function handleSubmit() {
+	
   const IDCookie = document
   	.cookie
 	.split('; ')
@@ -73,20 +74,24 @@ function Profile() {
 
 	function handleUploadImage(ev)
 	{
-		ev.preventDefault();
+		console.log("handled");
+	
+		let data = new FormData();
+		data.append('file',document.getElementById("image").files[0]);
+		console.log("=====");
+		console.log(data);
 
-		const data = new FormData();
-		data.append('file', this.uploadInput.files[0]);
-		data.append('filename', this.fileName.value);
-
-		fetch('http://localhost:8000/upload', {
-			method: 'POST',
-			body: data,
-		}).then((response) => {
-			response.json().then((body) => {
-				this.setState({imageURL: `http://localhost:8000/${body.file}`});
-			});
-		});
+		
+		
+		axios.post('http://localhost:5000/image', data)
+    .then(response => {
+        console.log(response);
+    })
+    .catch(error => {
+        console.log(error);
+    });
+	
+	
 	}
 
 
@@ -118,13 +123,10 @@ function Profile() {
                 <TextField margin='normal' id='email' type={'email'} variant='outlined' placeholder='Email' value={data.email}/>
 				<TextField margin='normal' id='newPassword' type={'password'} variant='outlined' placeholder='New password'/>
 				<TextField margin='normal' id='password' type={'password'} variant='outlined' placeholder='Password (required)'/>
+				<div>
+				<input type="file" name="file" id='image' onChange={handleUploadImage} />
+				</div>
 				<Button onClick={handleSubmit} buttonStyle='btn--2' buttonSize="btn--medium">Save changes</Button>
-				<div>
-				<input type="file" name="file" onChange={handleUploadImage} />
-				</div>
-				<div>
-				<Button onClick={handleSubmit} buttonStyle='btn--2' buttonSize="btn--medium">Change picture</Button>
-				</div>
             </Box>
        </form>
     </div>
