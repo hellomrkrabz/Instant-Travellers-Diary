@@ -24,8 +24,7 @@ def upload_file():
     if not os.path.isdir(target):
         os.mkdir(target)
 
-    data = request.get_json()
-    print("DATA:", data)
+    data = request.form
 
     j_id = data['journeyID']
     s_id = data['stageID']
@@ -83,19 +82,14 @@ def upload_avatar():
     destination = os.path.join(target, filename)
 
     if not os.path.isfile(destination):
-        file.save(os.path.abspath(destination))
         avatar = Avatar(
             user_id=u_id,
             full_filename=destination
         )
         db.session.add(avatar)
         db.session.commit()
-        print(f"[INFO] Avatar {destination} saved successfully")
-    else:
-        file.save(os.path.abspath(destination))
-        print("[INFO] Avatar already exists! Overwriting...")
-        print(f"[INFO] Avatar {destination} saved successfully")
 
-        return jsonify({"msg": "success"})
+    file.save(os.path.abspath(destination))
+    print(f"[INFO] Avatar {destination} saved successfully")
 
-    return jsonify({"msg": "Unknown error"})
+    return jsonify({"msg": "success"})
