@@ -8,7 +8,9 @@ from flask import (
 from werkzeug.utils import secure_filename
 
 from . import db
-from .image import Image, Avatar
+#from .image import Image, Avatar
+from .image import Image
+from .user import User
 
 
 bp = Blueprint("upload", __name__, url_prefix="/api/upload")
@@ -60,7 +62,6 @@ def upload_file():
         "msg": f"File with the name {file.filename} already exists. Change the name and try again."
     })
 
-
 @bp.route('/avatar', methods=['POST'])
 def upload_avatar():
     target = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
@@ -69,25 +70,22 @@ def upload_avatar():
     if not os.path.isdir(target):
         os.mkdir(target)
 
-    u_id = request.form['userID']
+    user_id = request.form['userID']
+    user = User.query.filter_by(id=user_id).first()
 
     file = request.files['file']
     extension = file.filename.split('.')[-1]
     if extension not in ALLOWED_EXTENSIONS:
         return jsonify({"msg": f"Invalid extension: {extension}"})
 
-    filename = f"{u_id}.{extension}"
+    filename = f"{user_id}.{extension}"
     filename = secure_filename(filename)
 
     destination = os.path.join(target, filename)
 
-    if not os.path.isfile(destination):
-        avatar = Avatar(
-            user_id=u_id,
-            full_filename=destination
-        )
-        db.session.add(avatar)
-        db.session.commit()
+    #if not os.path.isfile(destination):
+    user.avatar = destination
+    db.session.commit()
 
     file.save(os.path.abspath(destination))
     print(f"[INFO] Avatar {destination} saved successfully")

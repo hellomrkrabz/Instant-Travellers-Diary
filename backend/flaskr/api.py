@@ -4,7 +4,7 @@ from .stage import Stage
 from .user import User
 from . import db
 
-from .image import Image, Avatar
+from .image import Image
 
 # TODO: make this function do stuff
 def body_to_html(body: str) -> str:
@@ -21,7 +21,8 @@ def get_user_data(u_id):
         return jsonify({'msg': 'Specified user does not exist'})
     return jsonify({
         'username': user.get_username(),
-        'email': user.get_email()
+        'email': user.get_email(),
+        'avatar': user.get_avatar()
     })
 
 
@@ -101,16 +102,16 @@ def add(entity_type):
         print('[ERROR] ::', error)
         return jsonify({'msg': error})
 
-@bp.route('/<user_id>/avatar', methods=['GET'])
-def get_avatar(user_id):
-    avatar = Avatar.query.filter_by(
-        user_id=user_id,
-    ).first()
-
-    if avatar is None:
-        return jsonify({'msg': 'Avatar for this user does not exist'})
-
-    return jsonify({'msg': avatar.get_full_filename()})
+# @bp.route('/<user_id>/avatar', methods=['GET'])
+# def get_avatar(user_id):
+#     avatar = Avatar.query.filter_by(
+#         user_id=user_id,
+#     ).first()
+#
+#     if avatar is None:
+#         return jsonify({'msg': 'Avatar for this user does not exist'})
+#
+#     return jsonify({'msg': avatar.get_full_filename()})
 
 @bp.route('/get_image_names', methods=['GET'])
 def get_image_names():

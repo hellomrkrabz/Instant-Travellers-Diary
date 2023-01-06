@@ -17,19 +17,11 @@ class User(db.Model):
     password_hash = db.Column(db.String(128))
     name = db.Column(db.String(64))
     bio = db.Column(db.Text())
-    avatar_hash = db.Column(db.String(32))
+    avatar = db.Column(db.String(128))
     journeys = db.relationship('Journey',
                                backref='author',
                                lazy='dynamic',
                                cascade="all, delete")
-    avatar = db.relationship('Avatar',
-                             backref='user',
-                             lazy='dynamic',
-                             cascade="all, delete")
-    # events = db.relationship('Event', backref='author', lazy='dynamic')
-    # def __init__(self, username: str, profile: Profile):
-    #     self.username = username
-    #     self.profile = profile
 
     def __repr__(self):
         return '<User %r>' % self.username
@@ -45,6 +37,9 @@ class User(db.Model):
 
     def get_email(self):
         return self.email
+
+    def get_avatar(self):
+        return self.avatar
 
     def set_password_hash(self, new_password):
         self.password_hash = generate_password_hash(new_password)

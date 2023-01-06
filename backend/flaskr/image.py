@@ -28,21 +28,3 @@ class Image(db.Model):
     
     def get_full_filename(self):
         return self.full_filename
-    
-class Avatar(db.Model):
-    __tablename__ = 'avatars'
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    full_filename = db.Column(db.Text)
-    
-    def __repr__(self):
-        return '<Avatar %r>' % self.id
-
-    def get_id(self):
-        return self.id
-    
-    def get_user_id(self):
-        return self.user_id
-    
-    def get_full_filename(self):
-        return self.full_filename
