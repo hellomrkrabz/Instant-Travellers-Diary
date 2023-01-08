@@ -65,7 +65,8 @@ def upload_file():
 @bp.route('/avatar', methods=['POST'])
 def upload_avatar():
     target = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    target = os.path.join(target, 'public', 'avatars')
+    #target = os.path.join(target, 'public', 'avatars')
+    target = '\\avatars'
 
     if not os.path.isdir(target):
         os.mkdir(target)

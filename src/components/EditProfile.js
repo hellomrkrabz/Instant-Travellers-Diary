@@ -43,32 +43,47 @@ function redirect(response) {
 function Profile() {
 
 	const [data, setData] = useState([])
-
-
-	avatar = setAvatar(data.avatarUrl);
-
-
+	
 	var xhr = new XMLHttpRequest();
 
 	xhr.onreadystatechange = function () {
 		if (this.readyState == 4 && this.status == 200) {
 			var response = this.responseText;
+		
+		var avatarPath,username, email, sB, sE;
+		
+		var res=response.replace(/"/,'d');
+		res=res.replace(/"/,'d');
+		sB= res.search(/"/);
+		res=res.replace(/"/,'d');
+		sE= res.search(/"/);
+		
+		avatarPath=res.slice(sB+2,sE);
 
-			let email = /[a-zA-Z0-9]{1,}[@]{1}[a-z0-9]{1,}[.]{1}[a-z0-9]{1,}/.exec(response);
-			document.getElementById('email').value = email;
+		res=res.replace(/"/,'d');
+		res=res.replace(/"/,'d');
+		res=res.replace(/"/,'d');
+		
+		sB= res.search(/"/);
+		res=res.replace(/"/,'d');
+		sE= res.search(/"/);
+		
+		email=res.slice(sB+1,sE);
 
-			var res = response.replace(/"/, 'd');
-			var res = res.replace(/"/, 'd');
-			var res = res.replace(/"/, 'd');
-			var res = res.replace(/"/, 'd');
-			var res = res.replace(/"/, 'd');
-			var res = res.replace(/"/, 'd');
-			var begin = res.search(/"/);
-			var res = res.replace(/"/, 'd');
-			var end = res.search(/"/);
-			var username = res.slice(begin + 1, end);
+		res=res.replace(/"/,'d');
+		res=res.replace(/"/,'d');
+		res=res.replace(/"/,'d');
+		
+		sB= res.search(/"/);
+		res=res.replace(/"/,'d');
+		sE= res.search(/"/);
+		
+		username=res.slice(sB+1,sE);
 
-			document.getElementById('username').value = username;
+		document.getElementById('username').value=username;
+		document.getElementById('email').value=email;
+		avatar=setAvatar(avatarPath);
+		document.getElementById('avatar').src=avatar;
 		}
 	};
 
@@ -106,18 +121,20 @@ function Profile() {
             userId= c.substring(nameEQ.length,c.length);
         }
     }
-	let url="http://localhost:5000/profile/get_data/"+userId.toString();
+	let url="http://localhost:5000/api/users/"+userId.toString();
 
 	xhr.open('GET', url, true);
 	xhr.send();
 
+
+	
 	
   return (
 
     <div>
         <form method="POST" style={{height: reScale()+'px'}}>
             <Box className='sign-up-form2'>
-				<img src={avatar} height="150px" width="150px"/>
+				<img src={avatar} id='avatar' height="150px" width="150px"/>
 				<TextField margin='normal' id='username' type={'text'} variant='outlined' placeholder='Nick' value={data.nick}/>
                 <TextField margin='normal' id='email' type={'email'} variant='outlined' placeholder='Email' value={data.email}/>
 				<TextField margin='normal' id='newPassword' type={'password'} variant='outlined' placeholder='New password'/>
