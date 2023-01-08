@@ -25,6 +25,7 @@ def Register():
     username = data['username']
     password = data['password']
     email = data['email']
+    avatar = '/avatars/default.jpg'
 
     error = None
 
@@ -41,7 +42,8 @@ def Register():
     try:
         user = User(username=username,
                     email=email,
-                    password_hash=generate_password_hash(password))
+                    password_hash=generate_password_hash(password),
+                    avatar=avatar)
         db.session.add(user)
         db.session.commit()
         print(f"[INFO] User {username} created successfully")

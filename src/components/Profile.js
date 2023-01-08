@@ -3,7 +3,7 @@ import { Box } from '@mui/material'
 import React from 'react'
 import {Button} from './Button'
 import './Profile.css'
-import avatar from './default.png'
+//import avatar from './default.png'
 
 import { useState, useEffect } from "react";
 import axios, {isCancel, AxiosError} from 'axios';
@@ -31,7 +31,7 @@ function Profile() {
 		res=res.replace(/"/,'d');
 		sE= res.search(/"/);
 		
-		avatarPath=res.slice(sB+2,sE);
+		avatarPath=res.slice(sB+1,sE);
 
 		res=res.replace(/"/,'d');
 		res=res.replace(/"/,'d');
@@ -52,12 +52,13 @@ function Profile() {
 		sE= res.search(/"/);
 		
 		username=res.slice(sB+1,sE);
-		
+		console.log(avatarPath);
+		console.log(email);
+		console.log(username);
 		document.getElementById('username').value=username;
 		document.getElementById('email').value=email;
-		avatar=setAvatar(avatarPath);
-		document.getElementById('avatar').src=avatar;
-		
+		//avatar=setAvatar(avatarPath);
+		document.getElementById('avatar').src=setAvatar(avatarPath);
 	  }
 	};
 
@@ -88,7 +89,7 @@ function Profile() {
         <form method="POST" style={{height: reScale()+'px'}}>
             <Box className='sign-up-form2'>
                 <Typography className='typography' variant='h2'>Your profile!</Typography>
-				<img id='avatar'src={avatar} height="150px" width="150px"/>
+				<img id='avatar' height="150px" width="150px"/>
 				<TextField margin='normal' id='username' type={'text'} variant='outlined' placeholder='Nick' value={data.nick}/>
                 <TextField margin='normal' id='email' type={'email'} variant='outlined' placeholder='Email' value={data.email}/>
 				<Button buttonStyle='btn--2' buttonSize="btn--medium"  path="/EditProfile">Edit profile</Button>

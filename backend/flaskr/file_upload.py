@@ -8,10 +8,8 @@ from flask import (
 from werkzeug.utils import secure_filename
 
 from . import db
-#from .image import Image, Avatar
 from .image import Image
 from .user import User
-
 
 bp = Blueprint("upload", __name__, url_prefix="/api/upload")
 
@@ -62,11 +60,12 @@ def upload_file():
         "msg": f"File with the name {file.filename} already exists. Change the name and try again."
     })
 
+
 @bp.route('/avatar', methods=['POST'])
 def upload_avatar():
     target = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    #target = os.path.join(target, 'public', 'avatars')
-    target = '\\avatars'
+    target = os.path.join(target, 'public', 'avatars')
+    target2 = '/avatars'
 
     if not os.path.isdir(target):
         os.mkdir(target)
@@ -78,14 +77,24 @@ def upload_avatar():
     extension = file.filename.split('.')[-1]
     if extension not in ALLOWED_EXTENSIONS:
         return jsonify({"msg": f"Invalid extension: {extension}"})
-
+    dest = os.path.join(target, f"{user_id}.{extension}")
+    print(dest)
+    if os.path.isfile(dest) and os.path.exists(dest):
+        print("dziala")
+        try:
+            os.remove(dest)
+        except OSError as e:  # name the Exception `e`
+            print
+            "Failed with:", e.strerror  # look what it says
+        print("kaput?")
     filename = f"{user_id}.{extension}"
     filename = secure_filename(filename)
 
     destination = os.path.join(target, filename)
-
-    #if not os.path.isfile(destination):
-    user.avatar = destination
+    #destination2 = os.path.join(target2, filename)
+    destination2 = target2 + '/' + filename
+    print(destination)
+    user.avatar = destination2
     db.session.commit()
 
     file.save(os.path.abspath(destination))
