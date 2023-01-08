@@ -14,21 +14,19 @@ import setAvatar from './setAvatar'
 function Profile() {
 	
 	const [data, setData] = useState([])
-		
 
-  
-  avatar=setAvatar(data.avatarUrl);
+
   var red='#eb3449';
-  
+
 	var xhr = new XMLHttpRequest();
 
 	xhr.onreadystatechange = function() {
 	  if (this.readyState == 4 && this.status == 200) {
 		var response = this.responseText;
-		
+		console.log(response);
 		let email = /[a-zA-Z0-9]{1,}[@]{1}[a-z0-9]{1,}[.]{1}[a-z0-9]{1,}/.exec(response);
 		document.getElementById('email').value=email;
-		
+
 		var res=response.replace(/"/,'d');
 		var res=res.replace(/"/,'d');
 		var res=res.replace(/"/,'d');
@@ -39,7 +37,7 @@ function Profile() {
 		var res=res.replace(/"/,'d');
 		var end = res.search(/"/);
 		var username=res.slice(begin+1,end);
-		
+
 		document.getElementById('username').value=username;
 	  }
 	};
@@ -56,19 +54,39 @@ function Profile() {
             userId= c.substring(nameEQ.length,c.length);
         }
     }
-	
-	let url="http://localhost:5000/profile/get_data/"+userId.toString();
+
+	let url="http://localhost:5000/api/users/"+userId.toString();
 
 	xhr.open('GET', url, true);
 	xhr.send();
 
-	
+
+	// let url2="http://localhost:5000/api/users/"+userId.toString()+'/avatar';
+	//
+	//   useEffect(() => {
+	// 	axios.get(url2)
+	// 	  .then((response) => {
+	// 		console.log(response)
+	// 		const data = response.data
+	// 		console.log(data)
+	// 		setData(data)
+	// 	  })
+	// 	  .catch(error => {
+	// 		alert(error)
+	// 	  })
+	//   }, [])
+	//
+	// console.log(data.msg);
+
+	avatar=setAvatar(data.msg);
+
+
   return (
     <div>
         <form method="POST" style={{height: reScale()+'px'}}>
             <Box className='sign-up-form2'>
                 <Typography className='typography' variant='h2'>Your profile!</Typography>
-				<img src={avatar} height="150px" width="150px"/>
+				<img src='\static\1.png' height="150px" width="150px"/>
 				<TextField margin='normal' id='username' type={'text'} variant='outlined' placeholder='Nick' value={data.nick}/>
                 <TextField margin='normal' id='email' type={'email'} variant='outlined' placeholder='Email' value={data.email}/>
 				<Button buttonStyle='btn--2' buttonSize="btn--medium"  path="/EditProfile">Edit profile</Button>
