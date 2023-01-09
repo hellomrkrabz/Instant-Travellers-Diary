@@ -1,0 +1,26 @@
+.journeys {
+    display: flex;
+    flex-direction: row;
+}
+
+.journey {
+    width: 300px;
+    height: 400px;
+    border: 2px solid black;
+}
+
+.journey img {
+    width: 30px;
+    height: 30px; 
+}
+
+.card-create-journey{
+    border: 2px solid black;
+    height: 450px;
+    width: 300px;
+}
+
+.form-group img{
+    width: 30px;
+    height: 30px; 
+}

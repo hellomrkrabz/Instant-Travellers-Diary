@@ -13,6 +13,8 @@ import NoPage2 from './components/NoPage2';
 
 import { useState, useEffect } from "react";
 import axios, {isCancel, AxiosError} from 'axios';
+import Journey from './components/Journey';
+import Journeys from './components/Journeys';
 
 function App() {
 
@@ -56,6 +58,8 @@ function App() {
 					<Route path="/" exact component={Home}/>
 					<Route path="/Register" exact component={Register}/>
 					<Route path="/Login" exact component={Login}/>
+					<Route path="/Journeys" exact component={Journeys} />
+                   <Route path="/Journey/:id" exact component={Journey}/>
 					<Route path="*" exact component={NoPage1}/>
 			</Switch>
 		  </Router>

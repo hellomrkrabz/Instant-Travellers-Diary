@@ -1,0 +1,34 @@
+.stage {
+    width: 350px;
+    border: 2px solid black;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+}
+
+.stage img{
+    width: 250px;
+    height: 150px;
+}
+
+.stages-slide{
+    width: 600px;
+    background-color: red;
+}
+
+.slider-test{
+    width: 200px;
+}
+
+.card-create-journey{
+    border: 2px solid black;
+    height: 450px;
+    width: 300px;
+}
+
+.form-group img{
+    width: 30px;
+    height: 30px; 
+}

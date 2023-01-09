@@ -16,10 +16,14 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.2.1",
     "http-proxy-middleware": "^2.0.6",
+    "json-server": "^0.17.1",
+    "keen-slider": "^6.8.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
     "react-router-dom": "^5.3.4",
     "react-scripts": "5.0.1",
+    "swiper": "^8.4.5",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
