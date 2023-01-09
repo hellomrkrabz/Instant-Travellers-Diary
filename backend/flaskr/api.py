@@ -26,9 +26,9 @@ def get_user_data(u_id):
     })
 
 
-@bp.route('/<username>/journeys', methods=['GET'])
-def get_user_journeys(username):
-    user = User.query.filter_by(username=username).first()
+@bp.route('/Journeys/<user_id>', methods=['GET'])
+def get_user_journeys(user_id):
+    user = User.query.filter_by(id=user_id).first()
     if user is None:
         return jsonify({'msg': 'Specified user does not exist'})
     journeys = Journey.query.filter_by(
@@ -41,7 +41,7 @@ def get_user_journeys(username):
     return jsonify({'journeys': journeys_json})
 
 
-@bp.route('/<journey_id>/stages', methods=['GET'])
+@bp.route('/Stages/<journey_id>', methods=['GET'])
 def get_journey_stages(journey_id):
     journey = Journey.query.filter_by(id=journey_id).first()
     if journey is None:
