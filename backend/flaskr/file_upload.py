@@ -80,18 +80,14 @@ def upload_avatar():
     dest = os.path.join(target, f"{user_id}.{extension}")
     print(dest)
     if os.path.isfile(dest) and os.path.exists(dest):
-        print("dziala")
         try:
             os.remove(dest)
         except OSError as e:  # name the Exception `e`
-            print
-            "Failed with:", e.strerror  # look what it says
-        print("kaput?")
+            print("Failed with:", e.strerror)  # look what it says
     filename = f"{user_id}.{extension}"
     filename = secure_filename(filename)
 
     destination = os.path.join(target, filename)
-    #destination2 = os.path.join(target2, filename)
     destination2 = target2 + '/' + filename
     print(destination)
     user.avatar = destination2

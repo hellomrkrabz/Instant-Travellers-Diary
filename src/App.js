@@ -58,8 +58,7 @@ function App() {
 					<Route path="/" exact component={Home}/>
 					<Route path="/Register" exact component={Register}/>
 					<Route path="/Login" exact component={Login}/>
-					<Route path="/Journeys" exact component={Journeys} />
-                   <Route path="/Journey/:id" exact component={Journey}/>
+					
 					<Route path="*" exact component={NoPage1}/>
 			</Switch>
 		  </Router>
@@ -77,6 +76,8 @@ function App() {
 				  <Route path="/Profile" exact component={Profile}/>
 				  <Route path="/EditProfile" exact component={EditProfile}/>
 				  <Route path="/Logout" exact component={Logout}/>
+				  <Route path="/Journeys" exact component={Journeys} />
+                  <Route path="/Journey/:id" exact component={Journey}/>
 				  <Route path="*" exact component={NoPage2}/>
 			</Switch>
 		  </Router>

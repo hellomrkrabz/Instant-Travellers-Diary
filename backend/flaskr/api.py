@@ -19,6 +19,7 @@ def get_user_data(u_id):
     user = User.query.filter_by(id=u_id).first()
     if user is None:
         return jsonify({'msg': 'Specified user does not exist'})
+
     return jsonify({
         'username': user.get_username(),
         'email': user.get_email(),
@@ -26,9 +27,9 @@ def get_user_data(u_id):
     })
 
 
-@bp.route('/<username>/journeys', methods=['GET'])
-def get_user_journeys(username):
-    user = User.query.filter_by(username=username).first()
+@bp.route('/Journeys/<user_id>', methods=['GET'])
+def get_user_journeys(user_id):
+    user = User.query.filter_by(id=user_id).first()
     if user is None:
         return jsonify({'msg': 'Specified user does not exist'})
     journeys = Journey.query.filter_by(
@@ -36,12 +37,12 @@ def get_user_journeys(username):
     ).all()
     journeys_json = [{'id': j.get_id(),
                       'name': j.get_name(),
-                      'body': j.get_body(),
-                      'author_id': j.get_author_id()} for j in journeys]
+                      'body': j.get_body()} for j in journeys]
+
     return jsonify({'journeys': journeys_json})
 
 
-@bp.route('/<journey_id>/stages', methods=['GET'])
+@bp.route('/Stages/<journey_id>', methods=['GET'])
 def get_journey_stages(journey_id):
     journey = Journey.query.filter_by(id=journey_id).first()
     if journey is None:
@@ -51,23 +52,30 @@ def get_journey_stages(journey_id):
     ).all()
     stages_json = [{'id': s.get_id(),
                     'name': s.get_name(),
-                    'body': s.get_body(),
-                    'journey_id': s.get_journey_id()} for s in stages]
+                    'body': s.get_body()} for s in stages]
 
     return jsonify({'stages': stages_json})
 
 
 @bp.route('/<entity_type>/add', methods=['POST'])
 def add(entity_type):
+
     data = request.get_json()
-    name = data['name']
-    body = data['body']
-    relationship_id = data['relationship_id']
+    print(data)
+    
 
     entity_type = str(entity_type)
     entity = None
     try:
         if entity_type == 'journey':
+            name = data['name']
+            description = data['description']
+            initialDate = data['initialDate']
+            endDate = data['endDate']
+            picture = data['picture']
+            stages = data['stages']
+            print("tu jeszcze działa")
+            
             entity = Journey(name=name,
                              body=body,
                              body_html=body_to_html(body),
@@ -113,8 +121,27 @@ def add(entity_type):
 #
 #     return jsonify({'msg': avatar.get_full_filename()})
 
+@bp.route('/Journey/<journey_id>/images', methods=['GET'])
+def get_image_names(journey_id):
+
+    images = Image.query.filter_by(
+        journey_id=journey_id
+    ).all()
+
+    if images is None:
+        return jsonify({'msg': 'Specified image does not exist'})
+
+    images_json = [{'u_id': i.get_user_id(),
+                    'j_id': i.get_journey_id(),
+                    's_id': i.get_stage_id(),
+                    'e_id': i.get_event_id(),
+                    'filename': i.get_full_filename} for i in images]
+
+    return jsonify({'images': images_json})
+
+
 @bp.route('/get_image_names', methods=['GET'])
-def get_image_names():
+def get_image_names_old():
     data = request.get_json()
     u_id = data['userID']
     j_id = data['journeyID']

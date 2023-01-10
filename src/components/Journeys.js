@@ -5,6 +5,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { DropzoneOptions, useDropzone } from "react-dropzone";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { IconButton } from "@mui/material";
+import getCookie from "./getCookie"
+import dump from "./DUMP.json"
+import dump2 from "./DUMP2.json"
 
 const AddJourney = (props) => {
   const [name, setName] = useState("");
@@ -51,20 +54,25 @@ const AddJourney = (props) => {
         description: description,
         initialDate: dateInit,
         endDate: dateEnd,
-        picture: fileUrl,
+        picture: 'dupa',
         stages: [],
       };
 
-      newJourneys.push(journey);
+	const arr=Array.from(newJourneys);
+	arr.push(journey);
+	
+      //Array.from(newJourneys).push(journey);
 
-      await fetch("http://localhost:3001/journeys", {
+      await fetch("http://localhost:3000/api/journey/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(journey),
+		userId:getCookie
       });
 
       props.setCreateJourney(0);
-      props.setJourneys(newJourneys);
+      //props.setJourneys(newJourneys);
+      props.setJourneys(arr);
     }
   };
 
@@ -153,17 +161,40 @@ const Journey = (props) => {
   );
 };
 
+function func(f)
+{
+	for(var i=0;i<f.lenght;i++)
+	{
+		return(
+		<SwiperSlide>
+			<Journey journey={f[i]} />
+		</SwiperSlide>
+		)
+	}
+}
+
 function Journeys() {
   const [createJourney, setCreateJourney] = useState(0);
   const [journeys, setJourneys] = useState([]);
+  
+//###########################################################################################
+//Tutaj pobieramy dane z backu i to chyba musi być json, albo chociaż string
+//###########################################################################################
 
   useEffect(() => {
     (async () => {
-      const res = await fetch("http://localhost:3001/journeys");
+      const res = await fetch("http://localhost:3000/api/Journeys/"+getCookie());
+	 
       const resJson = await res.json();
+		//var resJson = dump;
       setJourneys(resJson);
+	  //setJourneys(JSON.parse(JSON.stringify(dump)));
+	//console.log({journeys});
     })();
   }, []);
+  
+  console.log("tukej");
+  console.log(journeys);
 
   return (
     <>
@@ -175,8 +206,10 @@ function Journeys() {
           <div className="box-journeys">
           <div className="journeys">
             <Swiper spaceBetween={50} slidesPerView={journeys.length == 1 ? 1: journeys.length == 2 ? 2: 3 }>
-              {journeys.map((journey) => (
+             {
+				  Array.from(journeys).map((journey) => (
                 <SwiperSlide>
+				
                   <Journey journey={journey} />
                 </SwiperSlide>
               ))}
