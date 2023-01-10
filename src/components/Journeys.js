@@ -68,7 +68,7 @@ const AddJourney = (props) => {
     }
   };
 
-  return (
+  return (<div className="box-create-journey">
     <div class="card-create-journey">
       <div class="card-header">
         <h3>Create Journey</h3>
@@ -80,7 +80,7 @@ const AddJourney = (props) => {
           {files.length == 0 ?
             <IconButton onClick={open}>
               <input {...getInputProps()} />
-              <CloudUploadIcon sx={{ fontSize: 40 }} />
+              <CloudUploadIcon sx={{ fontSize: 60 }} />
             </IconButton>
             :
             <img src={fileUrl} />
@@ -89,9 +89,9 @@ const AddJourney = (props) => {
           <div class="form-group">
             <input
               type="text"
-              class="form-control"
+              class="form-control-name"
               id="name"
-              placeholder="name"
+              placeholder="Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
@@ -99,7 +99,7 @@ const AddJourney = (props) => {
           <div class="form-group">
             <input
               type="date"
-              class="form-control"
+              class="form-control-date"
               id="initial_date"
               value={dateInit}
               onChange={(e) => setDateInit(e.target.value)}
@@ -108,7 +108,7 @@ const AddJourney = (props) => {
           <div class="form-group">
             <input
               type="date"
-              class="form-control"
+              class="form-control-date"
               id="end_date"
               value={dateEnd}
               onChange={(e) => setDateEnd(e.target.value)}
@@ -116,17 +116,18 @@ const AddJourney = (props) => {
           </div>
           <div class="form-group">
             <textarea
-              class="form-control"
+              class="form-control-description"
               id="description"
               rows="3"
               value={description}
-              placeholder="description"
+              placeholder="Description"
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
           </div>
         </form>
-        <button onClick={createJourney}>Create Journey</button>
+        <button className="button-create" onClick={createJourney}>CREATE JOURNEY</button>
       </div>
+    </div>
     </div>
   );
 };
@@ -135,16 +136,20 @@ const Journey = (props) => {
   const [showStages, setShowStages] = useState(false);
 
   return (
+  
     <div className="journey">
-      <h1>{props.journey.name}</h1>
+      <h1 className="title-journey">{props.journey.name}</h1>
       <img src={props.journey.picture} />
-      <h4>{props.journey.initialDate}</h4>
-      <h4>{props.journey.endDate}</h4>
-      <span>{props.journey.description}</span>
+  
+      <h4 className="date-journey">{props.journey.initialDate} to {props.journey.endDate}</h4>
+      <div className="box-description">
+      <span className="text-description">{props.journey.description}</span>
+      </div>
       <Link to={`/journey/${props.journey.id}`}>
-        <button>Open</button>
+        <button className="button-open">OPEN</button>
       </Link>
     </div>
+  
   );
 };
 
@@ -164,10 +169,10 @@ function Journeys() {
     <>
       {createJourney == 0 ? (
         <>
-          Journeys
-          <button onClick={() => setCreateJourney(1)}>Add Journeys</button>
-          <br></br>
-          <br></br>
+          
+          <button className="button-add" onClick={() => setCreateJourney(1)}>ADD JOURNEYS</button>
+         
+          <div className="box-journeys">
           <div className="journeys">
             <Swiper spaceBetween={50} slidesPerView={journeys.length == 1 ? 1: journeys.length == 2 ? 2: 3 }>
               {journeys.map((journey) => (
@@ -177,13 +182,16 @@ function Journeys() {
               ))}
             </Swiper>
           </div>
+          </div>
         </>
       ) : (
         <AddJourney
           setJourneys={setJourneys}
           journeys={journeys}
           setCreateJourney={setCreateJourney}
+          
         />
+        
       )}
     </>
   );
