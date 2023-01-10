@@ -59,15 +59,23 @@ def get_journey_stages(journey_id):
 
 @bp.route('/<entity_type>/add', methods=['POST'])
 def add(entity_type):
+
     data = request.get_json()
-    name = data['name']
-    body = data['body']
-    relationship_id = data['relationship_id']
+    print(data)
+    
 
     entity_type = str(entity_type)
     entity = None
     try:
         if entity_type == 'journey':
+            name = data['name']
+            description = data['description']
+            initialDate = data['initialDate']
+            endDate = data['endDate']
+            picture = data['picture']
+            stages = data['stages']
+            print("tu jeszcze działa")
+            
             entity = Journey(name=name,
                              body=body,
                              body_html=body_to_html(body),

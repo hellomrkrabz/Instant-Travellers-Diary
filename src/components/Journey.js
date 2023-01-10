@@ -149,10 +149,11 @@ const Journey = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await fetch("http://localhost:3001/journeys")
+      const res = await fetch("http://localhost:3000/api/Stages/"+id)//retrive
+	  console.log(res);
       const resJson = await res.json()
       console.log("II", resJson)
-      setJourney(resJson.filter((j) => j.id == id)[0])
+      setJourney(Array.from(resJson).filter((j) => j.id == id)[0])
     })();
   }, []);
 
