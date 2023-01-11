@@ -12,6 +12,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const AddStage = (props) => {
 
@@ -73,7 +74,7 @@ const AddStage = (props) => {
 
       console.log("Stages Now", stages)
 
-      await fetch(`http://localhost:3001/journeys/${props.journey.id}`, {
+      await fetch(`http://localhost:5000/journeys/${props.journey.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newJourney),
@@ -84,7 +85,24 @@ const AddStage = (props) => {
   
     }
   };
+  function handleUploadImage(ev)
+{
+    const IDCookie = document
+          .cookie
+          .split('; ')
+          .find((row) => row.startsWith('user_id='))?.split('=')[1];
+    // console.log("handled");
 
+    let data = new FormData();
+    data.append('file', document.getElementById("image").files[0]);
+    data.append('userID', IDCookie)
+
+    axios.post('http://localhost:5000/api/upload/image', data).then(response => {
+        console.log(response);
+    }).catch(error => {
+        console.log(error);
+    });
+}
 
   return (
     <div class="card-create-journey">
@@ -95,7 +113,7 @@ const AddStage = (props) => {
         <form>
         <div class="form-group">
           {files.length == 0 ?
-            <IconButton onClick={open}>
+            <IconButton onChange={handleUploadImage} onClick={open} >
               <input {...getInputProps()} />
               <CloudUploadIcon sx={{ fontSize: 40 }} />
             </IconButton>

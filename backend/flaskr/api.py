@@ -70,8 +70,8 @@ def add(entity_type):
         if entity_type == 'journey':
             name = data['name']
             description = data['description']
-            initialDate = data['initialDate']
-            endDate = data['endDate']
+            initial_date = data['initialDate']
+            end_date = data['endDate']
             picture = data['picture']
             stages = data['stages']
             print("tu jeszcze działa")

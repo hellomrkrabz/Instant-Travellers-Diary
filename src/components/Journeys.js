@@ -6,6 +6,7 @@ import { DropzoneOptions, useDropzone } from "react-dropzone";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { IconButton } from "@mui/material";
 import getCookie from "./getCookie"
+import axios from "axios";
 //import dump from "./DUMP.json"
 //import dump2 from "./DUMP2.json"
 
@@ -47,33 +48,33 @@ const AddJourney = (props) => {
     console.log("Description", description);
 
     if (fileUrl != "" && name != "" && dateInit != "" && dateEnd != "" && description != "") {
-      const newJourneys = JSON.parse(JSON.stringify(props.journeys));
+      //const newJourneys = JSON.parse(JSON.stringify(props.journeys));
 
       const journey = {
         name: name,
         description: description,
         initialDate: dateInit,
         endDate: dateEnd,
-        picture: 'dupa',
+        picturePath: 'dupa',
         stages: [],
       };
 
 	/*const arr=Array.from(newJourneys);
 	arr.push(journey);
   */
-  newJourneys.push(journey);
+  //newJourneys.push(journey);
       //Array.from(newJourneys).push(journey);
       //http://localhost:3000/api/journey/add
       //localhost:3001/journeys
-      await fetch("http://localhost:3001/journeys", {
+      await fetch("http://localhost:5000/journey/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(journey),
-		userId:getCookie
+        body: JSON.stringify(journey)//,
+		//userId:getCookie
       });
 
       props.setCreateJourney(0);
-      props.setJourneys(newJourneys);
+      //props.setJourneys(newJourneys);
       /*props.setJourneys(arr);*/
     }
   };
@@ -142,6 +143,7 @@ const AddJourney = (props) => {
   );
 };
 
+
 const Journey = (props) => {
   const [showStages, setShowStages] = useState(false);
 
@@ -173,6 +175,13 @@ function func(f)
 		</SwiperSlide>
 		)
 	}
+}
+
+function parseJSON(props) {
+  JSON.stringify(props.journeys.name)
+  JSON.stringify(props.journeys.description)
+  JSON.stringify(props.journeys.initialDate)
+  JSON.stringify(props.journeys.endDate)
 }
 
 function Journeys() {
