@@ -92,8 +92,7 @@ def add(entity_type):
             # Check if stage's journey exists
             name = data['name']
             description = data['description']
-            initial_date = data['initialDate']
-            end_date = data['endDate']
+            timestamp = data['timestamp']
             relationship_id = data['userId']
 
             exists = db.session.query(
