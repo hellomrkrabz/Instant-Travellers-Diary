@@ -54,7 +54,7 @@ const AddJourney = (props) => {
         description: description,
         initialDate: dateInit,
         endDate: dateEnd,
-        picture: 'dupa',
+        picture: fileUrl,
         stages: [],
       };
 
@@ -234,3 +234,6 @@ function Journeys() {
 }
 
 export default Journeys;
+
+
+//// yarn run json-server --port 3001 journey.json

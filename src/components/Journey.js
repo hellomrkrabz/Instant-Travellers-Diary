@@ -87,7 +87,8 @@ const AddStage = (props) => {
 
 
   return (
-    <div class="card-create-journey">
+    <div className="box-create-stage">
+    <div class="card-create-stage">
       <div class="card-header">
         <h3>Create Stage</h3>
       </div>
@@ -97,7 +98,7 @@ const AddStage = (props) => {
           {files.length == 0 ?
             <IconButton onClick={open}>
               <input {...getInputProps()} />
-              <CloudUploadIcon sx={{ fontSize: 40 }} />
+              <CloudUploadIcon sx={{ fontSize: 60 }} />
             </IconButton>
             :
             <img src={fileUrl} />
@@ -106,21 +107,22 @@ const AddStage = (props) => {
           <div class="form-group">
             <input
               type="text"
-              class="form-control"
+              class="form-control-name"
               id="name"
-              placeholder="name"
+              placeholder="Name"
               onChange={(e) => setName(e.target.value)}
             />
           </div>
           <div class="form-group">
-            <input type="date" class="form-control" id="end_date" onChange={(e) => setDate(e.target.value)}/>
+            <input type="date" class="form-control-date" id="end_date" onChange={(e) => setDate(e.target.value)}/>
           </div>
           <div class="form-group">
-            <textarea onChange={(e) => setDescription(e.target.value)} class="form-control" id="description" rows="3"></textarea>
+            <textarea onChange={(e) => setDescription(e.target.value)} class="form-control-description" id="description" placeholder="Description" rows="3"></textarea>
           </div>
         </form>
-        <button onClick={createStage}>Create Stage</button>
+        <button className="button-create" onClick={createStage}>Create Stage</button>
       </div>
+    </div>
     </div>
   );
 };
@@ -128,10 +130,12 @@ const AddStage = (props) => {
 const Stage = (props) => {
   return (
     <div className="stage">
-      <h1>{props.stage.name}</h1>
+      <h1 className="title-stage">{props.stage.name}</h1>
       <img src={props.stage.picture} />
-      <h4>{props.stage.date}</h4>
-      <span>{props.stage.description}</span>
+      <h4 className="date-stage">{props.stage.date}</h4>
+      <div className="box-description"> 
+      <span className="text-description">{props.stage.description}</span>
+      </div>
     </div>
   );
 };
@@ -149,7 +153,10 @@ const Journey = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await fetch("http://localhost:3000/api/Stages/"+id)//retrive
+
+      //"http://localhost:3000/api/Stages/"+id
+      //retrive
+      const res = await fetch("http://localhost:3001/journeys")
 	  console.log(res);
       const resJson = await res.json()
       console.log("II", resJson)
@@ -160,9 +167,10 @@ const Journey = () => {
   return (
     <>
       {createStage == false ? 
-      <>
-      Stages
-      <button onClick={() => setCreateStage(true)}>Add Stage</button>
+      <div className="stage-page">
+      
+      <button className="button-add" onClick={() => setCreateStage(true)}>ADD STAGE</button>
+      <div className="box-stages">
       <Swiper spaceBetween={50} slidesPerView={3}>
         {journey?.stages.map((stage) => (
           <SwiperSlide>
@@ -170,7 +178,8 @@ const Journey = () => {
           </SwiperSlide>
         ))}
       </Swiper>
-      </>
+      </div>
+      </div>
       :
       <AddStage setJourney={setJourney} journey={journey} addStage={addStage}/>
     }
