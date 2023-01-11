@@ -48,7 +48,7 @@ const AddJourney = (props) => {
     console.log("Description", description);
 
     if (fileUrl != "" && name != "" && dateInit != "" && dateEnd != "" && description != "") {
-      //const newJourneys = JSON.parse(JSON.stringify(props.journeys));
+      const newJourneys = JSON.parse(JSON.stringify(props.journeys));
 
       const journey = {
         name: name,
@@ -56,17 +56,18 @@ const AddJourney = (props) => {
         initialDate: dateInit,
         endDate: dateEnd,
         picturePath: 'dupa',
+		userId: getCookie(),
         stages: [],
       };
 
-	/*const arr=Array.from(newJourneys);
+	const arr=Array.from(newJourneys);
 	arr.push(journey);
-  */
+  
   //newJourneys.push(journey);
       //Array.from(newJourneys).push(journey);
       //http://localhost:3000/api/journey/add
       //localhost:3001/journeys
-      await fetch("http://localhost:5000/journey/add", {
+      await fetch("http://localhost:5000/api/journey/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(journey)//,
@@ -75,7 +76,7 @@ const AddJourney = (props) => {
 
       props.setCreateJourney(0);
       //props.setJourneys(newJourneys);
-      /*props.setJourneys(arr);*/
+      props.setJourneys(arr);
     }
   };
 
@@ -195,11 +196,15 @@ function Journeys() {
   useEffect(() => {
     (async () => {
       //"http://localhost:3000/api/Journeys/"+getCookie()
-      const res = await fetch("http://localhost:3001/journeys");
+      const res = await fetch("http://localhost:5000/api/Journeys/"+getCookie());
 	 
       const resJson = await res.json();
+	  const resJourneys=resJson.journeys;
+	  
+	  //console.log(resJson);
 		//var resJson = dump;
-      setJourneys(resJson);
+
+      setJourneys(resJourneys);
 	  //setJourneys(JSON.parse(JSON.stringify(dump)));
 	//console.log({journeys});
     })();

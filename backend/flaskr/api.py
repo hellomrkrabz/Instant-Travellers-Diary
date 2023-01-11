@@ -3,6 +3,8 @@ from .journey import Journey
 from .stage import Stage
 from .user import User
 from . import db
+from datetime import datetime
+
 
 from .image import Image
 
@@ -37,7 +39,10 @@ def get_user_journeys(user_id):
     ).all()
     journeys_json = [{'id': j.get_id(),
                       'name': j.get_name(),
-                      'body': j.get_body()} for j in journeys]
+                      'author_id': j.get_author_id(),
+                      'initial_date': j.get_initial_date(),
+                      'end_date': j.get_end_date(),
+                      'description': j.get_description()} for j in journeys]
 
     return jsonify({'journeys': journeys_json})
 
@@ -72,14 +77,26 @@ def add(entity_type):
             description = data['description']
             initial_date = data['initialDate']
             end_date = data['endDate']
-            picture = data['picture']
-            stages = data['stages']
+            #picture = data['picturePath']
+            relationship_id = data['userId']
             print("tu jeszcze działa")
             
+            datetime_str = initial_date
+            initial_date = datetime.strptime(datetime_str, '%Y-%m-%d')
+            
+            datetime_str = end_date
+            end_date = datetime.strptime(datetime_str, '%Y-%m-%d')
+            
             entity = Journey(name=name,
-                             body=body,
-                             body_html=body_to_html(body),
-                             author_id=relationship_id)
+                            description=description,
+                            initial_date=initial_date,
+                            end_date=end_date,
+                            author_id=relationship_id)
+                             #body=body,
+                             #body_html=body_to_html(body),
+                             #)
+                             
+            print("tu wlazi")
         elif entity_type == 'stage':
             # Check if stage's journey exists
             exists = db.session.query(
