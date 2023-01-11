@@ -1,5 +1,6 @@
 from . import db
 from datetime import datetime
+from flask import jsonify
 
 
 class Journey(db.Model):
@@ -7,19 +8,13 @@ class Journey(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.Integer)
     description = db.Column(db.Text)
-    journey_image = db.Column(db.Text)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    initial_date = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    end_date = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    initial_date = db.Column(db.DateTime, default=datetime.utcnow)
+    end_date = db.Column(db.DateTime, default=datetime.utcnow)
     stages = db.relationship('Stage',
                              backref='journey',
                              lazy='dynamic',
                              cascade="all, delete")
-    # images = db.relationship('Images',
-    #                          backref='journey',
-    #                          lazy='dynamic',
-    #                          cascade="all, delete")
-    # comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
     def __repr__(self):
         return '<Journey %r>' % self.id
@@ -41,5 +36,7 @@ class Journey(db.Model):
 
     def get_initial_date(self):
         return self.initial_date
+
     def get_end_date(self):
         return self.end_date
+
