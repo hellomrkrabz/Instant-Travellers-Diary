@@ -73,7 +73,7 @@ const AddJourney = (props) => {
         body: JSON.stringify(journey)//,
 		//userId:getCookie
       });
-
+	  
       props.setCreateJourney(0);
       //props.setJourneys(newJourneys);
       props.setJourneys(arr);
@@ -143,7 +143,6 @@ const AddJourney = (props) => {
     </div>
   );
 };
-
 
 const Journey = (props) => {
   const [showStages, setShowStages] = useState(false);

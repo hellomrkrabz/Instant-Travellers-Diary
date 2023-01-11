@@ -58,7 +58,8 @@ def get_journey_stages(journey_id):
     ).all()
     stages_json = [{'id': s.get_id(),
                     'name': s.get_name(),
-                    'body': s.get_description()} for s in stages]
+                    'timestamp': s.get_timestamp(),
+                    'description': s.get_description()} for s in stages]
 
     return jsonify({'stages': stages_json})
 

@@ -5,6 +5,7 @@ import { DropzoneOptions, useDropzone } from "react-dropzone";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { IconButton } from "@mui/material";
 import getCookie from "./getCookie"
+import getStageId from "./getJourneyId"
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -16,6 +17,29 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 var stejdze=[0];
+var url='xd';
+
+function handleUploadImage(ev)
+{
+	
+	console.log("called");
+    const IDCookie = document
+          .cookie
+          .split('; ')
+          .find((row) => row.startsWith('user_id='))?.split('=')[1];
+    // console.log("handled");
+//console.log(url);
+    let data = new FormData();
+    data.append('file', url);
+    data.append('id', getStageId());
+	data.append('type','stage');
+
+    axios.post('http://localhost:5000/api/upload/image', data).then(response => {
+        console.log(response);
+    }).catch(error => {
+        console.log(error);
+    });
+}
 
 const AddStage = (props) => {
 
@@ -55,6 +79,8 @@ const AddStage = (props) => {
       const stages = JSON.parse(JSON.stringify(props.journey.stages));
 
       //console.log("Stages Current", stages)
+	  url=fileUrl;
+	  handleUploadImage();
 
       const stage = {
         name: name,
@@ -62,6 +88,8 @@ const AddStage = (props) => {
         timestamp: date,
 		userId: getCookie()
       };
+	  
+	  
 
       stages.push(stage)
 	  stejdze=stages;
@@ -83,31 +111,12 @@ const AddStage = (props) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(stage),
       });
-		console.log()
-
-      props.addStage()
+      props.addStage();
       //props.setJourney(newJourney)
   
     }
   };
-  function handleUploadImage(ev)
-{
-    const IDCookie = document
-          .cookie
-          .split('; ')
-          .find((row) => row.startsWith('user_id='))?.split('=')[1];
-    // console.log("handled");
-
-    let data = new FormData();
-    data.append('file', document.getElementById("image").files[0]);
-    data.append('userID', IDCookie)
-
-    axios.post('http://localhost:5000/api/upload/image', data).then(response => {
-        console.log(response);
-    }).catch(error => {
-        console.log(error);
-    });
-}
+ 
 
   return (
     <div class="card-create-journey">
@@ -118,8 +127,8 @@ const AddStage = (props) => {
         <form>
         <div class="form-group">
           {files.length == 0 ?
-            <IconButton onChange={handleUploadImage} onClick={open} >
-              <input {...getInputProps()} />
+            <IconButton onClick={open} >
+              <input type="file" id="image"{...getInputProps()} />
               <CloudUploadIcon sx={{ fontSize: 40 }} />
             </IconButton>
             :
@@ -142,7 +151,7 @@ const AddStage = (props) => {
             <textarea onChange={(e) => setDescription(e.target.value)} class="form-control" id="description" rows="3"></textarea>
           </div>
         </form>
-        <button onClick={createStage}>Create Stage</button>
+        <button onClick={handleUploadImage,createStage}>Create Stage</button>
       </div>
     </div>
   );
@@ -154,6 +163,7 @@ const Stage = (props) => {
       <h1>{props.stage.name}</h1>
       <img src={props.stage.picture} />
       <h4>{props.stage.date}</h4>
+	  <h4>{props.stage.timestamp}</h4>
       <span>{props.stage.description}</span>
     </div>
   );
