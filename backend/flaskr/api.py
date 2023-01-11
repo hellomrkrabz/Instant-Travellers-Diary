@@ -8,6 +8,7 @@ from datetime import datetime
 
 from .image import Image
 
+
 # TODO: make this function do stuff
 def body_to_html(body: str) -> str:
     return body
@@ -67,7 +68,6 @@ def add(entity_type):
 
     data = request.get_json()
     print(data)
-    
 
     entity_type = str(entity_type)
     entity = None
@@ -78,16 +78,16 @@ def add(entity_type):
             initial_date = data['initialDate']
             end_date = data['endDate']
             relationship_id = data['userId']
-            
+
             initial_date = datetime.strptime(initial_date, '%Y-%m-%d')
             end_date = datetime.strptime(end_date, '%Y-%m-%d')
-            
+
             entity = Journey(name=name,
                              description=description,
                              initial_date=initial_date,
                              end_date=end_date,
                              author_id=relationship_id)
-                             
+
         elif entity_type == 'stage':
             # Check if stage's journey exists
             name = data['name']
@@ -122,6 +122,7 @@ def add(entity_type):
         error = str(e)
         print('[ERROR] ::', error)
         return jsonify({'msg': error})
+
 
 #               v- journey / stage / event
 @bp.route('/<relationship_type>/<relatioship_id>/images', methods=['GET'])

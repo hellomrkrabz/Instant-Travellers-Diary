@@ -7,3 +7,4 @@ SQLAlchemy
 pymysql
 psycopg2-binary
 flask_cors
+sqlalchemy_utils
