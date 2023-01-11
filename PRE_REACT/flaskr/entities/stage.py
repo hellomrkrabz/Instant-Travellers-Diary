@@ -1,3 +1,0 @@
-class Stage:
-    pass
-    
