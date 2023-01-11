@@ -24,6 +24,42 @@ def upload_file():
     if not os.path.isdir(target):
         os.mkdir(target)
 
+    id = request.form['id']
+    image_type = request.form['type']
+    file = request.files['file']
+
+    extension = file.filename.split('.')[-1]
+    if extension not in ALLOWED_EXTENSIONS:
+        return jsonify({"msg": f"Invalid extension: {extension}"})
+
+    while True:
+        hashed = abs(hash(file.filename + 'a')) % (10 ** 9)
+        filename = f"{hashed}.{extension}"
+        filename = secure_filename(filename)
+
+        destination = os.path.join(target, filename)
+
+        if not os.path.isfile(destination):
+            file.save(os.path.abspath(destination))
+            image = Image(
+                relationship_id=id,
+                type=image_type,
+                filename=destination
+            )
+            db.session.add(image)
+            db.session.commit()
+            print(f"[INFO] File {destination} saved successfully")
+
+            return jsonify({"msg": "success"})
+
+@bp.route('/image2', methods=['POST'])
+def upload_file2():
+    target = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
+    target = os.path.join(target, 'public', 'images')
+
+    if not os.path.isdir(target):
+        os.mkdir(target)
+
     data = request.form
 
     j_id = data['journeyID']
@@ -82,8 +118,8 @@ def upload_avatar():
     if os.path.isfile(dest) and os.path.exists(dest):
         try:
             os.remove(dest)
-        except OSError as e:  # name the Exception `e`
-            print("Failed with:", e.strerror)  # look what it says
+        except OSError as e:
+            print("Failed with:", e.strerror)
     filename = f"{user_id}.{extension}"
     filename = secure_filename(filename)
 

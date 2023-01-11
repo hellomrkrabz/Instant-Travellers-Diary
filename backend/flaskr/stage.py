@@ -8,16 +8,11 @@ class Stage(db.Model):
     body = db.Column(db.Text)
     body_html = db.Column(db.Text)
     journey_id = db.Column(db.Integer, db.ForeignKey('journeys.id'))
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     events = db.relationship('Event',
                               backref='stage',
                               lazy='dynamic',
                               cascade="all, delete")
-    # images = db.relationship('Images',
-    #                          backref='stage',
-    #                          lazy='dynamic',
-    #                          cascade="all, delete")
-    # comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
     def __repr__(self):
         return '<Stage %r>' % self.id

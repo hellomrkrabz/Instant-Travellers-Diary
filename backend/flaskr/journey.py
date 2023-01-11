@@ -28,9 +28,6 @@ class Journey(db.Model):
     def get_description(self):
         return self.description
 
-    def get_body(self):
-        return self.description
-
     def get_journey_image(self):
         return self.journey_image
 
