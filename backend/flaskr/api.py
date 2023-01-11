@@ -136,7 +136,6 @@ def get_image_names(relationship_type, relationship_id):
         return jsonify({'msg': 'Specified image does not exist'})
 
     images_json = [{'id': i.get_id(),
-                    'r_id': i.get_relationship_id(),
                     'filename': i.get_filename()} for i in images]
 
     return jsonify({'images': images_json})
