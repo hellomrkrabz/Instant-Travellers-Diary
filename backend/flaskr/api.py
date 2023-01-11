@@ -128,7 +128,7 @@ def add(entity_type):
 @bp.route('/<relationship_type>/<relatioship_id>/images', methods=['GET'])
 def get_image_names(relationship_type, relationship_id):
     images = Image.query.filter_by(
-        type=relationship_type,
+        type=relationship_type.lower(),
         relationship_id=relationship_id
     ).all()
 

@@ -43,7 +43,7 @@ def upload_file():
             file.save(os.path.abspath(destination))
             image = Image(
                 relationship_id=id,
-                type=image_type,
+                type=image_type.lower(),
                 filename=destination
             )
             db.session.add(image)
