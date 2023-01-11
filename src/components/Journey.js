@@ -4,6 +4,7 @@ import { useKeenSlider } from "keen-slider/react";
 import { DropzoneOptions, useDropzone } from "react-dropzone";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { IconButton } from "@mui/material";
+import getCookie from "./getCookie"
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -13,6 +14,8 @@ import "swiper/css";
 
 import { useParams } from "react-router-dom";
 import axios from "axios";
+
+var stejdze=[0];
 
 const AddStage = (props) => {
 
@@ -51,17 +54,18 @@ const AddStage = (props) => {
       
       const stages = JSON.parse(JSON.stringify(props.journey.stages));
 
-      console.log("Stages Current", stages)
+      //console.log("Stages Current", stages)
 
       const stage = {
         name: name,
         description: description,
-        date: date,
-        picture: fileUrl
+        timestamp: date,
+		userId: getCookie()
       };
 
       stages.push(stage)
-
+	  stejdze=stages;
+/*
       const newJourney = {
         name: props.journey.name,
         description: props.journey.description,
@@ -70,18 +74,19 @@ const AddStage = (props) => {
         picture: props.journey.picture,
         stages: stages,
         id: props.journey.id
-      }
+      }*/
 
-      console.log("Stages Now", stages)
+      //console.log("Stages Now", stages)
 
-      await fetch(`http://localhost:5000/journeys/${props.journey.id}`, {
-        method: "PUT",
+      await fetch(`http://localhost:3000/api/stage/add`, {//dodawanie
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newJourney),
+        body: JSON.stringify(stage),
       });
+		console.log()
 
       props.addStage()
-      props.setJourney(newJourney)
+      //props.setJourney(newJourney)
   
     }
   };
@@ -157,9 +162,21 @@ const Stage = (props) => {
 const Journey = () => {
   let { id } = useParams();
 
-  const [journey, setJourney] = useState(undefined);
+  var [journey, setJourney] = useState({
+        name: "cos",
+        description: "cos",
+        initialDate: "cos",
+        endDate: "cos",
+        picturePath: 'dupa',
+		userId: "cos",
+        stages: []
+      });
+	  
+	var [stages,setStages]=useState([]);
 
   const [createStage, setCreateStage] = useState(false)
+
+	var {resJ} = [];
 
   const addStage = () => {
     setCreateStage(0);
@@ -169,9 +186,32 @@ const Journey = () => {
     (async () => {
       const res = await fetch("http://localhost:3000/api/Stages/"+id)//retrive
 	  console.log(res);
+	  
+	  
+	  	  
       const resJson = await res.json()
+	  //setresJ(resJson);
+	  
+	  //console.log(resJson.stages);
+	  
+	  setStages(resJson.stages);
+		stejdze=resJson.stages;
+	  resJ=resJson.stages;
+	  
+	  console.log(resJ);
+	  const resJourney = resJson;
       console.log("II", resJson)
-      setJourney(Array.from(resJson).filter((j) => j.id == id)[0])
+	  var tmp={
+        name: "cos",
+        description: "cos",
+        initialDate: "cos",
+        endDate: "cos",
+        picturePath: 'dupa',
+		userId: "cos",
+        stages: resJ
+      };
+      setJourney(tmp);//Array.from(resJourney).filter((j) => j.id == id)[0])
+	  console.log({journey});
     })();
   }, []);
 
@@ -182,7 +222,7 @@ const Journey = () => {
       Stages
       <button onClick={() => setCreateStage(true)}>Add Stage</button>
       <Swiper spaceBetween={50} slidesPerView={3}>
-        {journey?.stages.map((stage) => (
+        {Array.from(stejdze).map((stage) => (
           <SwiperSlide>
             <Stage stage={stage} />
           </SwiperSlide>

@@ -57,7 +57,7 @@ def get_journey_stages(journey_id):
     ).all()
     stages_json = [{'id': s.get_id(),
                     'name': s.get_name(),
-                    'body': s.get_body()} for s in stages]
+                    'body': s.get_description()} for s in stages]
 
     return jsonify({'stages': stages_json})
 
@@ -95,6 +95,8 @@ def add(entity_type):
             timestamp = data['timestamp']
             relationship_id = data['userId']
 
+            timestamp = datetime.strptime(timestamp, '%Y-%m-%d')
+            
             exists = db.session.query(
                 db.session.query(Journey).filter_by(
                     id=relationship_id
