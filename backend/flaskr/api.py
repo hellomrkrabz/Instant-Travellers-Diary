@@ -77,28 +77,25 @@ def add(entity_type):
             description = data['description']
             initial_date = data['initialDate']
             end_date = data['endDate']
-            #picture = data['picturePath']
             relationship_id = data['userId']
-            print("tu jeszcze działa")
             
-            datetime_str = initial_date
-            initial_date = datetime.strptime(datetime_str, '%Y-%m-%d')
-            
-            datetime_str = end_date
-            end_date = datetime.strptime(datetime_str, '%Y-%m-%d')
+            initial_date = datetime.strptime(initial_date, '%Y-%m-%d')
+            end_date = datetime.strptime(end_date, '%Y-%m-%d')
             
             entity = Journey(name=name,
-                            description=description,
-                            initial_date=initial_date,
-                            end_date=end_date,
-                            author_id=relationship_id)
-                             #body=body,
-                             #body_html=body_to_html(body),
-                             #)
+                             description=description,
+                             initial_date=initial_date,
+                             end_date=end_date,
+                             author_id=relationship_id)
                              
-            print("tu wlazi")
         elif entity_type == 'stage':
             # Check if stage's journey exists
+            name = data['name']
+            description = data['description']
+            initial_date = data['initialDate']
+            end_date = data['endDate']
+            relationship_id = data['userId']
+
             exists = db.session.query(
                 db.session.query(Journey).filter_by(
                     id=relationship_id
@@ -111,8 +108,8 @@ def add(entity_type):
                 return jsonify({'msg': error})
 
             entity = Stage(name=name,
-                           body=body,
-                           body_html=body_to_html(body),
+                           description=description,
+                           timestamp=timestamp,
                            journey_id=relationship_id)
         else:
             print(f"[ERROR] :: Unknown entity type: {entity_type}")
@@ -127,32 +124,20 @@ def add(entity_type):
         print('[ERROR] ::', error)
         return jsonify({'msg': error})
 
-# @bp.route('/<user_id>/avatar', methods=['GET'])
-# def get_avatar(user_id):
-#     avatar = Avatar.query.filter_by(
-#         user_id=user_id,
-#     ).first()
-#
-#     if avatar is None:
-#         return jsonify({'msg': 'Avatar for this user does not exist'})
-#
-#     return jsonify({'msg': avatar.get_full_filename()})
-
-@bp.route('/Journey/<journey_id>/images', methods=['GET'])
-def get_image_names(journey_id):
-
+#               v- journey / stage / event
+@bp.route('/<relationship_type>/<relatioship_id>/images', methods=['GET'])
+def get_image_names(relationship_type, relationship_id):
     images = Image.query.filter_by(
-        journey_id=journey_id
+        type=relationship_type,
+        relationship_id=relationship_id
     ).all()
 
     if images is None:
         return jsonify({'msg': 'Specified image does not exist'})
 
-    images_json = [{'u_id': i.get_user_id(),
-                    'j_id': i.get_journey_id(),
-                    's_id': i.get_stage_id(),
-                    'e_id': i.get_event_id(),
-                    'filename': i.get_full_filename} for i in images]
+    images_json = [{'id': i.get_id(),
+                    'r_id': i.get_relationship_id(),
+                    'filename': i.get_filename()} for i in images]
 
     return jsonify({'images': images_json})
 

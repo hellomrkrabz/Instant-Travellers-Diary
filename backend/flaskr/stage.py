@@ -5,8 +5,8 @@ from datetime import datetime
 class Stage(db.Model):
     __tablename__ = 'stages'
     id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.Text)
-    body_html = db.Column(db.Text)
+    name = db.Column(db.Text)
+    description = db.Column(db.Text)
     journey_id = db.Column(db.Integer, db.ForeignKey('journeys.id'))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     events = db.relationship('Event',
@@ -23,11 +23,11 @@ class Stage(db.Model):
     def get_name(self):
         return self.name
 
-    def get_body(self):
-        return self.body
-
-    def get_body_html(self):
-        return self.body_html
+    def get_description(self):
+        return self.description
 
     def get_journey_id(self):
         return self.journey_id
+
+    def get_timestamp(self):
+        return self.timestamp
