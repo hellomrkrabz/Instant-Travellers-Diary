@@ -43,6 +43,7 @@ def get_user_journeys(user_id):
                       'author_id': j.get_author_id(),
                       'initial_date': j.get_initial_date(),
                       'end_date': j.get_end_date(),
+                      'image_path': 'najn',
                       'description': j.get_description()} for j in journeys]
 
     return jsonify({'journeys': journeys_json})
@@ -128,7 +129,7 @@ def add(entity_type):
 
 
 #               v- journey / stage / event
-@bp.route('/<relationship_type>/<relatioship_id>/images', methods=['GET'])
+@bp.route('/<relationship_type>/<relationship_id>/images', methods=['GET'])
 def get_image_names(relationship_type, relationship_id):
     images = Image.query.filter_by(
         type=relationship_type.lower(),

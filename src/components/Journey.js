@@ -6,6 +6,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { IconButton } from "@mui/material";
 import getCookie from "./getCookie"
 import getStageId from "./getJourneyId"
+import getJourneyId from "./getJourneyIdFromStages"
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -16,8 +17,8 @@ import "swiper/css";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-var stejdze=[0];
-var url='xd';
+var globalStages=[0];
+var img;
 
 function handleUploadImage(ev)
 {
@@ -27,11 +28,10 @@ function handleUploadImage(ev)
           .cookie
           .split('; ')
           .find((row) => row.startsWith('user_id='))?.split('=')[1];
-    // console.log("handled");
-//console.log(url);
+  
     let data = new FormData();
-    data.append('file', url);
-    data.append('id', getStageId());
+    data.append('file', img);
+    data.append('id', getJourneyId());
 	data.append('type','stage');
 
     axios.post('http://localhost:5000/api/upload/image', data).then(response => {
@@ -59,6 +59,7 @@ const AddStage = (props) => {
       const token = process.env.CMS_TOKEN;
 
       const file = filesUpload[0];
+	  img=file;
 
       const reader = new FileReader();
 
@@ -79,20 +80,21 @@ const AddStage = (props) => {
       const stages = JSON.parse(JSON.stringify(props.journey.stages));
 
       //console.log("Stages Current", stages)
-	  url=fileUrl;
+	  //url=fileUrl;
 	  handleUploadImage();
 
       const stage = {
         name: name,
         description: description,
         timestamp: date,
-		userId: getCookie()
+		userId: getJourneyId()
       };
+	  
 	  
 	  
 
       stages.push(stage)
-	  stejdze=stages;
+	  globalStages=stages;
 /*
       const newJourney = {
         name: props.journey.name,
@@ -205,7 +207,7 @@ const Journey = () => {
 	  //console.log(resJson.stages);
 	  
 	  setStages(resJson.stages);
-		stejdze=resJson.stages;
+		globalStages=resJson.stages;
 	  resJ=resJson.stages;
 	  
 	  console.log(resJ);
@@ -232,7 +234,7 @@ const Journey = () => {
       Stages
       <button onClick={() => setCreateStage(true)}>Add Stage</button>
       <Swiper spaceBetween={50} slidesPerView={3}>
-        {Array.from(stejdze).map((stage) => (
+        {Array.from(globalStages).map((stage) => (
           <SwiperSlide>
             <Stage stage={stage} />
           </SwiperSlide>

@@ -8,8 +8,45 @@ import { IconButton } from "@mui/material";
 import getCookie from "./getCookie"
 import axios from "axios";
 import setCSS from "./setCSS"
+import setImgs from "./setImgs"
+//import setImgs from "./setImgs"
 //import dump from "./DUMP.json"
 //import dump2 from "./DUMP2.json"
+
+var img;
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function nwm(a,j)
+{
+	console.log(a);
+	for(var i=0;i<j.lenght;i++)
+	{
+		j[i].image_path=a[i];
+	}
+}
+
+function handleUploadImage(ev)
+{
+	console.log("called");
+    const IDCookie = document
+          .cookie
+          .split('; ')
+          .find((row) => row.startsWith('user_id='))?.split('=')[1];
+  
+    let data = new FormData();
+    data.append('file', img);
+    data.append('id', '1');	//############	Here should be journey id but it doesn't exist yet...
+	data.append('type','Journey');
+
+    axios.post('http://localhost:5000/api/upload/image', data).then(response => {
+        console.log(response);
+    }).catch(error => {
+        console.log(error);
+    });
+}
 
 const AddJourney = (props) => {
   const [name, setName] = useState("");
@@ -29,6 +66,7 @@ const AddJourney = (props) => {
       const token = process.env.CMS_TOKEN;
 
       const file = filesUpload[0];
+	  img=file;
 
       const reader = new FileReader();
 
@@ -50,6 +88,9 @@ const AddJourney = (props) => {
 
     if (fileUrl != "" && name != "" && dateInit != "" && dateEnd != "" && description != "") {
       const newJourneys = JSON.parse(JSON.stringify(props.journeys));
+
+		handleUploadImage();
+		console.log("halo");
 
       const journey = {
         name: name,
@@ -75,11 +116,15 @@ const AddJourney = (props) => {
 		//userId:getCookie
       });
 	  
+	  
+	  
       props.setCreateJourney(0);
       //props.setJourneys(newJourneys);
-      props.setJourneys(arr);
+      //props.setJourneys(arr);
     }
   };
+  
+  
 
   return (<div className="box-create-journey">
     <div class="card-create-journey">
@@ -138,7 +183,7 @@ const AddJourney = (props) => {
             ></textarea>
           </div>
         </form>
-        <button className="button-create" onClick={createJourney}>CREATE JOURNEY</button>
+        <button className="button-create" onClick={handleUploadImage,createJourney}>CREATE JOURNEY</button>
       </div>
     </div>
     </div>
@@ -152,9 +197,9 @@ const Journey = (props) => {
   
     <div className="journey">
       <h1 className="title-journey">{props.journey.name}</h1>
-      <img src={props.journey.picture} />
+      <img src={props.journey.image_path} />
   
-      <h4 className="date-journey">{props.journey.initialDate} to {props.journey.endDate}</h4>
+      <h4 className="date-journey">{props.journey.initial_date} to {props.journey.end_date}</h4>
       <div className="box-description">
       <span className="text-description">{props.journey.description}</span>
       </div>
@@ -210,8 +255,16 @@ function Journeys() {
     })();
   }, []);
   
-  console.log("tukej");
-  console.log(journeys);
+  //setImgs();
+  
+  	var imagePaths=setImgs().then(text=>nwm(text,journeys));
+	//console.log(imagePaths.promise);
+	sleep(1000);
+	
+	//################################
+	//ustawić im id
+	
+  console.log(journeys);  
 
   return (
     <>
@@ -234,6 +287,7 @@ function Journeys() {
             </Swiper>
           </div>
           </div>
+		  
         </>
       ) : (
         <AddJourney

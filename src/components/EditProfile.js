@@ -98,6 +98,7 @@ function Profile() {
 		let data = new FormData();
 		data.append('file', document.getElementById("image").files[0]);
         data.append('userID', IDCookie)
+		console.log(document.getElementById("image").files[0]);
 		// console.log("=====");
 		// console.log(data);
 
