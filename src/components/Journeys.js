@@ -7,6 +7,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { IconButton } from "@mui/material";
 import getCookie from "./getCookie"
 import axios from "axios";
+import setCSS from "./setCSS"
 //import dump from "./DUMP.json"
 //import dump2 from "./DUMP2.json"
 
@@ -214,6 +215,7 @@ function Journeys() {
 
   return (
     <>
+	{setCSS()}
       {createJourney == 0 ? (
         <>
           

@@ -1,11 +1,11 @@
-function reScale() {
+function setCSS() {
 	var height = window.screen.availHeight;
-	height=height*0.65;
-	//height=height*0.85;
+	console.log("łopanie");
+	//height=height*0.65;
+	//return height;
 	document.body.style.height=height*5+'px';
 	document.body.style.overflowY='hidden';
 	document.body.style.overflowX='hidden';
-	return height;
 }
 	
-export default reScale
+export default setCSS
