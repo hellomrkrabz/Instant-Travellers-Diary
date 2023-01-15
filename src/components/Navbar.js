@@ -8,6 +8,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Link } from "react-router-dom";
 import './Navbar.css';
 import logo from './logo.png';
+import setCss from "./setCSS"
 
 function Navbar() {
     const [click, setClick] = useState(false);
@@ -31,12 +32,12 @@ function Navbar() {
 
       window.addEventListener('resize', showButton);
 
-	console.log(document.URL);
 
 	if(document.URL=='http://localhost:3000/' || document.URL=='http://localhost:3000/Login' || document.URL=='http://localhost:3000/Register')
 	{
 	  return (
 		<>
+		{setCss()}
 			<nav className='navbar'>
 			
 				<div className='navbar-container'>
@@ -71,6 +72,7 @@ function Navbar() {
 	{
 		return (
 		<>
+		{setCss()}
 			<nav className='navbar'>
 			
 				<div className='navbar-container'>

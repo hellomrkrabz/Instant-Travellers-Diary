@@ -9,28 +9,21 @@ import getCookie from "./getCookie"
 import axios from "axios";
 import setCSS from "./setCSS"
 import setImgs from "./setImgs"
-//import setImgs from "./setImgs"
-//import dump from "./DUMP.json"
-//import dump2 from "./DUMP2.json"
 
 var img;
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-function nwm(a,j)
+function changeImgs(imgs)
 {
-	console.log(a);
-	for(var i=0;i<j.lenght;i++)
+	var list = document.getElementsByClassName("journey");
+	
+	for(var i=0;i<imgs.length;i++)
 	{
-		j[i].image_path=a[i];
+		list[i].childNodes[1].src=imgs[i].filename;
 	}
 }
 
 function handleUploadImage(ev)
 {
-	console.log("called");
     const IDCookie = document
           .cookie
           .split('; ')
@@ -90,42 +83,40 @@ const AddJourney = (props) => {
       const newJourneys = JSON.parse(JSON.stringify(props.journeys));
 
 		handleUploadImage();
-		console.log("halo");
 
       const journey = {
         name: name,
         description: description,
         initialDate: dateInit,
         endDate: dateEnd,
-        picturePath: 'dupa',
+        picturePath: 'cos',
 		userId: getCookie(),
         stages: [],
       };
 
 	const arr=Array.from(newJourneys);
 	arr.push(journey);
-  
-  //newJourneys.push(journey);
-      //Array.from(newJourneys).push(journey);
-      //http://localhost:3000/api/journey/add
-      //localhost:3001/journeys
+
       await fetch("http://localhost:5000/api/journey/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(journey)//,
-		//userId:getCookie
       });
 	  
 	  
-	  
+	  props.setJourneys(arr);
+	  setImgs("journey").then(text=>{
+			changeImgs(text);
+		});
       props.setCreateJourney(0);
-      //props.setJourneys(newJourneys);
-      //props.setJourneys(arr);
+	  
+	  window.location.reload();
+	  
+
     }
   };
-  
-  
 
+  
   return (<div className="box-create-journey">
     <div class="card-create-journey">
       <div class="card-header">
@@ -211,18 +202,6 @@ const Journey = (props) => {
   );
 };
 
-function func(f)
-{
-	for(var i=0;i<f.lenght;i++)
-	{
-		return(
-		<SwiperSlide>
-			<Journey journey={f[i]} />
-		</SwiperSlide>
-		)
-	}
-}
-
 function parseJSON(props) {
   JSON.stringify(props.journeys.name)
   JSON.stringify(props.journeys.description)
@@ -233,39 +212,24 @@ function parseJSON(props) {
 function Journeys() {
   const [createJourney, setCreateJourney] = useState(0);
   const [journeys, setJourneys] = useState([]);
-  
-//###########################################################################################
-//Tutaj pobieramy dane z backu i to chyba musi być json, albo chociaż string
-//###########################################################################################
+  const [id,setId] = useState(0);
 
   useEffect(() => {
-    (async () => {
-      //"http://localhost:3000/api/Journeys/"+getCookie()
-      const res = await fetch("http://localhost:5000/api/Journeys/"+getCookie());
-	 
-      const resJson = await res.json();
-	  const resJourneys=resJson.journeys;
-	  
-	  //console.log(resJson);
-		//var resJson = dump;
+		(async () => {
+		const res = await fetch("http://localhost:5000/api/Journeys/"+getCookie());
 
-      setJourneys(resJourneys);
-	  //setJourneys(JSON.parse(JSON.stringify(dump)));
-	//console.log({journeys});
+		const resJson = await res.json();
+		const resJourneys=resJson.journeys;
+
+		setImgs("journey").then(text=>{
+			changeImgs(text);
+		});
+		
+		setJourneys(resJourneys);
+
     })();
   }, []);
   
-  //setImgs();
-  
-  	var imagePaths=setImgs().then(text=>nwm(text,journeys));
-	//console.log(imagePaths.promise);
-	sleep(1000);
-	
-	//################################
-	//ustawić im id
-	
-  console.log(journeys);  
-
   return (
     <>
 	{setCSS()}
@@ -280,7 +244,6 @@ function Journeys() {
              {
 				  Array.from(journeys).map((journey) => (
                 <SwiperSlide>
-				
                   <Journey journey={journey} />
                 </SwiperSlide>
               ))}

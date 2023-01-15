@@ -7,12 +7,9 @@ import { IconButton } from "@mui/material";
 import getCookie from "./getCookie"
 import getStageId from "./getJourneyId"
 import getJourneyId from "./getJourneyIdFromStages"
-
-// Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
 import "swiper/css";
+import setImgs from "./setImgs"
 
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -20,10 +17,19 @@ import axios from "axios";
 var globalStages=[0];
 var img;
 
+function changeImgs(imgs)
+{
+	var list = document.getElementsByClassName("stage");
+	
+	for(var i=0;i<imgs.length;i++)
+	{
+		list[i].childNodes[1].src=imgs[i].filename;
+	}
+}
+
 function handleUploadImage(ev)
 {
 	
-	console.log("called");
     const IDCookie = document
           .cookie
           .split('; ')
@@ -79,8 +85,6 @@ const AddStage = (props) => {
       
       const stages = JSON.parse(JSON.stringify(props.journey.stages));
 
-      //console.log("Stages Current", stages)
-	  //url=fileUrl;
 	  handleUploadImage();
 
       const stage = {
@@ -95,18 +99,6 @@ const AddStage = (props) => {
 
       stages.push(stage)
 	  globalStages=stages;
-/*
-      const newJourney = {
-        name: props.journey.name,
-        description: props.journey.description,
-        endDate: props.journey.endDate,
-        initialDate: props.journey.initialDate,
-        picture: props.journey.picture,
-        stages: stages,
-        id: props.journey.id
-      }*/
-
-      //console.log("Stages Now", stages)
 
       await fetch(`http://localhost:3000/api/stage/add`, {//dodawanie
         method: "POST",
@@ -114,7 +106,7 @@ const AddStage = (props) => {
         body: JSON.stringify(stage),
       });
       props.addStage();
-      //props.setJourney(newJourney)
+	   window.location.reload();
   
     }
   };
@@ -197,33 +189,31 @@ const Journey = () => {
   useEffect(() => {
     (async () => {
       const res = await fetch("http://localhost:3000/api/Stages/"+id)//retrive
-	  console.log(res);
 	  
 	  
 	  	  
       const resJson = await res.json()
-	  //setresJ(resJson);
-	  
-	  //console.log(resJson.stages);
 	  
 	  setStages(resJson.stages);
 		globalStages=resJson.stages;
 	  resJ=resJson.stages;
 	  
-	  console.log(resJ);
 	  const resJourney = resJson;
-      console.log("II", resJson)
 	  var tmp={
         name: "cos",
         description: "cos",
         initialDate: "cos",
         endDate: "cos",
-        picturePath: 'dupa',
+        picturePath: 'cos',
 		userId: "cos",
         stages: resJ
       };
-      setJourney(tmp);//Array.from(resJourney).filter((j) => j.id == id)[0])
-	  console.log({journey});
+	  
+	  var imagePaths=setImgs('stage').then(text=>{
+			changeImgs(text);
+		});
+	  
+      setJourney(tmp);
     })();
   }, []);
 

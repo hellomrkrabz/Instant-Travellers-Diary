@@ -1,14 +1,17 @@
-export async function setImgs()
+export async function setImgs(type)
 {
+	var url = document.URL;
 	
-	//"http://localhost:3000/api/Journeys/"+getCookie()
-	const res = await fetch("http://localhost:5000/api/journey/"+"1"+"/images");//tu nie mam id
-	//console.log(res);
+	if(url=="http://localhost:3000/Journeys")
+	{
+		var id=1;
+	}else
+	{
+		var id=url.replace("http://localhost:3000/journey/", "");
+	}
+	
+	const res = await fetch("http://localhost:5000/api/"+type+"/"+id+"/images");
 	const resJson = await res.json();
-	console.log(resJson.images);
-	//var imagesArray
-	//url=resJson.images[0].filename;
-	//console.log(url);
 
 	return resJson.images;
 }
