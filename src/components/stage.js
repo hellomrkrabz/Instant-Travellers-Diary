@@ -117,7 +117,7 @@ const AddEvent = (props) => {
   return (
     <div class="card-create-journey">
       <div class="card-header">
-        <h3>Create Stage</h3>
+        <h3>Create Event</h3>
       </div>
       <div class="card-body">
         <form>
