@@ -9,8 +9,8 @@ class Journey(db.Model):
     name = db.Column(db.Integer)
     description = db.Column(db.Text)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    initial_date = db.Column(db.DateTime, default=datetime.utcnow)
-    end_date = db.Column(db.DateTime, default=datetime.utcnow)
+    initial_date = db.Column(db.DateTime, default=datetime.date)
+    end_date = db.Column(db.DateTime, default=datetime.date)
     stages = db.relationship('Stage',
                              backref='journey',
                              lazy='dynamic',

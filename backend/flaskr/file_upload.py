@@ -20,6 +20,7 @@ ALLOWED_EXTENSIONS = ['png', 'jpg', 'jpeg', 'gif']
 def upload_file():
     target = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
     target = os.path.join(target, 'public', 'images')
+    target2 = '/images'
 
     if not os.path.isdir(target):
         os.mkdir(target)
@@ -38,17 +39,18 @@ def upload_file():
         filename = secure_filename(filename)
 
         destination = os.path.join(target, filename)
+        destination2 = target2 + '/' + filename
 
         if not os.path.isfile(destination):
             file.save(os.path.abspath(destination))
             image = Image(
                 relationship_id=id,
                 type=image_type.lower(),
-                filename=destination
+                filename=destination2
             )
             db.session.add(image)
             db.session.commit()
-            print(f"[INFO] File {destination} saved successfully")
+            print(f"[INFO] File {destination2} saved successfully")
 
             return jsonify({"msg": "success"})
 
