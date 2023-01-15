@@ -5,17 +5,17 @@ import { DropzoneOptions, useDropzone } from "react-dropzone";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { IconButton } from "@mui/material";
 import getCookie from "./getCookie"
-import getStageId from "./getJourneyId"
-import getJourneyId from "./getJourneyIdFromStages"
+import getStageId from "./getJourneyIdFromEvents"
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import setImgs from "./setImgs"
 import { Link } from "react-router-dom";
+import getJourneyId from "./getJourneyIdv2"
 
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
-var globalStages=[0];
+var globalEvents=[0];
 var img;
 
 function changeImgs(imgs)
@@ -26,21 +26,6 @@ function changeImgs(imgs)
 	{
 		list[i].childNodes[1].src=imgs[i].filename;
 	}
-}
-
-function setCookie(journeyID)
-{
-	var days =1;
-	var name='journey_id';
-	var date, expires;
-    if (days) {
-        date = new Date();
-        date.setTime(date.getTime()+(days*24*60*60*1000));
-        expires = "; expires=" + date.toGMTString();
-            }else{
-        expires = "";
-    }
-    document.cookie = name + "=" + journeyID + expires + "; path=/";
 }
 
 function handleUploadImage(ev)
@@ -63,7 +48,7 @@ function handleUploadImage(ev)
     });
 }
 
-const AddStage = (props) => {
+const AddEvent = (props) => {
 
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
@@ -95,33 +80,34 @@ const AddStage = (props) => {
     },
   });
 
-  const createStage = async () => {
+  const createEvent = async () => {
     
     if (fileUrl != "" && name != "" && date != "" && description != "") {
       
-      const stages = JSON.parse(JSON.stringify(props.journey.stages));
+      const events = JSON.parse(JSON.stringify(props.stage.events));
 
 	  handleUploadImage();
 
-      const stage = {
+      const event = {
         name: name,
         description: description,
         timestamp: date,
-		userId: getJourneyId()
+		userId: getStageId(),
+		journeyId: getJourneyId()
       };
 	  
 	  
 	  
 
-      stages.push(stage)
-	  globalStages=stages;
+      events.push(event)
+	  globalEvents=events;
 
-      await fetch(`http://localhost:3000/api/stage/add`, {//dodawanie
+      await fetch(`http://localhost:3000/api/event/add`, {//dodawanie
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(stage),
+        body: JSON.stringify(event),
       });
-      props.addStage();
+      props.addEvent();
 	   window.location.reload();
   
     }
@@ -161,63 +147,61 @@ const AddStage = (props) => {
             <textarea onChange={(e) => setDescription(e.target.value)} class="form-control" id="description" rows="3"></textarea>
           </div>
         </form>
-        <button onClick={handleUploadImage,createStage}>Create Stage</button>
+        <button onClick={handleUploadImage,createEvent}>Create Event</button>
       </div>
     </div>
   );
 };
 
-const Stage = (props) => {
+const event = (props) => {//to byl stage
   return (
-    <div className="stage">
-      <h1>{props.stage.name}</h1>
-      <img src={props.stage.picture} />
-      <h4>{props.stage.date}</h4>
-	  <h4>{props.stage.timestamp}</h4>
-      <span>{props.stage.description}</span>
-	  <div onClick={setCookie(getJourneyId())}>
-	  <Link to={`/stage/${props.stage.id}`}>
+    <div className="event">
+      <h1>{props.event.name}</h1>
+      <img src={props.event.picture} />
+      <h4>{props.event.date}</h4>
+	  <h4>{props.event.timestamp}</h4>
+      <span>{props.event.description}</span>
+	  <Link to={`/event/${props.event.id}`}>
         <button className="button-open">OPEN</button>
       </Link>
-	  </div>
     </div>
   );
 };
 
-const Journey = () => {
+const Event = () => {
   let { id } = useParams();
 
-  var [journey, setJourney] = useState({
+  var [stage, setStage] = useState({
         name: "cos",
         description: "cos",
         initialDate: "cos",
         endDate: "cos",
         picturePath: 'dupa',
 		userId: "cos",
-        stages: []
+        events: []
       });
 	  
-	var [stages,setStages]=useState([]);
+	var [events,setEvents]=useState([]);
 
-  const [createStage, setCreateStage] = useState(false)
+  const [createEvent, setCreateEvent] = useState(false)
 
 	var {resJ} = [];
 
-  const addStage = () => {
-    setCreateStage(0);
+  const addEvent = () => {
+    setCreateEvent(0);
   };
 
   useEffect(() => {
     (async () => {
-      const res = await fetch("http://localhost:3000/api/Stages/"+id)//retrive
+      const res = await fetch("http://localhost:3000/api/Events/"+id)//retrive
 	  
-	  
+	  console.log(res);
 	  	  
       const resJson = await res.json()
 	  
-	  setStages(resJson.stages);
-		globalStages=resJson.stages;
-	  resJ=resJson.stages;
+	  setEvents(resJson.events);
+		globalEvents=resJson.events;
+	  resJ=resJson.events;
 	  
 	  const resJourney = resJson;
 	  var tmp={
@@ -227,36 +211,35 @@ const Journey = () => {
         endDate: "cos",
         picturePath: 'cos',
 		userId: "cos",
-        stages: resJ
+        events: resJ
       };
 	  
 	  var imagePaths=setImgs('stage').then(text=>{
 			changeImgs(text);
 		});
 	  
-      setJourney(tmp);
+      setStage(tmp);
     })();
   }, []);
+  
+  console.log(globalEvents);
 
   return (
     <>
-      {createStage == false ? 
+      {createEvent == false ? 
       <>
-      Stages
-      <button onClick={() => setCreateStage(true)}>Add Stage</button>
+      Events
+      <button onClick={() => setCreateEvent(true)}>Add Event</button>
       <Swiper spaceBetween={50} slidesPerView={3}>
-        {Array.from(globalStages).map((stage) => (
-          <SwiperSlide>
-            <Stage stage={stage} />
-          </SwiperSlide>
-        ))}
+        
       </Swiper>
       </>
       :
-      <AddStage setJourney={setJourney} journey={journey} addStage={addStage}/>
+	  <AddEvent setStage={setStage} stage={stage} addEvent={addEvent}/>
+      
     }
     </>
   );
 };
 
-export default Journey;
+export default Event;

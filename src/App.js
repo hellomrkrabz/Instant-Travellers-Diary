@@ -9,6 +9,7 @@ import EditProfile from './components/EditProfile';
 import Logout from './components/Logout';
 import NoPage1 from './components/NoPage1';
 import NoPage2 from './components/NoPage2';
+import Stage from './components/stage';
 
 
 import { useState, useEffect } from "react";
@@ -77,6 +78,7 @@ function App() {
 				  <Route path="/Logout" exact component={Logout}/>
 				  <Route path="/Journeys" exact component={Journeys} />
                   <Route path="/Journey/:id" exact component={Journey}/>
+				  <Route path="/stage/:id" exact component={Stage}/>
 				  <Route path="*" exact component={NoPage2}/>
 			</Switch>
 		  </Router>

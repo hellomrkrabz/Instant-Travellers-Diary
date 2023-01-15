@@ -65,7 +65,7 @@ def get_journey_stages(journey_id):
 
     return jsonify({'stages': stages_json})
 
-@bp.route('/Events/<stage_id>', methods=['GET'])
+@bp.route('/Events/<journey_id>/<stage_id>', methods=['GET'])
 def get_stage_events(stage_id):
     stage = Stage.query.filter_by(id=stage_id).first()
     if stage is None:
@@ -120,6 +120,11 @@ def add(entity_type):
                     id=relationship_id
                 ).exists()
             ).scalar()
+            
+            entity = Stage(name=name,
+                           description=description,
+                           timestamp=timestamp,
+                           journey_id=relationship_id)
 
         elif entity_type == 'event':
             # Check if event's journey exists
@@ -127,6 +132,7 @@ def add(entity_type):
             description = data['description']
             timestamp = data['timestamp']
             relationship_id = data['userId']
+            journey_id=data['journeyId']
 
             timestamp = datetime.strptime(timestamp, '%Y-%m-%d')
 
@@ -135,16 +141,19 @@ def add(entity_type):
                     id=relationship_id
                 ).exists()
             ).scalar()
+            
+            entity = Event(name=name,
+                           description=description,
+                           timestamp=timestamp,
+                           journey_id=journey_id,
+                           stage_id=relationship_id)
 
             if not exists:
                 error = f"Couldn't find a Journey with id {relationship_id}"
                 print('[ERROR] ::', error)
                 return jsonify({'msg': error})
 
-            entity = Stage(name=name,
-                           description=description,
-                           timestamp=timestamp,
-                           journey_id=relationship_id)
+            
         else:
             print(f"[ERROR] :: Unknown entity type: {entity_type}")
             return jsonify({'msg': f"Unknown entity type: {entity_type}"})
