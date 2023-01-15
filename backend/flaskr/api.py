@@ -66,12 +66,16 @@ def get_journey_stages(journey_id):
     return jsonify({'stages': stages_json})
 
 @bp.route('/Events/<journey_id>/<stage_id>', methods=['GET'])
-def get_stage_events(stage_id):
+def get_stage_events(journey_id, stage_id):
+    journey = Journey.query.filter_by(id=journey_id).first()
+    if journey is None:
+        return jsonify({'msg': 'Specified journey does not exist'})
     stage = Stage.query.filter_by(id=stage_id).first()
     if stage is None:
         return jsonify({'msg': 'Specified stage does not exist'})
     events = Event.query.filter_by(
-        stage_id=stage.get_id()
+        stage_id=stage.get_id(),
+        journey_id = journey.get_id()
     ).all()
     events_json = [{'id': e.get_id(),
                     'name': e.get_name(),
