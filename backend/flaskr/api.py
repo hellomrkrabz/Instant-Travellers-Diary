@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 from .journey import Journey
 from .stage import Stage
+from .event import Event
 from .user import User
 from . import db
 from datetime import datetime
@@ -99,6 +100,21 @@ def add(entity_type):
 
             timestamp = datetime.strptime(timestamp, '%Y-%m-%d')
             
+            exists = db.session.query(
+                db.session.query(Journey).filter_by(
+                    id=relationship_id
+                ).exists()
+            ).scalar()
+
+        elif entity_type == 'event':
+            # Check if event's journey exists
+            name = data['name']
+            description = data['description']
+            timestamp = data['timestamp']
+            relationship_id = data['userId']
+
+            timestamp = datetime.strptime(timestamp, '%Y-%m-%d')
+
             exists = db.session.query(
                 db.session.query(Journey).filter_by(
                     id=relationship_id
