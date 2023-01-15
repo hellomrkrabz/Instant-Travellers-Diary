@@ -20,7 +20,7 @@ var img;
 
 function changeImgs(imgs)
 {
-	var list = document.getElementsByClassName("stage");
+	var list = document.getElementsByClassName("event");
 	
 	for(var i=0;i<imgs.length;i++)
 	{
@@ -39,7 +39,7 @@ function handleUploadImage(ev)
     let data = new FormData();
     data.append('file', img);
     data.append('id', getJourneyId());
-	data.append('type','stage');
+	data.append('type','event');
 
     axios.post('http://localhost:5000/api/upload/image', data).then(response => {
         console.log(response);
@@ -153,15 +153,15 @@ const AddEvent = (props) => {
   );
 };
 
-const event = (props) => {//to byl stage
+const EventComponent = (props) => {//to byl stage
   return (
     <div className="event">
-      <h1>{props.event.name}</h1>
-      <img src={props.event.picture} />
-      <h4>{props.event.date}</h4>
-	  <h4>{props.event.timestamp}</h4>
-      <span>{props.event.description}</span>
-	  <Link to={`/event/${props.event.id}`}>
+      <h1>{props.ev.name}</h1>
+      <img src={props.ev.picture} />
+      <h4>{props.ev.date}</h4>
+	  <h4>{props.ev.timestamp}</h4>
+      <span>{props.ev.description}</span>
+	  <Link to={`/event/${props.ev.id}`}>
         <button className="button-open">OPEN</button>
       </Link>
     </div>
@@ -193,10 +193,8 @@ const Event = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await fetch("http://localhost:3000/api/Events/"+id)//retrive
-	  
-	  console.log(res);
-	  	  
+      const res = await fetch("http://localhost:3000/api/Events/"+getJourneyId()+"/"+id)//retrive
+	  	  	  
       const resJson = await res.json()
 	  
 	  setEvents(resJson.events);
@@ -214,7 +212,7 @@ const Event = () => {
         events: resJ
       };
 	  
-	  var imagePaths=setImgs('stage').then(text=>{
+	  var imagePaths=setImgs('event').then(text=>{
 			changeImgs(text);
 		});
 	  
@@ -231,7 +229,11 @@ const Event = () => {
       Events
       <button onClick={() => setCreateEvent(true)}>Add Event</button>
       <Swiper spaceBetween={50} slidesPerView={3}>
-        
+        {Array.from(globalEvents).map((event2) => (
+          <SwiperSlide>
+            <EventComponent ev={event2} />
+          </SwiperSlide>
+        ))}
       </Swiper>
       </>
       :

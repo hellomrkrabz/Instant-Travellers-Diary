@@ -4,7 +4,7 @@ body{
 }
 
 
-.stage {
+.stage,.event {
     width: 350px;
     border: 2px solid black;
 
@@ -14,7 +14,7 @@ body{
     background-color: white;
 }
 
-.stage img{
+.stage img,.event img{
     width: 250px;
     height: 150px;
 }
