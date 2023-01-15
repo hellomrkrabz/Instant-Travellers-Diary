@@ -65,6 +65,21 @@ def get_journey_stages(journey_id):
 
     return jsonify({'stages': stages_json})
 
+@bp.route('/Events/<stage_id>', methods=['GET'])
+def get_stage_events(stage_id):
+    stage = Stage.query.filter_by(id=stage_id).first()
+    if stage is None:
+        return jsonify({'msg': 'Specified stage does not exist'})
+    events = Event.query.filter_by(
+        stage_id=stage.get_id()
+    ).all()
+    events_json = [{'id': e.get_id(),
+                    'name': e.get_name(),
+                    'timestamp': e.get_timestamp(),
+                    'description': e.get_description()} for e in events]
+
+    return jsonify({'events': events_json})
+
 
 @bp.route('/<entity_type>/add', methods=['POST'])
 def add(entity_type):
