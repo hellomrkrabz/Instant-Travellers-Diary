@@ -21,7 +21,7 @@ var img;
 function changeImgs(imgs)
 {
 	var list = document.getElementsByClassName("stage");
-	console.log(imgs);
+	//console.log(imgs);
 	
 	for(var i=0;i<imgs.length;i++)
 	{
@@ -46,6 +46,7 @@ function setCookie(journeyID)
 
 function handleUploadImage(ev)
 {
+	console.log(getJourneyId());
 	
     const IDCookie = document
           .cookie
@@ -121,7 +122,7 @@ const AddStage = (props) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(stage),
-      });
+      });//.then(()=> handleUploadImage());
       props.addStage();
 	   window.location.reload();
   
