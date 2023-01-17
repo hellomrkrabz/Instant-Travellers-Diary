@@ -102,7 +102,7 @@ function Profile() {
   return (
     <div>
         <form method="POST" style={{height: reScale()+'px'}}>
-            <Box className='sign-up-form2'>
+            <Box className='sign-up-form3'>
                 <Typography className='typography' variant='h2'>Your profile!</Typography>
 				<img id='avatar' height="150px" width="150px"/>
 				<TextField margin='normal' id='username' type={'text'} variant='outlined' placeholder='Nick' value={data.nick}/>

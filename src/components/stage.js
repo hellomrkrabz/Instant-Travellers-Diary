@@ -8,7 +8,7 @@ import getCookie from "./getCookie"
 import getStageId from "./getJourneyIdFromEvents"
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import setImgs from "./setImgs"
+import setImgs from "./setImgsInEvents"
 import { Link } from "react-router-dom";
 import getJourneyId from "./getJourneyIdv2"
 
@@ -21,16 +21,18 @@ var img;
 function changeImgs(imgs)
 {
 	var list = document.getElementsByClassName("event");
+	console.log(list);
+	console.log(imgs);
 	
 	for(var i=0;i<imgs.length;i++)
 	{
-		list[i].childNodes[1].src=imgs[i].filename;
+		list[i].childNodes[1].src=imgs[i];
 	}
 }
 
 function handleUploadImage(ev)
 {
-	
+	console.log("called");
     const IDCookie = document
           .cookie
           .split('; ')
@@ -212,7 +214,19 @@ const Event = () => {
         events: resJ
       };
 	  
-	  var imagePaths=setImgs('event').then(text=>{
+	  console.log(resJourney.events[0].id);
+	  var events=resJourney.events;
+	  var eventId=[];
+	  
+	  for(var i=0; i<events.length;i++)
+	  {
+		  eventId.push(events[i].id);
+	  }
+	  
+	  console.log(eventId);
+	  
+	  
+	  var imagePaths=setImgs(eventId).then(text=>{
 			changeImgs(text);
 		});
 	  

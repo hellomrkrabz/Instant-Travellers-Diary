@@ -29,10 +29,10 @@ def upload_file():
     image_type = request.form['type']
     file = request.files['file']
 
-    extension = file.filename.split('.')[-1]
+    extension = file.filename.split('.')[-1].lower()
     if extension not in ALLOWED_EXTENSIONS:
         return jsonify({"msg": f"Invalid extension: {extension}"})
-
+    print("trying to upload image")
     while True:
         hashed = abs(hash(file.filename + 'a')) % (10 ** 9)
         filename = f"{hashed}.{extension}"
@@ -40,6 +40,7 @@ def upload_file():
 
         destination = os.path.join(target, filename)
         destination2 = target2 + '/' + filename
+        
 
         if not os.path.isfile(destination):
             file.save(os.path.abspath(destination))

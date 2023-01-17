@@ -5,7 +5,7 @@
 	background-repeat: no-repeat;
 }
 
-.sign-up-form2{
+.sign-up-form3{
     
     display: flex;
     flex-direction: column;
@@ -22,7 +22,7 @@
 	height:80%;
 }
 
-.sign-up-form2>*
+.sign-up-form3>*
 {
 	position:relative;
 	top:60px;
@@ -40,6 +40,7 @@
 {
 	width:225px;
 }
+
 
 
 /*
