@@ -10,6 +10,8 @@ from werkzeug.utils import secure_filename
 from . import db
 from .image import Image
 from .user import User
+import random
+import string
 
 bp = Blueprint("upload", __name__, url_prefix="/api/upload")
 
@@ -34,7 +36,7 @@ def upload_file():
         return jsonify({"msg": f"Invalid extension: {extension}"})
     print("trying to upload image")
     while True:
-        hashed = abs(hash(file.filename + 'a')) % (10 ** 9)
+        hashed = abs(hash(str(file.filename + random.choice(string.ascii_letters)))) % (10 ** 9)
         filename = f"{hashed}.{extension}"
         filename = secure_filename(filename)
 
