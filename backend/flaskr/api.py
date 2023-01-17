@@ -10,11 +10,6 @@ from datetime import datetime
 from .image import Image
 
 
-# TODO: make this function do stuff
-def body_to_html(body: str) -> str:
-    return body
-
-
 bp = Blueprint("api", __name__, url_prefix='/api')
 
 
@@ -23,12 +18,15 @@ def get_user_data(u_id):
     user = User.query.filter_by(id=u_id).first()
     if user is None:
         return jsonify({'msg': 'Specified user does not exist'})
+    
+    journeys = Journey.query.filter_by(author_id=user.get_id()).all()
 
     return jsonify({
         'username': user.get_username(),
         'email': user.get_email(),
         'avatar': user.get_avatar(),
-        'bio': user.get_bio()
+        'bio': user.get_bio(),
+        'journeys': [j.id() for j in journeys]
     })
 
 
