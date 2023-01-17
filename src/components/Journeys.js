@@ -111,7 +111,7 @@ const AddJourney = (props) => {
 		});
       props.setCreateJourney(0);
 	  
-	  //window.location.reload();
+	  window.location.reload();
 	  
 
     }
