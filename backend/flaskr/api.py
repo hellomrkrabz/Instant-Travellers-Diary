@@ -27,7 +27,8 @@ def get_user_data(u_id):
     return jsonify({
         'username': user.get_username(),
         'email': user.get_email(),
-        'avatar': user.get_avatar()
+        'avatar': user.get_avatar(),
+        'bio': user.get_bio()
     })
 
 

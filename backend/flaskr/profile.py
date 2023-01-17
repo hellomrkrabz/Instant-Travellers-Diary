@@ -30,6 +30,7 @@ def EditProfile():
     email = data['email']
     password = data['password']
     new_password = data['newPassword']
+    bio = data['bio']
     user_id = session.get("user_id") or data['userID']
 
     if user_id is None:
@@ -51,6 +52,7 @@ def EditProfile():
                 user.email = email
             if new_password != '':
                 user.set_password_hash(new_password)
+            user.bio=bio
             db.session.commit()
             print(f"User {user_id} edited succesfully")
             return jsonify({'msg': 'User edited successfully'})

@@ -40,6 +40,9 @@ class User(db.Model):
 
     def get_avatar(self):
         return self.avatar
+        
+    def get_bio(self):
+        return self.bio
 
     def set_password_hash(self, new_password):
         self.password_hash = generate_password_hash(new_password)

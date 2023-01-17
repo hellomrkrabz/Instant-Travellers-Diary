@@ -1,4 +1,4 @@
-import { TextField, Typography } from '@mui/material'
+import { TextField, Typography, TextareaAutosize } from '@mui/material'
 import { Box } from '@mui/material'
 import React from 'react'
 import {Button} from './Button'
@@ -22,8 +22,10 @@ function Profile() {
 	xhr.onreadystatechange = function() {
 	  if (this.readyState == 4 && this.status == 200) {
 		var response = this.responseText;
+		console.log(response);
 		
-		var avatarPath,username, email, sB, sE;
+		var avatarPath,username, email, bio, sB, sE;
+		const obj = JSON.parse(response);
 		
 		var res=response.replace(/"/,'d');
 		res=res.replace(/"/,'d');
@@ -41,7 +43,7 @@ function Profile() {
 		res=res.replace(/"/,'d');
 		sE= res.search(/"/);
 		
-		email=res.slice(sB+1,sE);
+		bio=res.slice(sB+1,sE);
 
 		res=res.replace(/"/,'d');
 		res=res.replace(/"/,'d');
@@ -51,14 +53,27 @@ function Profile() {
 		res=res.replace(/"/,'d');
 		sE= res.search(/"/);
 		
+		email=res.slice(sB+1,sE);
+		
+		res=res.replace(/"/,'d');
+		res=res.replace(/"/,'d');
+		res=res.replace(/"/,'d');
+		
+		sB= res.search(/"/);
+		res=res.replace(/"/,'d');
+		sE= res.search(/"/);
+		
 		username=res.slice(sB+1,sE);
+		
 		console.log(avatarPath);
 		console.log(email);
 		console.log(username);
-		document.getElementById('username').value=username;
-		document.getElementById('email').value=email;
+		console.log(bio);
+		document.getElementById('username').value=obj.username;
+		document.getElementById('email').value=obj.email;
+		document.getElementById('bio').value=obj.bio;
 		//avatar=setAvatar(avatarPath);
-		document.getElementById('avatar').src=setAvatar(avatarPath);
+		document.getElementById('avatar').src=setAvatar(obj.avatar);
 	  }
 	};
 
@@ -92,6 +107,7 @@ function Profile() {
 				<img id='avatar' height="150px" width="150px"/>
 				<TextField margin='normal' id='username' type={'text'} variant='outlined' placeholder='Nick' value={data.nick}/>
                 <TextField margin='normal' id='email' type={'email'} variant='outlined' placeholder='Email' value={data.email}/>
+				<div><TextareaAutosize  margin='normal' id='bio' type={'text'} variant='outlined' minRows="3" placeholder='Bio' value={data.bio}/></div>
 				<Button buttonStyle='btn--2' buttonSize="btn--medium"  path="/EditProfile">Edit profile</Button>
             </Box>
         </form>

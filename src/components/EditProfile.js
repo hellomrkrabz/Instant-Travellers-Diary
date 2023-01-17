@@ -1,4 +1,4 @@
-import { TextField, Typography } from '@mui/material'
+import { TextField, Typography , TextareaAutosize } from '@mui/material'
 import { Box } from '@mui/material'
 import React from 'react'
 import {Button} from './Button'
@@ -24,7 +24,8 @@ function handleSubmit() {
     email: document.getElementById("email").value,
     username: document.getElementById("username").value, 
     password: document.getElementById("password").value,
-	newPassword: document.getElementById("newPassword").value
+	newPassword: document.getElementById("newPassword").value,
+	bio: document.getElementById("bio").value
   }).then((response) => { setTimeout(redirect(response.data), 1000)})
     .catch((error) => console.error('[FAIL] :: ' + error))
 }
@@ -50,15 +51,25 @@ function Profile() {
 		if (this.readyState == 4 && this.status == 200) {
 			var response = this.responseText;
 		
-		var avatarPath,username, email, sB, sE;
+		var avatarPath, username, email, bio, sB, sE;
 		
 		var res=response.replace(/"/,'d');
+		
+		const obj = JSON.parse(response);
 		res=res.replace(/"/,'d');
 		sB= res.search(/"/);
 		res=res.replace(/"/,'d');
 		sE= res.search(/"/);
 		
-		avatarPath=res.slice(sB+1,sE);
+		res=res.replace(/"/,'d');
+		res=res.replace(/"/,'d');
+		res=res.replace(/"/,'d');
+		
+		sB= res.search(/"/);
+		res=res.replace(/"/,'d');
+		sE= res.search(/"/);
+		
+		bio=res.slice(sB+1,sE);
 
 		res=res.replace(/"/,'d');
 		res=res.replace(/"/,'d');
@@ -69,7 +80,7 @@ function Profile() {
 		sE= res.search(/"/);
 		
 		email=res.slice(sB+1,sE);
-
+		
 		res=res.replace(/"/,'d');
 		res=res.replace(/"/,'d');
 		res=res.replace(/"/,'d');
@@ -79,11 +90,14 @@ function Profile() {
 		sE= res.search(/"/);
 		
 		username=res.slice(sB+1,sE);
+		
+		console.log(avatarPath);
 
-		document.getElementById('username').value=username;
-		document.getElementById('email').value=email;
+		document.getElementById('username').value=obj.username;
+		document.getElementById('email').value=obj.email;
+		document.getElementById('bio').value=obj.bio;
 		//avatar=setAvatar(avatarPath);
-		document.getElementById('avatar').src=setAvatar(avatarPath);
+		document.getElementById('avatar').src=setAvatar(obj.avatar);
 		}
 	};
 
@@ -136,10 +150,17 @@ function Profile() {
         <form method="POST" style={{height: reScale()+'px'}}>
             <Box className='sign-up-form2'>
 				<img id='avatar' height="150px" width="150px"/>
+				<p4>Username:</p4>
 				<TextField margin='normal' id='username' type={'text'} variant='outlined' placeholder='Nick' value={data.nick}/>
-                <TextField margin='normal' id='email' type={'email'} variant='outlined' placeholder='Email' value={data.email}/>
+                <p4>email:</p4>
+				<TextField margin='normal' id='email' type={'email'} variant='outlined' placeholder='Email' value={data.email}/>
+				<p4>bio:</p4>
+				<div><TextareaAutosize  margin='normal' id='bio' type={'text'} variant='outlined' minRows="3" placeholder='Bio' value={data.bio}/></div>
+				<p4>New password:</p4>
 				<TextField margin='normal' id='newPassword' type={'password'} variant='outlined' placeholder='New password'/>
+				<p4>Password:</p4>
 				<TextField margin='normal' id='password' type={'password'} variant='outlined' placeholder='Password (required)'/>
+				<p4>Avatar:</p4>
 				<div>
 				<input type="file" name="file" id='image' onChange={handleUploadImage} />
 				</div>
