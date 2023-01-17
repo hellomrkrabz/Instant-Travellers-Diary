@@ -21,6 +21,7 @@ var img;
 function changeImgs(imgs)
 {
 	var list = document.getElementsByClassName("stage");
+	console.log(imgs);
 	
 	for(var i=0;i<imgs.length;i++)
 	{

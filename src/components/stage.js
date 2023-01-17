@@ -30,9 +30,9 @@ function changeImgs(imgs)
 	}
 }
 
-function handleUploadImage(ev)
+function handleUploadImage(res)
 {
-	console.log("called");
+	console.log(res.data);
     const IDCookie = document
           .cookie
           .split('; ')
@@ -40,7 +40,7 @@ function handleUploadImage(ev)
   
     let data = new FormData();
     data.append('file', img);
-    data.append('id', getJourneyId());
+    data.append('id', res.id);
 	data.append('type','event');
 
     axios.post('http://localhost:5000/api/upload/image', data).then(response => {
@@ -88,7 +88,7 @@ const AddEvent = (props) => {
       
       const events = JSON.parse(JSON.stringify(props.stage.events));
 
-	  handleUploadImage();
+	  //handleUploadImage();
 
       const event = {
         name: name,
@@ -108,9 +108,9 @@ const AddEvent = (props) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(event),
-      });
+      }).then((response) => handleUploadImage(response));
       props.addEvent();
-	   window.location.reload();
+	   //window.location.reload();
   
     }
   };

@@ -14,6 +14,7 @@ var img;
 
 function changeImgs(imgs)
 {
+	console.log(imgs);
 	var list = document.getElementsByClassName("journey");
 	
 	for(var i=0;i<imgs.length;i++)
@@ -22,7 +23,7 @@ function changeImgs(imgs)
 	}
 }
 
-function handleUploadImage(ev)
+function handleUploadImage(res)
 {
     const IDCookie = document
           .cookie
@@ -31,7 +32,7 @@ function handleUploadImage(ev)
   
     let data = new FormData();
     data.append('file', img);
-    data.append('id', '1');	//############	Here should be journey id but it doesn't exist yet...
+    data.append('id', res.id);
 	data.append('type','Journey');
 
     axios.post('http://localhost:5000/api/upload/image', data).then(response => {
@@ -82,7 +83,7 @@ const AddJourney = (props) => {
     if (fileUrl != "" && name != "" && dateInit != "" && dateEnd != "" && description != "") {
       const newJourneys = JSON.parse(JSON.stringify(props.journeys));
 
-		handleUploadImage();
+		
 
       const journey = {
         name: name,
@@ -101,7 +102,7 @@ const AddJourney = (props) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(journey)//,
-      });
+      }).then((response) => response.json()).then((resp)=> handleUploadImage(resp));
 	  
 	  
 	  props.setJourneys(arr);
@@ -110,7 +111,7 @@ const AddJourney = (props) => {
 		});
       props.setCreateJourney(0);
 	  
-	  window.location.reload();
+	  //window.location.reload();
 	  
 
     }
@@ -174,7 +175,7 @@ const AddJourney = (props) => {
             ></textarea>
           </div>
         </form>
-        <button className="button-create" onClick={handleUploadImage,createJourney}>CREATE JOURNEY</button>
+        <button className="button-create" onClick={createJourney}>CREATE JOURNEY</button>
       </div>
     </div>
     </div>

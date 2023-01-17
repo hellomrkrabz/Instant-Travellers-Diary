@@ -26,7 +26,7 @@ def get_user_data(u_id):
         'email': user.get_email(),
         'avatar': user.get_avatar(),
         'bio': user.get_bio(),
-        'journeys': [j.id() for j in journeys]
+        'journeys': [j.get_id() for j in journeys]
     })
 
 
