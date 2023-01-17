@@ -166,7 +166,7 @@ def add(entity_type):
         db.session.add(entity)
         db.session.commit()
         print(f"[INFO] {entity} created successfully")
-        return jsonify({"msg": "success"})
+        return jsonify({"msg": "success", "id": entity.get_id()})
     except Exception as e:
         error = str(e)
         print('[ERROR] ::', error)
