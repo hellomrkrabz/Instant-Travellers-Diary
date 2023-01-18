@@ -5,35 +5,47 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { compose, withProps } from "recompose"
 
-let markers=[
-    {
-        id:1,
-        latitude: 25.0391667,
-        longitude: 121.525,
-        shelter:'marker 1'
+var markers=[{}];
 
-    },
-    {
-        id: 2,
-        latitude: 24.0391667,
-        longitude: 110.525,
-        shelter: 'marker 2'
+function assignMarkers(mar){
+  console.log(mar);
+  if(mar.length==0){
+    markers.push({id: 0,
+      lat: 0.0,
+      lng: 0.0,
+    });
+  }
+  console.log("tutaj");
+  for(var i=0; i<mar.length; i++){
+    console.log(parseFloat(mar[i].lat));
+    markers.push({id: i,
+      lat: parseFloat(mar[i].lat),
+      lng: parseFloat(mar[i].lng)
+    });
+  }
+}
 
-    },
-    {
-        id: 3,
-        latitude: 20.0391667,
-        longitude: 100.525,
-        shelter: 'marker 3'
+async function awaiting(){ 
+const res = await fetch("http://localhost:3000/api/Events/1")
+  const resJson = await res.json()
+  console.log(resJson);
+  assignMarkers(resJson);
+}
 
-    }
-]
-
-
-  
+/*
+async function awaiting(){ 
+await fetch(`http://localhost:3000/api/Events/1`, {//adres do zmiany
+        method: "GET",
+        headers: { "Content-Type": "application/json"},
+        body: JSON.stringify()
+      }).then((marker)=> console.log(marker));
+}
+*/
 
 
 const GoogleMaps = () => {
+  awaiting();
+  console.log(markers);
 const MyMapComponent = compose(
   withProps({
     googleMapURL: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places",
@@ -43,12 +55,12 @@ const MyMapComponent = compose(
   }), withScriptjs, withGoogleMap)((props) =>
   <GoogleMap
     defaultZoom={8}
-    defaultCenter={{ lat: markers[0].latitude, lng: markers[0].longitude }}
+    defaultCenter={{ lat: parseFloat(markers[0].lat), lng: parseFloat(markers[0].lng) }}
   >              
 
     {props.isMarkerShown && markers.map(marker => (
     <Marker
-      position={{ lat: marker.latitude, lng: marker.longitude }}
+      position={{ lat: marker.lat, lng: marker.lng }}
       key={marker.id}
     />
     ))} />}
