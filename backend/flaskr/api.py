@@ -181,15 +181,15 @@ def add_or_edit_entity(entity_type, action):
                                timestamp=timestamp,
                                journey_id=journey_id,
                                stage_id=relationship_id,
-                               latitude=lat,
-                               longitude=lng)
+                               latitude=float(lat),
+                               longitude=float(lng))
             elif action == "edit":
                 entity = Stage.query.filter_by(id=data['id']).first()
                 entity.name = name
                 entity.description = description
                 entity.timestamp = timestamp
-                entity.latitude = lat
-                entity.longitude = lng
+                entity.latitude = float(lat)
+                entity.longitude = float(lng)
             else:
                 print(f"[ERROR] :: Unknown action: {action}")
                 return jsonify({'msg': f"Unknown action: {action}"})
