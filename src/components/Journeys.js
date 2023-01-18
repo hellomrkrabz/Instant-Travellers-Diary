@@ -12,6 +12,11 @@ import setImgs from "./setImgs"
 
 var img;
 
+function reloadPage()
+{
+	window.location.reload();
+}
+
 function changeImgs(imgs)
 {
 	console.log(imgs);
@@ -111,7 +116,7 @@ const AddJourney = (props) => {
 		});
       props.setCreateJourney(0);
 	  
-	  window.location.reload();
+	  setTimeout(reloadPage(),200);
 	  
 
     }
