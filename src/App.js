@@ -15,6 +15,7 @@ import { useState, useEffect } from "react";
 import axios, {isCancel, AxiosError} from 'axios';
 import Journey from './components/Journey';
 import Journeys from './components/Journeys';
+import Stage from './components/Stage';
 
 function App() {
 	
@@ -60,6 +61,7 @@ function App() {
 					<Route path="/Login" exact component={Login}/>
 					<Route path="/Journeys" exact component={Journeys} />
                  	<Route path="/Journey/:id" exact component={Journey}/>
+					<Route path="/Journey/:id/stages/:stageId" exact component={Stage}/>
 					<Route path="*" exact component={NoPage1}/>
 			</Switch>
 		  </Router>
@@ -79,6 +81,7 @@ function App() {
 				  <Route path="/Logout" exact component={Logout}/>
 				  <Route path="/Journeys" exact component={Journeys} />
                   <Route path="/Journey/:id" exact component={Journey}/>
+				  <Route path="/Journey/:id/stages/:stageId" exact component={Stage}/>
 				  <Route path="*" exact component={NoPage2}/>
 			</Switch>
 		  </Router>

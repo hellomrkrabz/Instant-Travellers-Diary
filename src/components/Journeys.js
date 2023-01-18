@@ -40,13 +40,13 @@ const AddJourney = (props) => {
     },
   });
 
-  const createJourney = async () => {
-    console.log("Name", name);
-    console.log("Init", dateInit);
-    console.log("End", dateEnd);
-    console.log("Description", description);
+  const removeFiles = () => {
+    setFiles([])
+  }
 
-    if (fileUrl != "" && name != "" && dateInit != "" && dateEnd != "" && description != "") {
+  const createJourney = async () => {
+
+    if (files.length > 0 && fileUrl != "" && name != "" && dateInit != "" && dateEnd != "" && description != "") {
       const newJourneys = JSON.parse(JSON.stringify(props.journeys));
 
       const journey = {
@@ -93,7 +93,10 @@ const AddJourney = (props) => {
               <CloudUploadIcon sx={{ fontSize: 60 }} />
             </IconButton>
             :
+            <>
             <img src={fileUrl} />
+            <button onClick={removeFiles}>X</button>
+            </>
           }
           </div>
           <div class="form-group">
@@ -142,11 +145,171 @@ const AddJourney = (props) => {
   );
 };
 
+const EditJourney = (props) => {
+  const [name, setName] = useState(props.journey.name);
+  const [dateInit, setDateInit] = useState(props.journey.initialDate);
+  const [dateEnd, setDateEnd] = useState(props.journey.endDate);
+  const [description, setDescription] = useState(props.journey.description);
+  const [files, setFiles] = useState([]);
+  const [fileUrl, setFileUrl] = useState(props.journey.picture)
+
+  const { fileRejections, getRootProps, getInputProps, open } = useDropzone({
+    onDropAccepted: setFiles,
+    noClick: true,
+    noKeyboard: true,
+    multiple: false,
+    onDrop: (filesUpload) => {
+      const formData = new FormData();
+      const token = process.env.CMS_TOKEN;
+
+      const file = filesUpload[0];
+
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        const base64 = reader.result.split(",")[1];
+        const url = 'data:image/png;base64,'+base64
+        setFileUrl(url)
+      };
+
+      reader.readAsDataURL(file);
+    },
+  });
+
+  const removeFiles = () => {
+    setFiles([])
+    setFileUrl("")
+  }
+
+  const editJourney = async () => {
+    
+    // console.log("NAME ", name)
+    // console.log("END ", dateEnd)
+    // console.log("INIT", dateInit)
+    // console.log("URL", fileUrl)
+    // console.log("DESCRIPTION", description)
+
+    if (fileUrl != "" && name != "" && dateInit != "" && dateEnd != "" && description != "") {
+      let newJourneys = JSON.parse(JSON.stringify(props.journeys));
+
+      const index = newJourneys.findIndex((j) => j.id == props.journey.id)      
+      
+      const journey = {
+        name: name,
+        description: description,
+        initialDate: dateInit,
+        endDate: dateEnd,
+        picture: fileUrl,
+        stages: props.journey.stages,
+      };
+
+      console.log("NEW ", journey)
+      console.log("INDEX ", index)
+    
+      newJourneys[index] = journey
+
+      await fetch("http://localhost:3001/journeys/"+props.journey.id, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(journey)
+      });
+      props.setJourneys(newJourneys);
+      props.setEdit(false)
+      /*props.setJourneys(arr);*/
+    }
+  };
+
+  return (<div className="box-create-journey">
+    <div class="card-create-journey">
+      <div class="card-header">
+        <h3>Editar jornada</h3>
+      </div>
+      <div class="card-body">
+        <form>
+          
+          <div class="form-group">
+          {fileUrl == "" ?
+            <IconButton onClick={open}>
+              <input {...getInputProps()} />
+              <CloudUploadIcon sx={{ fontSize: 60 }} />
+            </IconButton>
+            :
+            <>
+            <img src={fileUrl} />
+            <button onClick={removeFiles}>X</button>
+            </>
+          }
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control-name"
+              id="name"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="date"
+              class="form-control-date"
+              id="initial_date"
+              value={dateInit}
+              onChange={(e) => setDateInit(e.target.value)}
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="date"
+              class="form-control-date"
+              id="end_date"
+              value={dateEnd}
+              onChange={(e) => setDateEnd(e.target.value)}
+            />
+          </div>
+          <div class="form-group">
+            <textarea
+              class="form-control-description"
+              id="description"
+              rows="3"
+              value={description}
+              placeholder="Description"
+              onChange={(e) => setDescription(e.target.value)}
+            ></textarea>
+          </div>
+        </form>
+        <button className="button-create" onClick={editJourney}>Editar Jornada</button>
+        <button className="button-create" onClick={() => {
+          setName("")
+          setDateInit("")
+          setDateEnd("")
+          setFileUrl("")
+          setFiles([])
+          setDescription("")
+          props.setEdit(false)
+        }}>Back</button>
+      </div>
+    </div>
+    </div>
+  );
+};
+
 const Journey = (props) => {
-  const [showStages, setShowStages] = useState(false);
+  const [edit, setEdit] = useState(false);
+
+  const deleteJourney = async (id) => {
+
+    await fetch(`http://localhost:3001/journeys/${id}`, {
+        method: "DELETE"
+      });
+
+    props.deleteJourney(id)
+  }
 
   return (
-  
+    <>
+    {edit == false ? 
     <div className="journey">
       <h1 className="title-journey">{props.journey.name}</h1>
       <img src={props.journey.picture} />
@@ -158,8 +321,19 @@ const Journey = (props) => {
       <Link to={`/journey/${props.journey.id}`}>
         <button className="button-open">OPEN</button>
       </Link>
+      <button onClick={() => deleteJourney(props.journey.id)}>DELETE</button>
+      <button onClick={() => setEdit(true)}>EDIT</button>
     </div>
-  
+    :
+    <EditJourney 
+      setJourneys={props.setJourneys}
+      journey={props.journey}
+      setEdit={setEdit}
+      journeys={props.journeys}
+      />
+    }
+    </>
+
   );
 };
 
@@ -179,6 +353,11 @@ function Journeys() {
   const [createJourney, setCreateJourney] = useState(0);
   const [journeys, setJourneys] = useState([]);
   
+  const deleteJourney = (id) => {
+    const newJourneys = journeys.filter((j) => j.id != id)
+    setJourneys(newJourneys)
+  }
+
 //###########################################################################################
 //Tutaj pobieramy dane z backu i to chyba musi być json, albo chociaż string
 //###########################################################################################
@@ -196,9 +375,6 @@ function Journeys() {
     })();
   }, []);
   
-  console.log("tukej");
-  console.log(journeys);
-
   return (
     <>
       {createJourney == 0 ? (
@@ -213,7 +389,7 @@ function Journeys() {
 				  Array.from(journeys).map((journey) => (
                 <SwiperSlide>
 				
-                  <Journey journey={journey} />
+                   <Journey  journeys={journeys} setJourneys={setJourneys} journey={journey} deleteJourney={deleteJourney} />
                 </SwiperSlide>
               ))}
             </Swiper>
