@@ -95,7 +95,9 @@ const AddEvent = (props) => {
         description: description,
         timestamp: date,
 		userId: getStageId(),
-		journeyId: getJourneyId()
+		journeyId: getJourneyId(),
+		lat: 1,
+		lng: 1
       };
 	  
 	  
@@ -110,7 +112,7 @@ const AddEvent = (props) => {
         body: JSON.stringify(event),
       }).then((response) => handleUploadImage(response));
       props.addEvent();
-	   //window.location.reload();
+	    window.location.reload();
   
     }
   };
@@ -227,6 +229,7 @@ const Event = () => {
 	  
 	  
 	  var imagePaths=setImgs(eventId).then(text=>{
+		  
 			changeImgs(text);
 		});
 	  
