@@ -172,6 +172,7 @@ def add_or_edit_entity(entity_type, action):
                 return jsonify({'msg': f"Unknown action: {action}"})
 
         elif entity_type == 'event':
+            print('  > getting data from JSON')
             name = data['name']
             description = data['description']
             timestamp = data['timestamp']
@@ -182,6 +183,7 @@ def add_or_edit_entity(entity_type, action):
 
             timestamp = datetime.strptime(timestamp, '%Y-%m-%d')
 
+            print('  > Checking if parent stage exists')
             # Check if event's stage exists
             exists = db.session.query(
                 db.session.query(Stage).filter_by(
@@ -194,6 +196,7 @@ def add_or_edit_entity(entity_type, action):
                 return jsonify({'msg': error})
 
             if action == "add":
+                print('  > Adding stage...')
                 entity = Event(name=name,
                                description=description,
                                timestamp=timestamp,
@@ -202,6 +205,7 @@ def add_or_edit_entity(entity_type, action):
                                latitude=float(lat),
                                longitude=float(lng))
             elif action == "edit":
+                print('  > Editing stage...')
                 entity = Stage.query.filter_by(id=data['id']).first()
                 entity.name = name
                 entity.description = description
@@ -217,13 +221,15 @@ def add_or_edit_entity(entity_type, action):
             return jsonify({'msg': f"Unknown entity type: {entity_type}"})
 
         if action == "add": 
+            print('  > Adding to DB...')
             db.session.add(entity)
+        print('  > Commiting to DB...')
         db.session.commit()
         print(f"[INFO] Action '{action}' on {entity} performed successfully")
         return jsonify({"msg": "success", "id": entity.get_id()})
     except Exception as e:
         error = str(e)
-        print('[ERROR] ::', error)
+        print('[ERROR] :: Failed to add/edit post. Cause:', error)
         return jsonify({'msg': error})
 
 
