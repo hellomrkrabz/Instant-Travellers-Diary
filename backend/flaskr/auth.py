@@ -18,6 +18,7 @@ bp = Blueprint('auth', __name__)
 
 regex = re.compile(r'([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+')
 
+
 @bp.route('/Register', methods=['POST'])
 def Register():
     data = request.get_json()
@@ -108,14 +109,3 @@ def load_logged_in_user():
 def logout():
     session.clear()
     return redirect(url_for('home'))
-
-
-# def login_required(view):
-#     @functools.wraps(view)
-#     def wrapped_view(**kwargs):
-#         if g.user is None:
-#             return redirect(url_for('auth.login'))
-# 
-#         return view(**kwargs)
-# 
-#     return wrapped_view

@@ -18,7 +18,7 @@ def get_user_data(u_id):
     user = User.query.filter_by(id=u_id).first()
     if user is None:
         return jsonify({'msg': 'Specified user does not exist'})
-    
+
     journeys = Journey.query.filter_by(author_id=user.get_id()).all()
 
     return jsonify({
@@ -64,6 +64,7 @@ def get_journey_stages(journey_id):
 
     return jsonify({'stages': stages_json})
 
+
 @bp.route('/Events/<journey_id>/<stage_id>', methods=['GET'])
 def get_stage_events(journey_id, stage_id):
     journey = Journey.query.filter_by(id=journey_id).first()
@@ -74,7 +75,7 @@ def get_stage_events(journey_id, stage_id):
         return jsonify({'msg': 'Specified stage does not exist'})
     events = Event.query.filter_by(
         stage_id=stage.get_id(),
-        journey_id = journey.get_id()
+        journey_id=journey.get_id()
     ).all()
     events_json = [{'id': e.get_id(),
                     'name': e.get_name(),
@@ -86,9 +87,7 @@ def get_stage_events(journey_id, stage_id):
 
 @bp.route('/<entity_type>/add', methods=['POST'])
 def add(entity_type):
-
     data = request.get_json()
-    print(data)
 
     entity_type = str(entity_type)
     entity = None
@@ -117,13 +116,13 @@ def add(entity_type):
             relationship_id = data['userId']
 
             timestamp = datetime.strptime(timestamp, '%Y-%m-%d')
-            
+
             exists = db.session.query(
                 db.session.query(Journey).filter_by(
                     id=relationship_id
                 ).exists()
             ).scalar()
-            
+
             entity = Stage(name=name,
                            description=description,
                            timestamp=timestamp,
@@ -135,7 +134,7 @@ def add(entity_type):
             description = data['description']
             timestamp = data['timestamp']
             relationship_id = data['userId']
-            journey_id=data['journeyId']
+            journey_id = data['journeyId']
 
             timestamp = datetime.strptime(timestamp, '%Y-%m-%d')
 
@@ -144,7 +143,7 @@ def add(entity_type):
                     id=relationship_id
                 ).exists()
             ).scalar()
-            
+
             entity = Event(name=name,
                            description=description,
                            timestamp=timestamp,
@@ -155,8 +154,6 @@ def add(entity_type):
                 error = f"Couldn't find a Journey with id {relationship_id}"
                 print('[ERROR] ::', error)
                 return jsonify({'msg': error})
-
-            
         else:
             print(f"[ERROR] :: Unknown entity type: {entity_type}")
             return jsonify({'msg': f"Unknown entity type: {entity_type}"})
@@ -165,6 +162,34 @@ def add(entity_type):
         db.session.commit()
         print(f"[INFO] {entity} created successfully")
         return jsonify({"msg": "success", "id": entity.get_id()})
+    except Exception as e:
+        error = str(e)
+        print('[ERROR] ::', error)
+        return jsonify({'msg': error})
+
+
+@bp.route('/<entity_type>/delete', methods=['POST'])
+def delete(entity_type):
+    data = request.get_json()
+    id = data['id']
+    entity_type = str(entity_type)
+    entity = None
+
+    try:
+        if entity_type == 'journey':
+            entity = Journey.query.filter_by(id=id).first()
+        elif entity_type == 'stage':
+            entity = Stage.query.filter_by(id=id).first()
+        elif entity_type == 'event':
+            entity = Event.query.filter_by(id=id).first()
+        else:
+            print(f"[ERROR] :: Unknown entity type: {entity_type}")
+            return jsonify({'msg': f"Unknown entity type: {entity_type}"})
+
+        db.session.delete(entity)
+        db.session.commit()
+        print(f"[INFO] {entity} deleted successfully")
+        return jsonify({"msg": "success"})
     except Exception as e:
         error = str(e)
         print('[ERROR] ::', error)
