@@ -60,8 +60,6 @@ def get_journey_stages(journey_id):
     stages_json = [{'id': s.get_id(),
                     'name': s.get_name(),
                     'timestamp': s.get_timestamp(),
-                    'lat': s.get_lat(),
-                    'lng': s.get_lng(),
                     'description': s.get_description()} for s in stages]
 
     return jsonify({'stages': stages_json})
@@ -82,6 +80,8 @@ def get_stage_events(journey_id, stage_id):
     events_json = [{'id': e.get_id(),
                     'name': e.get_name(),
                     'timestamp': e.get_timestamp(),
+                    'lat': e.get_lat(),
+                    'lng': e.get_lng(),
                     'description': e.get_description()} for e in events]
 
     return jsonify({'events': events_json})
