@@ -85,12 +85,12 @@ def get_stage_events(journey_id, stage_id):
     return jsonify({'events': events_json})
 
 
-@bp.route('/<entity_type>/add', methods=['POST'])
-def add(entity_type):
+@bp.route('/<entity_type>/<action>', methods=['POST'])
+def add_or_edit_entity(entity_type, action):
     data = request.get_json()
-
     entity_type = str(entity_type)
     entity = None
+
     try:
         if entity_type == 'journey':
             name = data['name']
@@ -102,14 +102,23 @@ def add(entity_type):
             initial_date = datetime.strptime(initial_date, '%Y-%m-%d')
             end_date = datetime.strptime(end_date, '%Y-%m-%d')
 
-            entity = Journey(name=name,
-                             description=description,
-                             initial_date=initial_date,
-                             end_date=end_date,
-                             author_id=relationship_id)
+            if action == "add":
+                entity = Journey(name=name,
+                                 description=description,
+                                 initial_date=initial_date,
+                                 end_date=end_date,
+                                 author_id=relationship_id)
+            elif action == "edit":
+                entity = Journey.query.filter_by(id=data['id']).first()
+                entity.name = name
+                entity.description = description
+                entity.initial_date = initial_date
+                entity.end_date = end_date
+            else:
+                print(f"[ERROR] :: Unknown action: {action}")
+                return jsonify({'msg': f"Unknown action: {action}"})
 
         elif entity_type == 'stage':
-            # Check if stage's journey exists
             name = data['name']
             description = data['description']
             timestamp = data['timestamp']
@@ -117,19 +126,32 @@ def add(entity_type):
 
             timestamp = datetime.strptime(timestamp, '%Y-%m-%d')
 
+            # Check if stage's journey exists
             exists = db.session.query(
                 db.session.query(Journey).filter_by(
                     id=relationship_id
                 ).exists()
             ).scalar()
+            if not exists:
+                error = f"Couldn't find a Journey with id {relationship_id}"
+                print('[ERROR] ::', error)
+                return jsonify({'msg': error})
 
-            entity = Stage(name=name,
-                           description=description,
-                           timestamp=timestamp,
-                           journey_id=relationship_id)
+            if action == "add":
+                entity = Stage(name=name,
+                               description=description,
+                               timestamp=timestamp,
+                               journey_id=relationship_id)
+            elif action == "edit":
+                entity = Stage.query.filter_by(id=data['id']).first()
+                entity.name = name
+                entity.description = description
+                entity.timestamp = timestamp
+            else:
+                print(f"[ERROR] :: Unknown action: {action}")
+                return jsonify({'msg': f"Unknown action: {action}"})
 
         elif entity_type == 'event':
-            # Check if event's journey exists
             name = data['name']
             description = data['description']
             timestamp = data['timestamp']
@@ -138,29 +160,40 @@ def add(entity_type):
 
             timestamp = datetime.strptime(timestamp, '%Y-%m-%d')
 
+            # Check if event's stage exists
             exists = db.session.query(
-                db.session.query(Journey).filter_by(
+                db.session.query(Stage).filter_by(
                     id=relationship_id
                 ).exists()
             ).scalar()
-
-            entity = Event(name=name,
-                           description=description,
-                           timestamp=timestamp,
-                           journey_id=journey_id,
-                           stage_id=relationship_id)
-
             if not exists:
-                error = f"Couldn't find a Journey with id {relationship_id}"
+                error = f"Couldn't find a Stage with id {relationship_id}"
                 print('[ERROR] ::', error)
                 return jsonify({'msg': error})
+
+            if action == "add":
+                entity = Event(name=name,
+                               description=description,
+                               timestamp=timestamp,
+                               journey_id=journey_id,
+                               stage_id=relationship_id)
+            elif action == "edit":
+                entity = Stage.query.filter_by(id=data['id']).first()
+                entity.name = name
+                entity.description = description
+                entity.timestamp = timestamp
+            else:
+                print(f"[ERROR] :: Unknown action: {action}")
+                return jsonify({'msg': f"Unknown action: {action}"})
+
         else:
             print(f"[ERROR] :: Unknown entity type: {entity_type}")
             return jsonify({'msg': f"Unknown entity type: {entity_type}"})
 
-        db.session.add(entity)
+        if action == "add": 
+            db.session.add(entity)
         db.session.commit()
-        print(f"[INFO] {entity} created successfully")
+        print(f"[INFO] Action '{action}' on {entity} performed successfully")
         return jsonify({"msg": "success", "id": entity.get_id()})
     except Exception as e:
         error = str(e)
