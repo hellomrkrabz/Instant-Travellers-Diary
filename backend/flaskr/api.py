@@ -159,6 +159,8 @@ def add_or_edit_entity(entity_type, action):
             timestamp = data['timestamp']
             relationship_id = data['userId']
             journey_id = data['journeyId']
+            lat = data['lat'] if data['lat'] != '' else 50.2944923
+            lng = data['lng'] if data['lng'] != '' else 18.6713801
 
             timestamp = datetime.strptime(timestamp, '%Y-%m-%d')
 
@@ -178,12 +180,16 @@ def add_or_edit_entity(entity_type, action):
                                description=description,
                                timestamp=timestamp,
                                journey_id=journey_id,
-                               stage_id=relationship_id)
+                               stage_id=relationship_id,
+                               latitude=lat,
+                               longitude=lng)
             elif action == "edit":
                 entity = Stage.query.filter_by(id=data['id']).first()
                 entity.name = name
                 entity.description = description
                 entity.timestamp = timestamp
+                entity.latitude = lat
+                entity.longitude = lng
             else:
                 print(f"[ERROR] :: Unknown action: {action}")
                 return jsonify({'msg': f"Unknown action: {action}"})
