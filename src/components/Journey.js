@@ -11,26 +11,12 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import setImgs from "./setImgs"
 import { Link } from "react-router-dom";
-import MapSection from './Map'
-
-
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
 var globalStages=[0];
 var img;
 
-const location = {
-  address: 'zadupie znane też jako AEi',
-  lat: 50.288714,
-  lng: 18.678154,
-}//50.288714, 18.678154
-
-const location2 = {
-  address: 'kurde',
-  lat: 50.188714,
-  lng: 18.678154,
-}//50.288714, 18.678154
 
 function changeImgs(imgs)
 {
@@ -272,9 +258,7 @@ const Journey = () => {
       <AddStage setJourney={setJourney} journey={journey} addStage={addStage}/>
     }
     
-	<div id="map">
-    <MapSection location={location} loc2={location2} zoomLevel={17} />
-	</div>
+	
 	</>
   );
 };
