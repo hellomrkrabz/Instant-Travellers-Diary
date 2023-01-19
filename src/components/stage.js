@@ -193,6 +193,23 @@ const EventComponent = (props) => {//to byl stage
 	  <Link to={`/event/${props.ev.id}`}>
         <button className="button-open">OPEN</button>
       </Link>
+	  
+	  <Link to={`/Event/`}>
+			<button className="button-open" onClick={()=>
+				{
+					console.log("edit");
+				}
+			}>EDIT</button>
+		</Link>
+	  
+		<Link to={`/Event/`}>
+			<button className="button-open" onClick={()=>
+				{
+					console.log("delete");
+				}
+			}>DELETE</button>
+		</Link>
+	  
     </div>
   );
 };

@@ -108,7 +108,11 @@ const AddJourney = (props) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(journey)//,
-      }).then((response) => response.json()).then((resp)=> handleUploadImage(resp));//.then(()=>reloadPage());
+	}).then((response) => response.json()).then((resp)=> 
+	{
+		arr[arr.length-1].id=resp.id;
+		handleUploadImage(resp)
+	});//.then(()=>reloadPage());
 	  	  
 	  props.setJourneys(arr);
 	  setImgs("journey").then(text=>{
@@ -200,9 +204,39 @@ const Journey = (props) => {
       <div className="box-description">
       <span className="text-description">{props.journey.description}</span>
       </div>
+	  
       <Link to={`/journey/${props.journey.id}`}>
         <button className="button-open">OPEN</button>
       </Link>
+	  
+		<Link to={`/Journeys`}>
+			<button className="button-open" onClick={()=>
+				{
+					console.log("edit");
+				}
+			}>EDIT</button>
+		</Link>
+	  
+		<Link >
+			<button className="button-open" onClick={()=>
+				{
+					//console.log("delete");
+					//console.log(props.journey.id);
+					
+					var information = {
+						id: props.journey.id
+					}
+					
+					fetch("http://localhost:5000/api/journey/delete", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify(information)//,
+					}).then(setTimeout(reloadPage,500));
+					
+				}
+			}>DELETE</button>
+		</Link>
+	  
     </div>
   
   );
