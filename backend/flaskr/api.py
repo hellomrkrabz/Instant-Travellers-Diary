@@ -228,11 +228,56 @@ def add_or_edit_entity(entity_type, action):
         return jsonify({'msg': error})
 
 
+@bp.route('/image/delete', methods=['POST'])
+def delete_image():
+    data = request.get_json()
+    image_id = data['id']
+    image = Image.query.filter_by(id=image_id).first()
+    db.session.delete(image)
+    db.session.commit()
+
+
+def delete_orphan_images():
+    all_images = Image.query.all()
+    for image in all_images:
+        if image.type == 'journey':
+            exists = db.session.query(
+                db.session.query(Journey).filter_by(
+                    id=image.relationship_id
+                ).exists()
+            ).scalar()
+            if not exists:
+                print(f"[INFO] Deleting image: {image.id} for {image.type}:{image.relationship_id} ({image.filename})")
+                db.session.delete(image)
+
+        elif image.type == 'stage':
+            exists = db.session.query(
+                db.session.query(Stage).filter_by(
+                    id=image.relationship_id
+                ).exists()
+            ).scalar()
+            if not exists:
+                print(f"[INFO] Deleting image: {image.id} for {image.type}:{image.relationship_id} ({image.filename})")
+                db.session.delete(image)
+
+        elif image.type == 'event':
+            exists = db.session.query(
+                db.session.query(Event).filter_by(
+                    id=image.relationship_id
+                ).exists()
+            ).scalar()
+            if not exists:
+                print(f"[INFO] Deleting image: {image.id} for {image.type}:{image.relationship_id} ({image.filename})")
+                db.session.delete(image)
+
+        db.session.commit()
+
+
 @bp.route('/<entity_type>/delete', methods=['POST'])
 def delete(entity_type):
     data = request.get_json()
     id = data['id']
-    entity_type = str(entity_type)
+    entity_type = str(entity_type).lower()
     entity = None
 
     try:
@@ -249,6 +294,7 @@ def delete(entity_type):
         db.session.delete(entity)
         db.session.commit()
         print(f"[INFO] {entity} deleted successfully")
+        delete_orphan_images()
         return jsonify({"msg": "success"})
     except Exception as e:
         error = str(e)
