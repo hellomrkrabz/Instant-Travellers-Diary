@@ -29,3 +29,5 @@ node_modules/
 
 public/avatars/*
 public/images/*
+
+yarn.lock
