@@ -30,7 +30,7 @@ const res = await fetch("http://localhost:3000/api/Events/1")
 }
 
 
-const GoogleMaps = () => {
+const GoogleMaps = (prop) => {
 	const [cos,setCos] = useState(0);
 	
   //awaiting();
@@ -62,6 +62,9 @@ const MyMapComponent = compose(
 	console.log(markers);
 	setCos(Math.random());
 	
+	console.log(prop);
+	
+	prop.setCoords(e.latLng.lat(),e.latLng.lng());
 	
 	}}
   >              

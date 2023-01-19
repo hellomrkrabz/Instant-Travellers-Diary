@@ -29,6 +29,12 @@ function changeImgs(imgs)
 	}
 }
 
+function setCoords(lat, lng)
+{
+	document.getElementById("lat").value=lat;
+	document.getElementById("lng").value=lng;
+}
+
 function handleUploadImage(res)
 {
     const IDCookie = document
@@ -57,6 +63,8 @@ const AddEvent = (props) => {
   const [description, setDescription] = useState("");
   const [files, setFiles] = useState([]);
   const [fileUrl, setFileUrl] = useState("")
+  const [lat, setLat] = useState(1);
+  const [lng, setLng] = useState(1);
 
   const { fileRejections, getRootProps, getInputProps, open } = useDropzone({
     onDropAccepted: setFiles,
@@ -94,8 +102,8 @@ const AddEvent = (props) => {
         timestamp: date,
 		userId: getJourneyId(),
 		journeyId: getJourneyIdOld(),
-		lat: 1,
-		lng: 1
+		lat: document.getElementById("lat").value,
+		lng: document.getElementById("lng").value
       };
 
       events.push(event)
@@ -145,6 +153,28 @@ const AddEvent = (props) => {
           <div class="form-group">
             <textarea onChange={(e) => setDescription(e.target.value)} class="form-control" id="description" rows="3"></textarea>
           </div>
+		  
+		  
+		  <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              id="lat"
+              placeholder="Latitude"
+              onChange={(e) => setLat(e.target.value)}
+            />
+          </div>
+		  
+		  <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              id="lng"
+              placeholder="Longitude"
+              onChange={(e) => setLng(e.target.value)}
+            />
+          </div>
+		  
         </form>
         <button onClick={handleUploadImage,createEvent}>Create Event</button>
       </div>
@@ -248,7 +278,7 @@ const Event = () => {
 	  <>
 	  <AddEvent setStage={setStage} stage={stage} addEvent={addEvent}/>
 	  
-      <Map />
+      <Map setCoords={setCoords} />
 	  </>
     }
     </>
