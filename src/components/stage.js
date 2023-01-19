@@ -11,6 +11,7 @@ import setImgs from "./setImgsInEvents"
 import { Link } from "react-router-dom";
 import getJourneyId from "./getJourneyIdFromEvents"
 import getJourneyIdOld from "./getJourneyIdv2"
+import Map from "./GoogleMapsWithCoords"
 
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -244,8 +245,11 @@ const Event = () => {
       </Swiper>
       </>
       :
+	  <>
 	  <AddEvent setStage={setStage} stage={stage} addEvent={addEvent}/>
-      
+	  
+      <Map />
+	  </>
     }
     </>
   );
