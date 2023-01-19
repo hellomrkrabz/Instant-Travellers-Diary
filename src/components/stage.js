@@ -19,13 +19,18 @@ import axios from "axios";
 var globalEvents=[0];
 var img;
 
+function reloadPage()
+{
+	window.location.reload();
+}
+
 function changeImgs(imgs)
 {
 	var list = document.getElementsByClassName("event");
 	
 	for(var i=0;i<imgs.length;i++)
 	{
-		list[i].childNodes[1].src=imgs[i].filename;
+		list[i].childNodes[1].src=imgs[i];
 	}
 }
 
@@ -43,9 +48,10 @@ function handleUploadImage(res)
           .find((row) => row.startsWith('user_id='))?.split('=')[1];
   
   
+  
     let data = new FormData();
     data.append('file', img);
-    data.append('id', getJourneyId());
+    data.append('id', res.id);
 	data.append('type','event');
 	
 
@@ -113,9 +119,8 @@ const AddEvent = (props) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(event),
-      }).then((response) => handleUploadImage(response));
+      }).then((response) => response.json()).then((resp)=> handleUploadImage(resp)).then(setTimeout(reloadPage,1000));
       props.addEvent();
-	    window.location.reload();
   
     }
   };
@@ -202,10 +207,22 @@ const EventComponent = (props) => {//to byl stage
 			}>EDIT</button>
 		</Link>
 	  
-		<Link to={`/Event/`}>
+		<Link>
 			<button className="button-open" onClick={()=>
-				{
-					console.log("delete");
+				{	
+					var information = {
+						id: props.ev.id
+					}
+					
+					console.log(props.ev.id);
+					
+								
+					fetch("http://localhost:5000/api/event/delete", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify(information)//,
+					}).then(setTimeout(reloadPage,500));
+					
 				}
 			}>DELETE</button>
 		</Link>

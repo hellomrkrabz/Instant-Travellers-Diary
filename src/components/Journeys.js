@@ -219,10 +219,7 @@ const Journey = (props) => {
 	  
 		<Link >
 			<button className="button-open" onClick={()=>
-				{
-					//console.log("delete");
-					//console.log(props.journey.id);
-					
+				{	
 					var information = {
 						id: props.journey.id
 					}

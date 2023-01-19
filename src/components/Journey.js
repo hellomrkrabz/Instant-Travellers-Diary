@@ -18,14 +18,18 @@ var globalStages=[0];
 var img;
 
 
+function reloadPage()
+{
+	window.location.reload();
+}
+
 function changeImgs(imgs)
 {
 	var list = document.getElementsByClassName("stage");
-	//console.log(imgs);
 	
 	for(var i=0;i<imgs.length;i++)
 	{
-		list[i].childNodes[1].src=imgs[i].filename;
+		list[i].childNodes[1].src=imgs[i];
 	}
 }
 
@@ -44,7 +48,7 @@ function setCookie(journeyID)
     document.cookie = name + "=" + journeyID + expires + "; path=/";
 }
 
-function handleUploadImage(ev)
+function handleUploadImage(res)
 {
 	console.log(getJourneyId());
 	
@@ -55,7 +59,7 @@ function handleUploadImage(ev)
   
     let data = new FormData();
     data.append('file', img);
-    data.append('id', getJourneyId());
+    data.append('id', res.id);
 	data.append('type','stage');
 
     axios.post('http://localhost:5000/api/upload/image', data).then(response => {
@@ -103,7 +107,7 @@ const AddStage = (props) => {
       
       const stages = JSON.parse(JSON.stringify(props.journey.stages));
 
-	  handleUploadImage();
+	  //handleUploadImage();
 
       const stage = {
         name: name,
@@ -122,9 +126,9 @@ const AddStage = (props) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(stage),
-      });//.then(()=> handleUploadImage());
+      }).then((response) => response.json()).then((resp)=> handleUploadImage(resp)).then(setTimeout(reloadPage,1000));
       props.addStage();
-	   window.location.reload();
+	   //window.location.reload();
   
     }
   };
@@ -163,7 +167,7 @@ const AddStage = (props) => {
             <textarea onChange={(e) => setDescription(e.target.value)} class="form-control" id="description" rows="3"></textarea>
           </div>
         </form>
-        <button onClick={handleUploadImage,createStage}>Create Stage</button>
+        <button onClick={createStage}>Create Stage</button>
       </div>
     </div>
   );
@@ -182,7 +186,7 @@ const Stage = (props) => {
         <button className="button-open">OPEN</button>
       </Link>
 	  
-	  <Link to={`/Stage`}>
+	  <Link >
 			<button className="button-open" onClick={()=>
 				{
 					console.log("edit");
@@ -190,10 +194,22 @@ const Stage = (props) => {
 			}>EDIT</button>
 		</Link>
 	  
-		<Link to={`/Stage`}>
+		<Link >
 			<button className="button-open" onClick={()=>
-				{
-					console.log("delete");
+				{	
+					var information = {
+						id: props.stage.id
+					}
+					
+					console.log(props.stage.id);
+					
+								
+					fetch("http://localhost:5000/api/stage/delete", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify(information)//,
+					}).then(setTimeout(reloadPage,500));
+					
 				}
 			}>DELETE</button>
 		</Link>
@@ -248,6 +264,7 @@ const Journey = () => {
 		userId: "cos",
         stages: resJ
       };
+	  
 	  
 	  var imagePaths=setImgs('stage').then(text=>{
 			changeImgs(text);
