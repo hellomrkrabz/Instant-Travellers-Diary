@@ -172,7 +172,6 @@ def add_or_edit_entity(entity_type, action):
                 return jsonify({'msg': f"Unknown action: {action}"})
 
         elif entity_type == 'event':
-            print(data)
             name = data['name']
             description = data['description']
             timestamp = data['timestamp']

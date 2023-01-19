@@ -34,13 +34,12 @@ def upload_file():
     extension = file.filename.split('.')[-1].lower()
     if extension not in ALLOWED_EXTENSIONS:
         return jsonify({"msg": f"Invalid extension: {extension}"})
-    print("trying to upload image")
     while True:
         hashed = abs(
             hash(
                 str(file.filename + random.choice(string.ascii_letters))
             )
-        ) % (10 ** 9)
+        )
 
         filename = f"{hashed}.{extension}"
         filename = secure_filename(filename)
