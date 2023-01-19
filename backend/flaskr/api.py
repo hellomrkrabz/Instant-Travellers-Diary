@@ -115,8 +115,8 @@ def add_or_edit_entity(entity_type, action):
         if entity_type == 'journey':
             name = data['name']
             description = data['description']
-            initial_date = data['initialDate']
-            end_date = data['endDate']
+            initial_date = data['initial_date']
+            end_date = data['end_date']
             relationship_id = data['userId']
 
             initial_date = datetime.strptime(initial_date, '%Y-%m-%d')

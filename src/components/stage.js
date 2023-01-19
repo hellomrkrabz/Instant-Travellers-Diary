@@ -5,12 +5,12 @@ import { DropzoneOptions, useDropzone } from "react-dropzone";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { IconButton } from "@mui/material";
 import getCookie from "./getCookie"
-import getStageId from "./getJourneyIdFromEvents"
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import setImgs from "./setImgsInEvents"
 import { Link } from "react-router-dom";
-import getJourneyId from "./getJourneyIdv2"
+import getJourneyId from "./getJourneyIdFromEvents"
+import getJourneyIdOld from "./getJourneyIdv2"
 
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -21,27 +21,26 @@ var img;
 function changeImgs(imgs)
 {
 	var list = document.getElementsByClassName("event");
-	console.log(list);
-	console.log(imgs);
 	
 	for(var i=0;i<imgs.length;i++)
 	{
-		list[i].childNodes[1].src=imgs[i];
+		list[i].childNodes[1].src=imgs[i].filename;
 	}
 }
 
 function handleUploadImage(res)
 {
-	console.log(res.data);
     const IDCookie = document
           .cookie
           .split('; ')
           .find((row) => row.startsWith('user_id='))?.split('=')[1];
   
+  
     let data = new FormData();
     data.append('file', img);
-    data.append('id', res.id);
+    data.append('id', getJourneyId());
 	data.append('type','event');
+	
 
     axios.post('http://localhost:5000/api/upload/image', data).then(response => {
         console.log(response);
@@ -87,21 +86,16 @@ const AddEvent = (props) => {
     if (fileUrl != "" && name != "" && date != "" && description != "") {
       
       const events = JSON.parse(JSON.stringify(props.stage.events));
-
-	  //handleUploadImage();
-
+	  	  
       const event = {
         name: name,
         description: description,
         timestamp: date,
-		userId: getStageId(),
-		journeyId: getJourneyId(),
+		userId: getJourneyId(),
+		journeyId: getJourneyIdOld(),
 		lat: 1,
 		lng: 1
       };
-	  
-	  
-	  
 
       events.push(event)
 	  globalEvents=events;
@@ -197,9 +191,10 @@ const Event = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await fetch("http://localhost:3000/api/Events/"+getJourneyId()+"/"+id)//retrive
+		
+      const res = await fetch("http://localhost:3000/api/Events/"+getJourneyIdOld()+"/"+id)//retrive
 	  	  	  
-      const resJson = await res.json()
+      const resJson = await res.json();
 	  
 	  setEvents(resJson.events);
 		globalEvents=resJson.events;
@@ -216,20 +211,16 @@ const Event = () => {
         events: resJ
       };
 	  
-	  console.log(resJourney.events[0].id);
+
 	  var events=resJourney.events;
 	  var eventId=[];
-	  
-	  for(var i=0; i<events.length;i++)
-	  {
-		  eventId.push(events[i].id);
-	  }
+
+	  eventId.push(getJourneyId());
 	  
 	  console.log(eventId);
 	  
 	  
 	  var imagePaths=setImgs(eventId).then(text=>{
-		  
 			changeImgs(text);
 		});
 	  
@@ -237,7 +228,6 @@ const Event = () => {
     })();
   }, []);
   
-  console.log(globalEvents);
 
   return (
     <>

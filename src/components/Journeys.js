@@ -19,7 +19,6 @@ function reloadPage()
 
 function changeImgs(imgs)
 {
-	console.log(imgs);
 	var list = document.getElementsByClassName("journey");
 	
 	for(var i=0;i<imgs.length;i++)
@@ -45,6 +44,8 @@ function handleUploadImage(res)
     }).catch(error => {
         console.log(error);
     });
+	
+	//reloadPage();
 }
 
 const AddJourney = (props) => {
@@ -93,8 +94,8 @@ const AddJourney = (props) => {
       const journey = {
         name: name,
         description: description,
-        initialDate: dateInit,
-        endDate: dateEnd,
+        initial_date: dateInit,
+        end_date: dateEnd,
         picturePath: 'cos',
 		userId: getCookie(),
         stages: [],
@@ -107,16 +108,15 @@ const AddJourney = (props) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(journey)//,
-      }).then((response) => response.json()).then((resp)=> handleUploadImage(resp));
-	  
-	  
+      }).then((response) => response.json()).then((resp)=> handleUploadImage(resp));//.then(()=>reloadPage());
+	  	  
 	  props.setJourneys(arr);
 	  setImgs("journey").then(text=>{
 			changeImgs(text);
 		});
       props.setCreateJourney(0);
 	  
-	  setTimeout(reloadPage(),200);
+	  //setTimeout(reloadPage(),2000);
 	  
 
     }
