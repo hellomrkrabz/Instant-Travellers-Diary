@@ -3225,12 +3225,12 @@ babel-preset-react-app@^10.0.1:
     babel-plugin-transform-react-remove-prop-types "^0.4.24"
 
 babel-runtime@^6.11.6:
-  version "6.11.6"
-  resolved "https://registry.npmjs.org/babel-runtime/-/babel-runtime-6.11.6.tgz"
-  integrity sha512-SMqmClRYw5jfeJfSutgZBOHf9X/2gadIunvWldsg1MMUStvJ1n3v+cjvOWx7etP2POJkBmtbGEk9KiJ/3sGVQg==
+  version "6.26.0"
+  resolved "https://registry.npmjs.org/babel-runtime/-/babel-runtime-6.26.0.tgz"
+  integrity sha512-ITKNuq2wKlW1fJg9sSW52eepoYgZBggvOAHC0u/CYu/qxQ9EVzThCgR69BnSXLHjy2f7SY5zaQ4yt7H9ZVxY2g==
   dependencies:
     core-js "^2.4.0"
-    regenerator-runtime "^0.9.5"
+    regenerator-runtime "^0.11.0"
 
 balanced-match@^1.0.0:
   version "1.0.2"
@@ -5787,9 +5787,9 @@ internal-slot@^1.0.3, internal-slot@^1.0.4:
     side-channel "^1.0.4"
 
 invariant@^2.2.1:
-  version "2.2.1"
-  resolved "https://registry.npmjs.org/invariant/-/invariant-2.2.1.tgz"
-  integrity sha512-hJNGb98rzTnJuQhSY9WNkdVJfyJZ1YaeJubAW5tdNydyX2Qc2iA3mDjZDQxbJYI+JahdyAdZHh0onobpQMGRvw==
+  version "2.2.4"
+  resolved "https://registry.npmjs.org/invariant/-/invariant-2.2.4.tgz"
+  integrity sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA==
   dependencies:
     loose-envify "^1.0.0"
 
@@ -7259,9 +7259,9 @@ minimatch@^3.0.4, minimatch@^3.0.5, minimatch@^3.1.1, minimatch@^3.1.2:
     brace-expansion "^1.1.7"
 
 minimatch@^5.0.1:
-  version "5.1.6"
-  resolved "https://registry.npmjs.org/minimatch/-/minimatch-5.1.6.tgz"
-  integrity sha512-lKwV/1brpG6mBUFHtb7NUmtABCb2WZZmm2wNiOA5hAb8VdCS4B3dtMWyvcoViccwAW/COERjXLt0zP1zXUN26g==
+  version "5.1.5"
+  resolved "https://registry.npmjs.org/minimatch/-/minimatch-5.1.5.tgz"
+  integrity sha512-CI8wwdrll4ehjPAqs8TL8lBPyNnpZlQI02Wn8C1weNz/QbUbjh3OMxgMKSnvqfKFdLlks3EzHB9tO0BqGc3phQ==
   dependencies:
     brace-expansion "^2.0.1"
 
@@ -8799,15 +8799,15 @@ regenerate@^1.4.2:
   resolved "https://registry.npmjs.org/regenerate/-/regenerate-1.4.2.tgz"
   integrity sha512-zrceR/XhGYU/d/opr2EKO7aRHUeiBI8qjtfHqADTwZd6Szfy16la6kqD0MIUs5z5hx6AaKa+PixpPrR289+I0A==
 
+regenerator-runtime@^0.11.0:
+  version "0.11.1"
+  resolved "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz"
+  integrity sha512-MguG95oij0fC3QV3URf4V2SDYGJhJnJGqvIIgdECeODCT98wSWDAJ94SSuVpYQUoTcGUIL6L4yNB7j1DFFHSBg==
+
 regenerator-runtime@^0.13.11, regenerator-runtime@^0.13.9:
   version "0.13.11"
   resolved "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.13.11.tgz"
   integrity sha512-kY1AZVr2Ra+t+piVaJ4gxaFaReZVH40AKNo7UCX6W+dEwBo/2oZJzqfuN1qLq1oL45o56cPaTXELwrTh8Fpggg==
-
-regenerator-runtime@^0.9.5:
-  version "0.9.6"
-  resolved "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.9.6.tgz"
-  integrity sha512-D0Y/JJ4VhusyMOd/o25a3jdUqN/bC85EFsaoL9Oqmy/O4efCh+xhp7yj2EEOsj974qvMkcW8AwUzJ1jB/MbxCw==
 
 regenerator-transform@^0.15.1:
   version "0.15.1"
@@ -9086,9 +9086,9 @@ schema-utils@2.7.0:
     ajv-keywords "^3.4.1"
 
 scriptjs@^2.5.8:
-  version "2.5.8"
-  resolved "https://registry.npmjs.org/scriptjs/-/scriptjs-2.5.8.tgz"
-  integrity sha512-MGTNT8p8Z3y6e5ZOGB4RSLEB7E1233OmJPPsvHIKOmRFCQuYiXAUAJeHMSbU0u5hU3q0wC6du6v29EEEiwI7IA==
+  version "2.5.9"
+  resolved "https://registry.npmjs.org/scriptjs/-/scriptjs-2.5.9.tgz"
+  integrity sha512-qGVDoreyYiP1pkQnbnFAUIS5AjenNwwQBdl7zeos9etl+hYKWahjRTfzAZZYBv5xNHx7vNKCmaLDQZ6Fr2AEXg==
 
 select-hose@^2.0.0:
   version "2.0.0"

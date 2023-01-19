@@ -172,13 +172,15 @@ def add_or_edit_entity(entity_type, action):
                 return jsonify({'msg': f"Unknown action: {action}"})
 
         elif entity_type == 'event':
+            print(data)
             name = data['name']
             description = data['description']
             timestamp = data['timestamp']
             relationship_id = data['userId']
             journey_id = data['journeyId']
-            lat = data['lat'] if data['lat'] != '' else 50.2944923
-            lng = data['lng'] if data['lng'] != '' else 18.6713801
+
+            lat = float(data['lat'])
+            lng = float(data['lng'])
 
             timestamp = datetime.strptime(timestamp, '%Y-%m-%d')
 
@@ -199,15 +201,15 @@ def add_or_edit_entity(entity_type, action):
                                timestamp=timestamp,
                                journey_id=journey_id,
                                stage_id=relationship_id,
-                               latitude=float(lat),
-                               longitude=float(lng))
+                               latitude=lat,
+                               longitude=lng)
             elif action == "edit":
                 entity = Stage.query.filter_by(id=data['id']).first()
                 entity.name = name
                 entity.description = description
                 entity.timestamp = timestamp
-                entity.latitude = float(lat)
-                entity.longitude = float(lng)
+                entity.latitude = lat
+                entity.longitude = lng
             else:
                 print(f"[ERROR] :: Unknown action: {action}")
                 return jsonify({'msg': f"Unknown action: {action}"})
@@ -216,14 +218,14 @@ def add_or_edit_entity(entity_type, action):
             print(f"[ERROR] :: Unknown entity type: {entity_type}")
             return jsonify({'msg': f"Unknown entity type: {entity_type}"})
 
-        if action == "add": 
+        if action == "add":
             db.session.add(entity)
         db.session.commit()
         print(f"[INFO] Action '{action}' on {entity} performed successfully")
         return jsonify({"msg": "success", "id": entity.get_id()})
     except Exception as e:
         error = str(e)
-        print('[ERROR] ::', error)
+        print('[ERROR] :: Failed to add/edit post. Cause:', error)
         return jsonify({'msg': error})
 
 

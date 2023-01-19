@@ -5,35 +5,27 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { compose, withProps } from "recompose"
 
-let markers=[
-    {
-        id:1,
-        latitude: 25.0391667,
-        longitude: 121.525,
-        shelter:'marker 1'
+var markers=[];
 
-    },
-    {
-        id: 2,
-        latitude: 24.0391667,
-        longitude: 110.525,
-        shelter: 'marker 2'
+function assignMarkers(mar){
+  for(var i=0; i<mar.events.length; i++){
+    markers.push({id: i,
+      lat: parseFloat(mar.events[i].lat),
+      lng: parseFloat(mar.events[i].lng)
+    });
+  }
+}
 
-    },
-    {
-        id: 3,
-        latitude: 20.0391667,
-        longitude: 100.525,
-        shelter: 'marker 3'
-
-    }
-]
-
-
-  
+async function awaiting(){ 
+const res = await fetch("http://localhost:3000/api/Events/1")
+  const resJson = await res.json()
+  assignMarkers(resJson);
+}
 
 
 const GoogleMaps = () => {
+  awaiting();
+  //console.log(markers);
 const MyMapComponent = compose(
   withProps({
     googleMapURL: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places",
@@ -43,12 +35,12 @@ const MyMapComponent = compose(
   }), withScriptjs, withGoogleMap)((props) =>
   <GoogleMap
     defaultZoom={8}
-    defaultCenter={{ lat: markers[0].latitude, lng: markers[0].longitude }}
+    defaultCenter={{ lat: parseFloat(markers[0].lat), lng: parseFloat(markers[0].lng) }}
   >              
 
     {props.isMarkerShown && markers.map(marker => (
     <Marker
-      position={{ lat: marker.latitude, lng: marker.longitude }}
+      position={{ lat: marker.lat, lng: marker.lng }}
       key={marker.id}
     />
     ))} />}
