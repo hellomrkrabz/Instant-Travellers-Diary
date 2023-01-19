@@ -12,7 +12,6 @@ function getJourneyId() {
             journeyId= c.substring(nameEQ.length,c.length);
         }
     }
-	console.log(journeyId);
 	return journeyId;
 }
 	

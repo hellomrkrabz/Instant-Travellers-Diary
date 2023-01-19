@@ -3,7 +3,7 @@ function getJourneyId() {
 	var url = document.URL;
 	
 	url=url.replace("http://localhost:3000/stage/", "");	
-	//console.log(url);
+	console.log(url);
 	return url;
 }
 	

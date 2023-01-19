@@ -11,35 +11,25 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import setImgs from "./setImgs"
 import { Link } from "react-router-dom";
-import MapSection from './Map'
-
-
 import { useParams } from "react-router-dom";
 import axios from "axios";
 
 var globalStages=[0];
 var img;
 
-const location = {
-  address: 'zadupie znane też jako AEi',
-  lat: 50.288714,
-  lng: 18.678154,
-}//50.288714, 18.678154
 
-const location2 = {
-  address: 'kurde',
-  lat: 50.188714,
-  lng: 18.678154,
-}//50.288714, 18.678154
+function reloadPage()
+{
+	window.location.reload();
+}
 
 function changeImgs(imgs)
 {
 	var list = document.getElementsByClassName("stage");
-	//console.log(imgs);
 	
 	for(var i=0;i<imgs.length;i++)
 	{
-		list[i].childNodes[1].src=imgs[i].filename;
+		list[i].childNodes[1].src=imgs[i];
 	}
 }
 
@@ -58,7 +48,7 @@ function setCookie(journeyID)
     document.cookie = name + "=" + journeyID + expires + "; path=/";
 }
 
-function handleUploadImage(ev)
+function handleUploadImage(res)
 {
 	console.log(getJourneyId());
 	
@@ -69,7 +59,7 @@ function handleUploadImage(ev)
   
     let data = new FormData();
     data.append('file', img);
-    data.append('id', getJourneyId());
+    data.append('id', res.id);
 	data.append('type','stage');
 
     axios.post('http://localhost:5000/api/upload/image', data).then(response => {
@@ -117,7 +107,7 @@ const AddStage = (props) => {
       
       const stages = JSON.parse(JSON.stringify(props.journey.stages));
 
-	  handleUploadImage();
+	  //handleUploadImage();
 
       const stage = {
         name: name,
@@ -136,9 +126,9 @@ const AddStage = (props) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(stage),
-      });//.then(()=> handleUploadImage());
+      }).then((response) => response.json()).then((resp)=> handleUploadImage(resp)).then(setTimeout(reloadPage,1000));
       props.addStage();
-	   window.location.reload();
+	   //window.location.reload();
   
     }
   };
@@ -177,7 +167,7 @@ const AddStage = (props) => {
             <textarea onChange={(e) => setDescription(e.target.value)} class="form-control" id="description" rows="3"></textarea>
           </div>
         </form>
-        <button onClick={handleUploadImage,createStage}>Create Stage</button>
+        <button onClick={createStage}>Create Stage</button>
       </div>
     </div>
   );
@@ -195,6 +185,35 @@ const Stage = (props) => {
 	  <Link to={`/stage/${props.stage.id}`}>
         <button className="button-open">OPEN</button>
       </Link>
+	  
+	  <Link >
+			<button className="button-open" onClick={()=>
+				{
+					console.log("edit");
+				}
+			}>EDIT</button>
+		</Link>
+	  
+		<Link >
+			<button className="button-open" onClick={()=>
+				{	
+					var information = {
+						id: props.stage.id
+					}
+					
+					console.log(props.stage.id);
+					
+								
+					fetch("http://localhost:5000/api/stage/delete", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify(information)//,
+					}).then(setTimeout(reloadPage,500));
+					
+				}
+			}>DELETE</button>
+		</Link>
+	  
 	  </div>
     </div>
   );
@@ -246,6 +265,7 @@ const Journey = () => {
         stages: resJ
       };
 	  
+	  
 	  var imagePaths=setImgs('stage').then(text=>{
 			changeImgs(text);
 		});
@@ -272,9 +292,7 @@ const Journey = () => {
       <AddStage setJourney={setJourney} journey={journey} addStage={addStage}/>
     }
     
-	<div id="map">
-    <MapSection location={location} loc2={location2} zoomLevel={17} />
-	</div>
+	
 	</>
   );
 };

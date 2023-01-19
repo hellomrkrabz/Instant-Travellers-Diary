@@ -10,6 +10,7 @@ import Logout from './components/Logout';
 import NoPage1 from './components/NoPage1';
 import NoPage2 from './components/NoPage2';
 import Stage from './components/stage';
+import GoogleMaps from './components/GoogleMaps';
 
 
 import { useState, useEffect } from "react";
@@ -79,7 +80,9 @@ function App() {
 				  <Route path="/Journeys" exact component={Journeys} />
                   <Route path="/Journey/:id" exact component={Journey}/>
 				  <Route path="/stage/:id" exact component={Stage}/>
+				  <Route path="/GoogleMaps" exact component={GoogleMaps}/>
 				  <Route path="*" exact component={NoPage2}/>
+
 			</Switch>
 		  </Router>
 		</div>

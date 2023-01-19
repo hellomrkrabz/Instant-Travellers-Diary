@@ -5,12 +5,13 @@ import { DropzoneOptions, useDropzone } from "react-dropzone";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { IconButton } from "@mui/material";
 import getCookie from "./getCookie"
-import getStageId from "./getJourneyIdFromEvents"
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import setImgs from "./setImgsInEvents"
 import { Link } from "react-router-dom";
-import getJourneyId from "./getJourneyIdv2"
+import getJourneyId from "./getJourneyIdFromEvents"
+import getJourneyIdOld from "./getJourneyIdv2"
+import Map from "./GoogleMapsWithCoords"
 
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -18,11 +19,14 @@ import axios from "axios";
 var globalEvents=[0];
 var img;
 
+function reloadPage()
+{
+	window.location.reload();
+}
+
 function changeImgs(imgs)
 {
 	var list = document.getElementsByClassName("event");
-	console.log(list);
-	console.log(imgs);
 	
 	for(var i=0;i<imgs.length;i++)
 	{
@@ -30,18 +34,26 @@ function changeImgs(imgs)
 	}
 }
 
+function setCoords(lat, lng)
+{
+	document.getElementById("lat").value=lat;
+	document.getElementById("lng").value=lng;
+}
+
 function handleUploadImage(res)
 {
-	console.log(res.data);
     const IDCookie = document
           .cookie
           .split('; ')
           .find((row) => row.startsWith('user_id='))?.split('=')[1];
   
+  
+  
     let data = new FormData();
     data.append('file', img);
     data.append('id', res.id);
 	data.append('type','event');
+	
 
     axios.post('http://localhost:5000/api/upload/image', data).then(response => {
         console.log(response);
@@ -57,6 +69,8 @@ const AddEvent = (props) => {
   const [description, setDescription] = useState("");
   const [files, setFiles] = useState([]);
   const [fileUrl, setFileUrl] = useState("")
+  const [lat, setLat] = useState(1);
+  const [lng, setLng] = useState(1);
 
   const { fileRejections, getRootProps, getInputProps, open } = useDropzone({
     onDropAccepted: setFiles,
@@ -87,19 +101,16 @@ const AddEvent = (props) => {
     if (fileUrl != "" && name != "" && date != "" && description != "") {
       
       const events = JSON.parse(JSON.stringify(props.stage.events));
-
-	  //handleUploadImage();
-
+	  	  
       const event = {
         name: name,
         description: description,
         timestamp: date,
-		userId: getStageId(),
-		journeyId: getJourneyId()
+		userId: getJourneyId(),
+		journeyId: getJourneyIdOld(),
+		lat: document.getElementById("lat").value,
+		lng: document.getElementById("lng").value
       };
-	  
-	  
-	  
 
       events.push(event)
 	  globalEvents=events;
@@ -108,9 +119,8 @@ const AddEvent = (props) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(event),
-      }).then((response) => handleUploadImage(response));
+      }).then((response) => response.json()).then((resp)=> handleUploadImage(resp)).then(setTimeout(reloadPage,1000));
       props.addEvent();
-	   //window.location.reload();
   
     }
   };
@@ -148,6 +158,28 @@ const AddEvent = (props) => {
           <div class="form-group">
             <textarea onChange={(e) => setDescription(e.target.value)} class="form-control" id="description" rows="3"></textarea>
           </div>
+		  
+		  
+		  <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              id="lat"
+              placeholder="Latitude"
+              onChange={(e) => setLat(e.target.value)}
+            />
+          </div>
+		  
+		  <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              id="lng"
+              placeholder="Longitude"
+              onChange={(e) => setLng(e.target.value)}
+            />
+          </div>
+		  
         </form>
         <button onClick={handleUploadImage,createEvent}>Create Event</button>
       </div>
@@ -166,6 +198,35 @@ const EventComponent = (props) => {//to byl stage
 	  <Link to={`/event/${props.ev.id}`}>
         <button className="button-open">OPEN</button>
       </Link>
+	  
+	  <Link to={`/Event/`}>
+			<button className="button-open" onClick={()=>
+				{
+					console.log("edit");
+				}
+			}>EDIT</button>
+		</Link>
+	  
+		<Link>
+			<button className="button-open" onClick={()=>
+				{	
+					var information = {
+						id: props.ev.id
+					}
+					
+					console.log(props.ev.id);
+					
+								
+					fetch("http://localhost:5000/api/event/delete", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify(information)//,
+					}).then(setTimeout(reloadPage,500));
+					
+				}
+			}>DELETE</button>
+		</Link>
+	  
     </div>
   );
 };
@@ -195,9 +256,10 @@ const Event = () => {
 
   useEffect(() => {
     (async () => {
-      const res = await fetch("http://localhost:3000/api/Events/"+getJourneyId()+"/"+id)//retrive
+		
+      const res = await fetch("http://localhost:3000/api/Events/"+getJourneyIdOld()+"/"+id)//retrive
 	  	  	  
-      const resJson = await res.json()
+      const resJson = await res.json();
 	  
 	  setEvents(resJson.events);
 		globalEvents=resJson.events;
@@ -214,14 +276,11 @@ const Event = () => {
         events: resJ
       };
 	  
-	  console.log(resJourney.events[0].id);
+
 	  var events=resJourney.events;
 	  var eventId=[];
-	  
-	  for(var i=0; i<events.length;i++)
-	  {
-		  eventId.push(events[i].id);
-	  }
+
+	  eventId.push(getJourneyId());
 	  
 	  console.log(eventId);
 	  
@@ -234,7 +293,6 @@ const Event = () => {
     })();
   }, []);
   
-  console.log(globalEvents);
 
   return (
     <>
@@ -251,8 +309,11 @@ const Event = () => {
       </Swiper>
       </>
       :
+	  <>
 	  <AddEvent setStage={setStage} stage={stage} addEvent={addEvent}/>
-      
+	  
+      <Map setCoords={setCoords} />
+	  </>
     }
     </>
   );

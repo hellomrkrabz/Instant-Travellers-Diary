@@ -1,26 +1,30 @@
 export async function setImgsInEvents(eventId)
 {
 	var url = document.URL;
-	
-	console.log(eventId);
-	
+		
+	url=url.replace("http://localhost:3000/stage/", "");
+		
 	var images=[];
+	var ids=[];
 	
-	for(var i=0;i<eventId.length;i++)
-	{
-		console.log(eventId[i]);
-		
-		const res = await fetch("http://localhost:5000/api/event/"+eventId[i]+"/images");
-		
-		const resJson = await res.json();
-		console.log(resJson.images[0]);
-		images.push(resJson.images[0]);
-	}
-		
-	//const res = await fetch("http://localhost:5000/api/"+type+"/"+id+"/images");
-	//const resJson = await res.json();
-	console.log(images);
-
+	var res = await fetch("http://localhost:5000/api/Events/"+url
+		).then((response) => response.json()).then((resp)=> 
+		{
+			for(var i=0;i<resp.events.length;i++)
+			{
+				ids.push(resp.events[i].id);
+			}
+			return ids;
+		}).then(async (r)=>
+		{
+			console.log(r);
+			for(var j=0;j<r.length;j++)
+			{
+				const res = await fetch("http://localhost:5000/api/event/"+r[j]+"/images");
+				const resJson = await res.json();
+				images.push(resJson.images[0].filename);
+			}
+		});
 	return images;
 }
 

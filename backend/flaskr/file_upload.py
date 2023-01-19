@@ -34,15 +34,18 @@ def upload_file():
     extension = file.filename.split('.')[-1].lower()
     if extension not in ALLOWED_EXTENSIONS:
         return jsonify({"msg": f"Invalid extension: {extension}"})
-    print("trying to upload image")
     while True:
-        hashed = abs(hash(str(file.filename + random.choice(string.ascii_letters)))) % (10 ** 9)
+        hashed = abs(
+            hash(
+                str(file.filename + random.choice(string.ascii_letters))
+            )
+        )
+
         filename = f"{hashed}.{extension}"
         filename = secure_filename(filename)
 
         destination = os.path.join(target, filename)
-        destination2 = target2 + '/' + filename
-        
+        destination2 = os.path.join(target2, filename)
 
         if not os.path.isfile(destination):
             file.save(os.path.abspath(destination))
@@ -56,50 +59,6 @@ def upload_file():
             print(f"[INFO] File {destination2} saved successfully")
 
             return jsonify({"msg": "success"})
-
-@bp.route('/image2', methods=['POST'])
-def upload_file2():
-    target = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-    target = os.path.join(target, 'public', 'images')
-
-    if not os.path.isdir(target):
-        os.mkdir(target)
-
-    data = request.form
-
-    j_id = data['journeyID']
-    s_id = data['stageID']
-    e_id = data['eventID']
-
-    file = request.files['file']
-    extension = file.filename.split('.')[-1]
-    if extension not in ALLOWED_EXTENSIONS:
-        return jsonify({"msg": f"Invalid extension: {extension}"})
-
-    hashed = abs(hash(file.filename)) % 10 ** 6
-
-    filename = f"{j_id}_{s_id}_{e_id}_{hashed}.{extension}"
-    filename = secure_filename(filename)
-
-    destination = os.path.join(target, filename)
-
-    if not os.path.isfile(destination):
-        file.save(os.path.abspath(destination))
-        image = Image(
-            journey_id=j_id,
-            stage_id=s_id,
-            event_id=e_id,
-            full_filename=destination
-        )
-        db.session.add(image)
-        db.session.commit()
-        print(f"[INFO] File {destination} saved successfully")
-
-        return jsonify({"msg": "success"})
-
-    return jsonify({
-        "msg": f"File with the name {file.filename} already exists. Change the name and try again."
-    })
 
 
 @bp.route('/avatar', methods=['POST'])
@@ -125,12 +84,15 @@ def upload_avatar():
             os.remove(dest)
         except OSError as e:
             print("Failed with:", e.strerror)
+            return jsonify({
+                "msg":
+                f"Could not delete the file {dest} while saving an avatar"
+            })
     filename = f"{user_id}.{extension}"
     filename = secure_filename(filename)
 
     destination = os.path.join(target, filename)
-    destination2 = target2 + '/' + filename
-    print(destination)
+    destination2 = os.path.join(target2, filename)
     user.avatar = destination2
     db.session.commit()
 

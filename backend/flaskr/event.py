@@ -10,6 +10,8 @@ class Event(db.Model):
     journey_id = db.Column(db.Integer, db.ForeignKey('journeys.id'))
     stage_id = db.Column(db.Integer, db.ForeignKey('stages.id'))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    latitude = db.Column(db.Float, default=50.2944923)
+    longitude = db.Column(db.Float, default=18.6713802)
 
     def __repr__(self):
         return '<Stage %r>' % self.id
@@ -30,4 +32,10 @@ class Event(db.Model):
         return self.journey_id
 
     def get_timestamp(self):
-        return self.timestamp
+        return str(self.timestamp.date())
+
+    def get_lat(self):
+        return self.latitude
+
+    def get_lng(self):
+        return self.longitude

@@ -4,6 +4,9 @@ export async function setImgs(type)
 	var url =document.URL;
 	var images=[];
 	
+	var tmpUrl1=url.substr(0,30);
+	
+	
 	if(url==="http://localhost:3000/Journeys")
 	{
 		var ids=1;
@@ -28,21 +31,33 @@ export async function setImgs(type)
 			
 		for(var i=0;i<ids.length;i++)
 		{
-
 			var res = await fetch("http://localhost:5000/api/"+type+"/"+ids[i]+"/images"
 			).then((response) => response.json()).then((resp)=> images=images.concat(resp.images[0]));//tutaj musi być for
 		}
-	}else
+		
+		
+	}else if(tmpUrl1==="http://localhost:3000/journey/")
 	{
+		
 		url=url.replace("http://localhost:3000/journey/", "");
 		
-		var res = await fetch("http://localhost:5000/api/stage/"+url+"/images"
-			).then((response) => response.json()).then((resp)=> {for(var i=0;i<resp.images.length;i++){images=images.concat(resp.images[i])}});//tutaj musi być for
-	}//images=images.concat(resp.images[0])
-	//{for(var i=0;i<resp.images.length;i++){images=images.concat(resp.images[i])}}
-	
-	console.log(images);
-	
+		var res = await fetch("http://localhost:5000/api/Stages/"+url
+		).then((response) => response.json()).then(async (r)=> {
+		
+			for(var i=0;i<r.stages.length;i++)
+			{
+				var res = await fetch("http://localhost:5000/api/stage/"+r.stages[i].id+"/images"
+				).then((response) => response.json()).then((resp)=> 
+				{
+					for(var i=0;i<resp.images.length;i++)
+					{
+						images=images.concat(resp.images[0].filename)
+					}
+				});
+			}
+		});
+	}
+		
 	return images;
 }
 
