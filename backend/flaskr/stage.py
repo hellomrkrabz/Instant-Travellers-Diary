@@ -10,9 +10,9 @@ class Stage(db.Model):
     journey_id = db.Column(db.Integer, db.ForeignKey('journeys.id'))
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     events = db.relationship('Event',
-                              backref='stage',
-                              lazy='dynamic',
-                              cascade="all, delete")
+                             backref='stage',
+                             lazy='dynamic',
+                             cascade="all, delete")
 
     def __repr__(self):
         return '<Stage %r>' % self.id
@@ -30,4 +30,4 @@ class Stage(db.Model):
         return self.journey_id
 
     def get_timestamp(self):
-        return self.timestamp
+        return str(self.timestamp.date())

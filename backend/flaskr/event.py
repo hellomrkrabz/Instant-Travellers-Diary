@@ -32,7 +32,7 @@ class Event(db.Model):
         return self.journey_id
 
     def get_timestamp(self):
-        return self.timestamp
+        return str(self.timestamp.date())
 
     def get_lat(self):
         return self.latitude

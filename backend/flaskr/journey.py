@@ -1,6 +1,5 @@
 from . import db
 from datetime import datetime
-from flask import jsonify
 
 
 class Journey(db.Model):
@@ -35,8 +34,8 @@ class Journey(db.Model):
         return self.author_id
 
     def get_initial_date(self):
-        return self.initial_date
+        return str(self.initial_date.date())
 
     def get_end_date(self):
-        return self.end_date
+        return str(self.end_date.date())
 
