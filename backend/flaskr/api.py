@@ -240,7 +240,7 @@ def delete_image():
 def delete_orphan_images():
     all_images = Image.query.all()
     for image in all_images:
-        print(f"[INFO] Checking image: {image} with type {image.type} and ID {image.id}")
+        print(f"[INFO] Checking image: {image} with type {image.type} and ID of entity {image.relationship_id}")
         if image.type == 'journey':
             exists = db.session.query(
                 db.session.query(Journey).filter_by(
@@ -253,6 +253,7 @@ def delete_orphan_images():
                 db.session.delete(image)
 
         elif image.type == 'stage':
+            print(" >>>", db.session.query(Stage).filter_by(id=image.relationship_id))
             exists = db.session.query(
                 db.session.query(Stage).filter_by(
                     id=image.relationship_id
