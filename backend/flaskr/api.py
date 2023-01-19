@@ -240,6 +240,7 @@ def delete_image():
 def delete_orphan_images():
     all_images = Image.query.all()
     for image in all_images:
+        print(f"[INFO] Checking image: {image} with type {image.type} and ID {image.id}")
         if image.type == 'journey':
             exists = db.session.query(
                 db.session.query(Journey).filter_by(
@@ -247,6 +248,7 @@ def delete_orphan_images():
                 ).exists()
             ).scalar()
             if not exists:
+                print(f"[INFO] Journey with id {image.relationship_id} does not exist - deleting image")
                 print(f"[INFO] Deleting image: {image.id} for {image.type}:{image.relationship_id} ({image.filename})")
                 db.session.delete(image)
 
@@ -257,6 +259,7 @@ def delete_orphan_images():
                 ).exists()
             ).scalar()
             if not exists:
+                print(f"[INFO] Stage with id {image.relationship_id} does not exist - deleting image")
                 print(f"[INFO] Deleting image: {image.id} for {image.type}:{image.relationship_id} ({image.filename})")
                 db.session.delete(image)
 
@@ -267,6 +270,7 @@ def delete_orphan_images():
                 ).exists()
             ).scalar()
             if not exists:
+                print(f"[INFO] Event with id {image.relationship_id} does not exist - deleting image")
                 print(f"[INFO] Deleting image: {image.id} for {image.type}:{image.relationship_id} ({image.filename})")
                 db.session.delete(image)
 
