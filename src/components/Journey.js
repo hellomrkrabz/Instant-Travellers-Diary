@@ -181,6 +181,23 @@ const Stage = (props) => {
 	  <Link to={`/stage/${props.stage.id}`}>
         <button className="button-open">OPEN</button>
       </Link>
+	  
+	  <Link to={`/Stage`}>
+			<button className="button-open" onClick={()=>
+				{
+					console.log("edit");
+				}
+			}>EDIT</button>
+		</Link>
+	  
+		<Link to={`/Stage`}>
+			<button className="button-open" onClick={()=>
+				{
+					console.log("delete");
+				}
+			}>DELETE</button>
+		</Link>
+	  
 	  </div>
     </div>
   );
