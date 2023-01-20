@@ -126,18 +126,15 @@ const AddStage = (props) => {
   };
  
 
-  return (
+return (<div className="box-create-journey">
     <div class="card-create-journey">
-      <div class="card-header">
-        <h3>Create Stage</h3>
-      </div>
-      <div class="card-body">
+        <div class="card-body" style={{backgroundColor: "white"}}>
         <form>
-        <div class="form-group">
+          <div class="form-group">
           {files.length == 0 ?
-            <IconButton onClick={open} >
-              <input type="file" id="image"{...getInputProps()} />
-              <CloudUploadIcon sx={{ fontSize: 40 }} />
+            <IconButton onClick={open}>
+              <input {...getInputProps()} />
+              <CloudUploadIcon sx={{ fontSize: 60 }} />
             </IconButton>
             :
             <img src={fileUrl} />
@@ -146,21 +143,36 @@ const AddStage = (props) => {
           <div class="form-group">
             <input
               type="text"
-              class="form-control"
+              class="form-control-name"
               id="name"
-              placeholder="name"
+              placeholder="Name"
+              value={name}
               onChange={(e) => setName(e.target.value)}
-            />
+           />
           </div>
           <div class="form-group">
-            <input type="date" class="form-control" id="end_date" onChange={(e) => setDate(e.target.value)}/>
-          </div>
+            <input
+              type="date"
+              class="form-control-date"
+              id="initial_date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+           />
+           </div>
           <div class="form-group">
-            <textarea onChange={(e) => setDescription(e.target.value)} class="form-control" id="description" rows="3"></textarea>
+            <textarea
+              class="form-control-description"
+              id="description"
+              rows="3"
+              value={description}
+              placeholder="Description"
+              onChange={(e) => setDescription(e.target.value)}
+            ></textarea>
           </div>
         </form>
-        <button onClick={createStage}>Create Stage</button>
+        <button className="button-create" onClick={createStage}>CREATE STAGE</button>
       </div>
+    </div>
     </div>
   );
 };
@@ -168,11 +180,15 @@ const AddStage = (props) => {
 const Stage = (props) => {
   return (
     <div className="stage">
+
       <h1>{props.stage.name}</h1>
+
       <img src={props.stage.picture} />
-      <h4>{props.stage.date}</h4>
-	  <h4>{props.stage.timestamp}</h4>
-      <span>{props.stage.description}</span>
+
+      <h4 className="date-journey">{props.stage.timestamp}</h4>
+       <div className="box-description">
+      <span className="text-description">{props.stage.description}</span>
+      </div>
 	  <div onClick={setCookie(getJourneyId())}>
 	  <Link to={`/stage/${props.stage.id}`}>
         <button className="button-open">OPEN</button>

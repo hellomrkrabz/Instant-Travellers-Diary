@@ -201,7 +201,7 @@ const Journey = (props) => {
       <div className="box-description">
       <span className="text-description">{props.journey.description}</span>
       </div>
-	  
+	   <div>
       <Link to={`/journey/${props.journey.id}`}>
         <button className="button-open">OPEN</button>
       </Link>
@@ -230,7 +230,7 @@ const Journey = (props) => {
 				}
 			}>DELETE</button>
 		</Link>
-	  
+	  </div>
     </div>
   
   );
