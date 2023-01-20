@@ -235,7 +235,7 @@ const Journey = () => {
         description: "cos",
         initialDate: "cos",
         endDate: "cos",
-        picturePath: 'dupa',
+        picturePath: 'coscos',
 		userId: "cos",
         stages: []
       });

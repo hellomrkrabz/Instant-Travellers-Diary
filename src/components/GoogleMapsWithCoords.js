@@ -42,7 +42,7 @@ const MyMapComponent = compose(
     googleMapURL: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places",
     loadingElement: <div style={{ height: `100%` }} />,
     containerElement: <div style={{ height: `1080px` }} />,
-    mapElement: <div style={{ width: `50%`, height: `50%` }} />,
+    mapElement: <div style={{ width: `100%`, height: `50%` }} />,
   }), withScriptjs, withGoogleMap)((props) =>
   <GoogleMap
     defaultZoom={8}
