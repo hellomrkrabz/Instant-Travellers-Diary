@@ -1,7 +1,15 @@
+.swiper-slide {
+    display: flex;
+    text-align: center;
+    margin-top: 30px;
+    width: 400px;
+    height: 500px;
+  }
 .journeys {
     display: flex;
     flex-direction: row;
     min-height: 100%;
+  
     
 }
 .box-journeys{
@@ -9,7 +17,7 @@
     width: 100%;
     height: 100%;
     margin-left: 50px;
-    margin-right: 50px;
+    
     margin-top: 30px;    
     
 
@@ -17,10 +25,11 @@
 
 
 .journey {
+    display: inline-block;
     background-color: white;
     width: 350px;
     height: flex;
-    border: 2px solid black;
+    
     border-radius: 2%;
     padding-bottom: 10px;
    
@@ -49,18 +58,32 @@
 .title-journey{
 text-align: center;
 margin-top: 20px;
+color: white;
+text-shadow: 
+-1px -1px 0px rgb(0, 0, 0), 
+-1px 1px 0px rgb(0, 0, 0),                   
+ 1px -1px 0px rgb(0, 0, 0),                   
+ 1px 0px 0px rgb(0, 0, 0); 
+ 
+
+
 }
 .date-journey{
-    margin-top: 10px;
-    margin-right: 20px;
+    margin-top: 40px;
+    margin-left: 20px;
     font-size: 10px;
-    text-align: right;
-    color: rgba(53, 48, 48, 0.65);
+    text-align: left;
+    color: rgb(255, 255, 255);
+    text-shadow: 
+    -0.3px -0.3px 0px rgb(0, 0, 0), 
+    -0.3px 0.3px 0px rgb(0, 0, 0),                   
+    0.3px -0.3px 0px rgb(0, 0, 0),                   
+    0.3px 0px 0px rgb(0, 0, 0); 
     
 }
 
 .box-description{
-    margin-top: 20px;
+    margin-top: 100px;
     margin-left: 25px;
     width: 300px;
     height: flex;
@@ -76,12 +99,31 @@ margin-top: 20px;
     
 }
 
-.button-open{
+.line-block{
+    display: flex;
+    flex-direction: row;
+    margin-top: 350px;
+}
+
+.button-edit{
+    color: white;
+    background:linear-gradient(#03a9f4, #e91ee3);
+    
+    border-radius: 5px;
+    margin-top: 30px;
+    margin-left: 15px;
+    padding: 10px;
+    width: 80px;
+    height: 40px;
+    border-color: rgba(0, 0, 0, 0);
+    z-index: 1;
+}
+.button-delete{
     color: white;
     background-color: rgb(59, 41, 127);
     border-radius: 5px;
-    margin-top: 10px;
-    margin-left: 245px;
+    margin-top: 30px;
+    margin-left: 10px;
     padding: 10px;
     width: 80px;
     height: 40px;

@@ -10,6 +10,17 @@ import axios from "axios";
 import setCSS from "./setCSS"
 import setImgs from "./setImgs"
 
+//
+//import "https://unpkg.com/swiper@8/swiper-bundle.min.js";
+//import "https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js";
+//import "https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js";
+//import "https://unpkg.com/swiper@8/swiper-bundle.min.css";
+import "swiper/swiper.min.css";
+//import "swiper/components/effect-coverflow/effect-coverflow.min.css";
+//import "swiper/components/pagination/pagination.min.css";
+import SwiperCore, { EffectCoverflow, Pagination } from "swiper/core";
+SwiperCore.use([EffectCoverflow, Pagination]);
+
 var img;
 
 function reloadPage()
@@ -195,22 +206,45 @@ const Journey = (props) => {
   const [showStages, setShowStages] = useState(false);
 
   return (
-  
-    <div className="journey">
-      <h1 className="title-journey">{props.journey.name}</h1>
-      <img src={props.journey.image_path} />
-  
-      <h4 className="date-journey">{props.journey.initial_date} to {props.journey.end_date}</h4>
-      <div className="box-description">
+  // if the image is working to put it as background is just
+  /*
+   style={{
+          backgroundImage: `url(${props.journey.image_path})`
+        }}
+  */
+// if not can put a ramdom picture as background
+/*
+style={{ 
+      backgroundImage: `url("https://www.artmajeur.com/medias/standard/v/i/vinko-hlebs/artwork/16358935_4c7995b2-e7a5-4985-8d1d-45ce7bbb96d8.jpg")` 
+    }}>
+*/
+
+
+// I just take out the image to working with the layout
+// <img src={props.journey.image_path} />
+
+/*
+I took the description out because look better with less thing this first page
+<div className="box-description">
       <span className="text-description">{props.journey.description}</span>
       </div>
+*/
+
+    <div className="journey" style={{ 
+      backgroundImage: `url(${props.journey.image_path}")` 
+    }}>
+      <Link to={`/journey/${props.journey.id}`} style={{ textDecoration: 'none' }}>
+      <h1 className="title-journey">{props.journey.name}</h1>
+     
+  
+      
+      
 	  
-      <Link to={`/journey/${props.journey.id}`}>
-        <button className="button-open">OPEN</button>
-      </Link>
-	  
+      <div className="line-block">
+      <h4 className="date-journey">{props.journey.initial_date} to {props.journey.end_date}</h4>
 		<Link to={`/Journeys`}>
-			<button className="button-open" onClick={()=>
+      
+			<button className="button-edit" onClick={()=>
 				{
 					console.log("edit");
 				}
@@ -218,7 +252,7 @@ const Journey = (props) => {
 		</Link>
 	  
 		<Link >
-			<button className="button-open" onClick={()=>
+			<button className="button-delete" onClick={()=>
 				{	
 					var information = {
 						id: props.journey.id
@@ -233,9 +267,13 @@ const Journey = (props) => {
 				}
 			}>DELETE</button>
 		</Link>
-	  
+    
+   
     </div>
-  
+	  </Link>
+    
+    </div>
+    
   );
 };
 
@@ -275,12 +313,24 @@ function Journeys() {
           
           <button className="button-add" onClick={() => setCreateJourney(1)}>ADD JOURNEYS</button>
          
-          <div className="box-journeys">
+          <div>
           <div className="journeys">
-            <Swiper spaceBetween={50} slidesPerView={journeys.length == 1 ? 1: journeys.length == 2 ? 2: 3 }>
+            <Swiper  effect={"coverflow"}
+        grabCursor={true}
+        centeredSlides={true}
+        slidesPerView={"auto"}
+        coverflowEffect={{
+          rotate: 0,
+          stretch: 5,
+          depth: 100,
+          modifier: 3,
+          slideShadows: true,
+        }}
+            >
              {
 				  Array.from(journeys).map((journey) => (
-                <SwiperSlide>
+                <SwiperSlide 
+                >
                   <Journey journey={journey} />
                 </SwiperSlide>
               ))}
@@ -303,3 +353,6 @@ function Journeys() {
 }
 
 export default Journeys;
+
+
+//spaceBetween={50} slidesPerView={journeys.length == 1 ? 1: journeys.length == 2 ? 2: 3 }
