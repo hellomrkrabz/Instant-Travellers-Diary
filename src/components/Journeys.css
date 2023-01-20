@@ -11,8 +11,6 @@
     margin-left: 50px;
     margin-right: 50px;
     margin-top: 30px;    
-    
-
 }
 
 
@@ -89,12 +87,21 @@ margin-top: 20px;
 }
 
 .box-create-journey{
+    //background-color: white;
     display: flex;
     margin-top: 50px;
     justify-content: center;
     flex-direction: row;
     min-height: 1000px; 
 }
+
+.box-create-journey.*{
+    display: flex;
+    justify-content: center;
+    break-before: always;
+    justify-content: center;
+}
+
 .card-create-journey{
     background-color: white;
     border: 2px solid black;
@@ -105,7 +112,6 @@ margin-top: 20px;
 }
 .card-header{
     margin-top: 20px;
-    text-align: center;
     font-size:larger;
 }
 
@@ -146,9 +152,14 @@ margin-top: 20px;
     background-color: rgb(59, 41, 127);
     border-radius: 5px;
     margin-top: 30px;
-    margin-left: 100px;
     padding: 10px;
     width: 150px;
+    margin-left: 75px;
     height: 40px;
     border-color: rgba(255, 255, 255, 0);  
+}
+.center{
+    display: flex;
+    justify-content: center;
+     break-before: always;
 }

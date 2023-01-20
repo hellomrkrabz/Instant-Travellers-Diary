@@ -129,10 +129,7 @@ const AddJourney = (props) => {
   
   return (<div className="box-create-journey">
     <div class="card-create-journey">
-      <div class="card-header">
-        <h3>Create Journey</h3>
-      </div>
-      <div class="card-body">
+        <div class="card-body" style={{backgroundColor: "white"}}>
         <form>
           
           <div class="form-group">
@@ -290,12 +287,14 @@ function Journeys() {
 		  
         </>
       ) : (
+      <div className="center">
         <AddJourney
           setJourneys={setJourneys}
           journeys={journeys}
           setCreateJourney={setCreateJourney}
           
         />
+        </div>
         
       )}
     </>

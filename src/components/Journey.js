@@ -13,6 +13,7 @@ import setImgs from "./setImgs"
 import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import setCSS from "./setCSS"
 
 var globalStages=[0];
 var img;
@@ -106,30 +107,21 @@ const AddStage = (props) => {
     if (fileUrl != "" && name != "" && date != "" && description != "") {
       
       const stages = JSON.parse(JSON.stringify(props.journey.stages));
-
-	  //handleUploadImage();
-
       const stage = {
         name: name,
         description: description,
         timestamp: date,
 		userId: getJourneyId()
-      };
-	  
-	  
-	  
-
+      }; 
       stages.push(stage)
-	  globalStages=stages;
+	    globalStages=stages;
 
       await fetch(`http://localhost:3000/api/stage/add`, {//dodawanie
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(stage),
       }).then((response) => response.json()).then((resp)=> handleUploadImage(resp)).then(setTimeout(reloadPage,1000));
-      props.addStage();
-	   //window.location.reload();
-  
+      props.addStage();  
     }
   };
  
@@ -276,21 +268,28 @@ const Journey = () => {
 
   return (
     <>
+    {setCSS()}
       {createStage == false ? 
       <>
-      Stages
-      <button onClick={() => setCreateStage(true)}>Add Stage</button>
-      <Swiper spaceBetween={50} slidesPerView={3}>
+      <button className="button-add" onClick={() => setCreateStage(1)}>ADD STAGE</button>
+      <div className="box-stages">
+      <div className="stages">
+      <br/>
+      <Swiper spaceBetween={50} slidesPerView={stages.length == 1 ? 1: stages.length == 2 ? 2: 3 }>
         {Array.from(globalStages).map((stage) => (
           <SwiperSlide>
             <Stage stage={stage} />
           </SwiperSlide>
-        ))}
+        ))
+      }
       </Swiper>
+            </div>
+            </div>
       </>
       :
       <AddStage setJourney={setJourney} journey={journey} addStage={addStage}/>
     }
+
     
 	
 	</>
