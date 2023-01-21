@@ -210,9 +210,7 @@ const EventComponent = (props) => {//to byl stage
         <div className="box-description">
       <span className="text-description">{props.ev.description}</span>
         </div>
-	  <Link to={`/event/${props.ev.id}`}>
-        <button className="button-open">OPEN</button>
-      </Link>
+
 	  
 	  <Link to={`/Event/`}>
 			<button className="button-open" onClick={()=>

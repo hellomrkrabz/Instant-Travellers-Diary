@@ -10,6 +10,8 @@ import axios from "axios";
 import setCSS from "./setCSS"
 import setImgs from "./setImgs"
 import GoogleMaps from "./GoogleMaps"
+import Popup from 'reactjs-popup';
+import Map from "./GoogleMapsWithCoords";
 
 var img;
 var isMapEnabled = false;
@@ -28,6 +30,12 @@ function changeImgs(imgs)
 	{
 		list[i].childNodes[1].src=imgs[i].filename;
 	}
+}
+
+function setCoords(lat, lng)
+{
+	document.getElementById("lat").value=lat;
+	document.getElementById("lng").value=lng;
 }
 
 function handleUploadImage(res)
@@ -296,7 +304,26 @@ function Journeys() {
           
           <button className="button-add" onClick={() => setCreateJourney(1)}>ADD JOURNEYS</button>
 
-          <button className="button-add" onClick={() => toggleMap()}>SHOW ON MAP</button>
+
+
+          <Popup trigger={<button className="button-add" onClick={() => toggleMap()}>SHOW ON MAP</button>}
+                 position="right center"
+                 modal
+                 nested
+          >
+            {close => (
+                <div className="modal">
+                    <button className="close" onClick={close}>
+                        &times;
+                    </button>
+                    <div className="header"> Map of Journeys
+                    </div>
+	  <div id="box-create-map">
+      <GoogleMaps/>
+      </div>
+                </div>
+            )}
+          </Popup>
          
           <div className="box-journeys">
           <div className="journeys">

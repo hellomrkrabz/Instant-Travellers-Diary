@@ -74,7 +74,7 @@ const MyMapComponent = compose(
       position={{ lat: marker.lat, lng: marker.lng }}
       key={marker.id}
     />
-    ))} />}
+    ))}
   </GoogleMap>
 );
 
