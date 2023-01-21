@@ -418,6 +418,9 @@ const Journey = () => {
       {createStage == false ? 
       <>
       <button className="button-add" onClick={() => setCreateStage(1)}>ADD STAGE</button>
+      <Link to={`/Journeys`}>
+      <button className="button-add" onClick={() => setCreateStage(1)}>GO BACK</button>
+      </Link>
       <div className="box-stages">
       <div className="stages">
       <br/>

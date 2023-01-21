@@ -493,7 +493,7 @@ function Journeys() {
 
 
 
-          <Popup trigger={<button className="button-add" onClick={() => toggleMap()}>SHOW ON MAP</button>}
+          <Popup trigger={<button className="button-add">SHOW ON MAP</button>}
                  position="right center"
                  modal
                  nested
