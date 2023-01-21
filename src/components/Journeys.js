@@ -9,8 +9,11 @@ import getCookie from "./getCookie"
 import axios from "axios";
 import setCSS from "./setCSS"
 import setImgs from "./setImgs"
+import GoogleMaps from "./GoogleMaps"
 
 var img;
+var isMapEnabled = false;
+
 
 function reloadPage()
 {
@@ -125,8 +128,6 @@ const AddJourney = (props) => {
 
     }
   };
-
-  
   return (<div className="box-create-journey">
     <div class="card-create-journey">
         <div class="card-body" style={{backgroundColor: "white"}}>
@@ -188,6 +189,28 @@ const AddJourney = (props) => {
   );
 };
 
+
+function toggleMap(){
+  if(isMapEnabled == false){
+    isMapEnabled = true;
+    showMap();
+  }
+  else{
+    isMapEnabled = false;
+  }
+}
+
+ function showMap() {
+  return (
+    <div>
+      <button className="button-add" onClick={() => toggleMap()}>HIDE MAP</button>
+      <GoogleMaps>
+      </GoogleMaps>
+    </div>
+  );
+}
+
+
 const Journey = (props) => {
   const [showStages, setShowStages] = useState(false);
 
@@ -245,6 +268,7 @@ function parseJSON(props) {
 
 function Journeys() {
   const [createJourney, setCreateJourney] = useState(0);
+  const [enableMap, setEnableMap] = useState(0);
   const [journeys, setJourneys] = useState([]);
   const [id,setId] = useState(0);
 
@@ -271,6 +295,8 @@ function Journeys() {
         <>
           
           <button className="button-add" onClick={() => setCreateJourney(1)}>ADD JOURNEYS</button>
+
+          <button className="button-add" onClick={() => toggleMap()}>SHOW ON MAP</button>
          
           <div className="box-journeys">
           <div className="journeys">
@@ -286,17 +312,16 @@ function Journeys() {
           </div>
 		  
         </>
-      ) : (
+      ) : ( 
       <div className="center">
         <AddJourney
           setJourneys={setJourneys}
           journeys={journeys}
-          setCreateJourney={setCreateJourney}
-          
+          setCreateJourney={setCreateJourney} 
         />
         </div>
-        
-      )}
+        )
+      }
     </>
   );
 }

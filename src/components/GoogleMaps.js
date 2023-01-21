@@ -5,11 +5,11 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { compose, withProps } from "recompose"
 import getCookie from "./getCookie"
+import "./GoogleMaps.css"
 
 var markers=[];
 
 function assignMarkers(mar){
-  console.log(mar);
   for(var i=0; i<mar.ids.length; i++){
     markers.push({id: parseFloat(mar.ids[i].id),
       lat: parseFloat(mar.ids[i].lat),
@@ -21,7 +21,6 @@ function assignMarkers(mar){
 async function awaiting(){ 
 const res = await fetch("http://localhost:3000/api/EventIds/" + getCookie())
   const resJson = await res.json()
-  console.log(resJson);
   assignMarkers(resJson);
 }
 
@@ -37,8 +36,8 @@ const MyMapComponent = compose(
     mapElement: <div style={{ width: `50%`, height: `50%` }} />,
   }), withScriptjs, withGoogleMap)((props) =>
   <GoogleMap
-    defaultZoom={1}
-    defaultCenter={{ lat: parseFloat(markers[0].lat), lng: parseFloat(markers[0].lng) }}
+    defaultZoom={1.5}
+    defaultCenter={{ lat: 0, lng: 0 }}
   >              
 
     {props.isMarkerShown && markers.map(marker => (
