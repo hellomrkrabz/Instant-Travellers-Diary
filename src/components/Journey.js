@@ -28,10 +28,12 @@ function changeImgs(imgs)
 {
 	var list = document.getElementsByClassName("stage");
 	
-	for(var i=0;i<imgs.length;i++)
+	for(var i=0;i<imgs.images.length;i++)
 	{
-		list[i].childNodes[1].src=imgs[i];
+		list[i].childNodes[1].src=imgs.images[i];
+		list[i].childNodes[1].setAttribute('id',imgs.imgsIds[i]);
 	}
+	
 }
 
 function setCookie(journeyID)
@@ -107,12 +109,14 @@ const AddStage = (props) => {
     if (fileUrl != "" && name != "" && date != "" && description != "") {
       
       const stages = JSON.parse(JSON.stringify(props.journey.stages));
-      const stage = {
+      
+	  const stage = {
         name: name,
         description: description,
         timestamp: date,
 		userId: getJourneyId()
       }; 
+	  
       stages.push(stage)
 	    globalStages=stages;
 
@@ -126,7 +130,8 @@ const AddStage = (props) => {
   };
  
 
-return (<div className="box-create-journey">
+return (
+	<div className="box-create-journey">
     <div class="card-create-journey">
         <div class="card-body" style={{backgroundColor: "white"}}>
         <form>
@@ -137,7 +142,9 @@ return (<div className="box-create-journey">
               <CloudUploadIcon sx={{ fontSize: 60 }} />
             </IconButton>
             :
+            <>
             <img src={fileUrl} />
+            </>
           }
           </div>
           <div class="form-group">
@@ -177,13 +184,123 @@ return (<div className="box-create-journey">
   );
 };
 
-const Stage = (props) => {
+const EditStage = (props) => {
+	
+  const [name, setName] = useState(props.stage.name);
+  const [date, setDate] = useState((globalStages.find((element) => element.name == props.stage.name).timestamp));
+  const [description, setDescription] = useState(props.stage.description);
+  const [files, setFiles] = useState([]);
+  const [fileUrl, setFileUrl] = useState((globalStages.find((element) => element.name == props.stage.name).image_path))
+
+  const { fileRejections, getRootProps, getInputProps, open } = useDropzone({
+    onDropAccepted: setFiles,
+    noClick: true,
+    noKeyboard: true,
+    multiple: false,
+    onDrop: (filesUpload) => {
+      const formData = new FormData();
+      const token = process.env.CMS_TOKEN;
+
+      const file = filesUpload[0];
+	  img=file;
+
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        const base64 = reader.result.split(",")[1];
+        const url = 'data:image/png;base64,'+base64
+        setFileUrl(url)
+      };
+
+      reader.readAsDataURL(file);
+    },
+  });
+
+  const editStage = async (id) => {
+  
+    if (fileUrl != "" && name != "" && date != "" && description != "") {
+      
+	  const stage = globalStages.find((element) => element.name == props.stage.name)
+	  
+	  var localStage=
+	{
+		name:name,
+		description:description,
+		userId:stage.id,
+		id:stage.id,
+		timestamp:date,
+		image_path:fileUrl,
+		events:[],
+	}
+		
+	 await fetch("http://localhost:3000/api/stage/edit",{
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(localStage)
+      }).then(()=>props.setEdit(false)).then(()=>reloadPage());
+    }
+  };
+
+
   return (
+    <div className="box-create-stage">
+    <div class="card-create-stage">
+      <div class="card-header">
+        <h3>Edit Stage</h3>
+      </div>
+      <div class="card-body">
+        <div>
+        <div class="form-group">
+          {fileUrl == "" ?
+            <IconButton onClick={open}>
+              <input {...getInputProps()} />
+              <CloudUploadIcon sx={{ fontSize: 60 }} />
+            </IconButton>
+            :
+            <>
+              <img src={(globalStages.find(element => element.name==props.stage.name)).image_path} />
+            </>
+          }
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control-name"
+              id="name"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div class="form-group">
+            <input value={(globalStages.find(element => element.name==props.stage.name)).timestamp} type="date" class="form-control-date" id="end_date" onChange={(e) => setDate(e.target.value)}/>
+          </div>
+          <div class="form-group">
+            <textarea value={description} onChange={(e) => setDescription(e.target.value)} class="form-control-description" id="description" placeholder="Description" rows="3"></textarea>
+          </div>
+        </div>
+        <button className="button-create" onClick={editStage}>EDIT Stage</button>
+        <button className="button-create" onClick={() => {
+          props.setEdit(false)
+        }}>Back</button>
+      </div>
+    </div>
+    </div>
+  );
+};
+
+const Stage = (props) => {
+	const [edit, setEdit] = useState(false)
+	
+  return (
+	<>
+    {edit == false?
+	
     <div className="stage">
 
       <h1>{props.stage.name}</h1>
 
-      <img src={props.stage.picture} />
+      <img id="" src={(globalStages.find(element => element.name==props.stage.name)).image_path} />
 
       <h4 className="date-journey">{props.stage.timestamp}</h4>
        <div className="box-description">
@@ -191,39 +308,52 @@ const Stage = (props) => {
       </div>
 	  <div onClick={setCookie(getJourneyId())}>
 	  <Link to={`/stage/${props.stage.id}`}>
-        <button className="button-open">OPEN</button>
+        <button className="button-open" onclick={setCookie(getJourneyId())}>OPEN</button>
       </Link>
 	  
-	  <Link >
-			<button className="button-open" onClick={()=>
+	  <button className="button-open" onClick={()=>
+	  {
+			var localStage={
+				name:props.stage.name,
+				id:props.stage.id,
+				timestamp:props.stage.timestamp,
+				description:props.stage.description,
+				image_path: document.getElementById(props.stage.id).src,
+				events:[],
+			}
+
+			for(var i=0;i<props.globalStages.length;i++)
+			{
+				if(props.globalStages[i].name==localStage.name)
 				{
-					console.log("edit");
+					props.globalStages[i]=localStage;
 				}
-			}>EDIT</button>
-		</Link>
+			}
+			
+			setEdit(true);
+	  }}>EDIT</button>
 	  
-		<Link >
-			<button className="button-open" onClick={()=>
-				{	
-					var information = {
-						id: props.stage.id
-					}
-					
-					console.log(props.stage.id);
-					
-								
-					fetch("http://localhost:5000/api/stage/delete", {
-						method: "POST",
-						headers: { "Content-Type": "application/json" },
-						body: JSON.stringify(information)//,
-					}).then(setTimeout(reloadPage,500));
-					
+		<button className="button-open" onClick={()=>
+			{	
+				var information = {
+					id: props.stage.id
 				}
-			}>DELETE</button>
-		</Link>
+							
+				fetch("http://localhost:5000/api/stage/delete", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify(information)//,
+				}).then(setTimeout(reloadPage,500));
+				
+			}
+		}>DELETE</button>
 	  
 	  </div>
     </div>
+    :
+    <EditStage stage={props.stage} journey={props.journey} setJourney={props.setJourney} setEdit={setEdit} />
+    }
+    </>
   );
 };
 
@@ -231,12 +361,12 @@ const Journey = () => {
   let { id } = useParams();
 
   var [journey, setJourney] = useState({
-        name: "cos",
-        description: "cos",
-        initialDate: "cos",
-        endDate: "cos",
-        picturePath: 'coscos',
-		userId: "cos",
+        name: "",
+        description: "",
+        initialDate: "",
+        endDate: "",
+        picturePath: "",
+		userId: "",
         stages: []
       });
 	  
@@ -250,13 +380,13 @@ const Journey = () => {
     setCreateStage(0);
   };
 
-  useEffect(() => {
+ useEffect(() => {
     (async () => {
       const res = await fetch("http://localhost:3000/api/Stages/"+id)//retrive
 	  
-	  
+	  var imgs;
 	  	  
-      const resJson = await res.json()
+      const resJson = await res.json();
 	  
 	  setStages(resJson.stages);
 		globalStages=resJson.stages;
@@ -264,12 +394,12 @@ const Journey = () => {
 	  
 	  const resJourney = resJson;
 	  var tmp={
-        name: "cos",
-        description: "cos",
-        initialDate: "cos",
-        endDate: "cos",
-        picturePath: 'cos',
-		userId: "cos",
+        name: "",
+        description: "",
+        initialDate: "",
+        endDate: "",
+        picturePath: "",
+		userId: "",
         stages: resJ
       };
 	  
@@ -294,17 +424,18 @@ const Journey = () => {
       <Swiper spaceBetween={50} slidesPerView={stages.length == 1 ? 1: stages.length == 2 ? 2: 3 }>
         {Array.from(globalStages).map((stage) => (
           <SwiperSlide>
-            <Stage stage={stage} />
+            <Stage stage={stage} globalStages={globalStages} />
           </SwiperSlide>
-        ))
-      }
+        ))}
       </Swiper>
-            </div>
-            </div>
+	  
+		</div>
+		</div>
       </>
       :
       <AddStage setJourney={setJourney} journey={journey} addStage={addStage}/>
-    }
+    
+	}
 
     
 	

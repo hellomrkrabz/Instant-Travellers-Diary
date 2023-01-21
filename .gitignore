@@ -32,3 +32,4 @@ public/images/*
 package.json
 yarn.lock
 package-lock.json
+*.lock

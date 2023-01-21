@@ -17,7 +17,6 @@ export async function setImgsInEvents(eventId)
 			return ids;
 		}).then(async (r)=>
 		{
-			console.log(r);
 			for(var j=0;j<r.length;j++)
 			{
 				const res = await fetch("http://localhost:5000/api/event/"+r[j]+"/images");
@@ -25,7 +24,14 @@ export async function setImgsInEvents(eventId)
 				images.push(resJson.images[0].filename);
 			}
 		});
-	return images;
+		
+	var tmp={
+		images:images,
+		imgsIds:ids,
+	}
+	console.log(tmp);
+		
+	return tmp;
 }
 
 export default setImgsInEvents

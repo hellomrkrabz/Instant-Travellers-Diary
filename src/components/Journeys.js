@@ -25,11 +25,14 @@ function reloadPage()
 function changeImgs(imgs)
 {
 	var list = document.getElementsByClassName("journey");
+	console.log(imgs);
 	
-	for(var i=0;i<imgs.length;i++)
+	for(var i=0;i<imgs.images.length;i++)
 	{
-		list[i].childNodes[1].src=imgs[i].filename;
+		list[i].childNodes[1].src=imgs.images[i].filename;
+		list[i].childNodes[1].setAttribute('id',imgs.imgsIds[i]);
 	}
+	
 }
 
 function setCoords(lat, lng)
@@ -136,6 +139,8 @@ const AddJourney = (props) => {
 
     }
   };
+  
+  
   return (<div className="box-create-journey">
     <div class="card-create-journey">
         <div class="card-body" style={{backgroundColor: "white"}}>
@@ -218,12 +223,182 @@ function toggleMap(){
   );
 }
 
+const EditJourney = (props) => {
+	
+	console.log(props);
+	
+  const [name, setName] = useState(props.journey.name);
+  const [dateInit, setDateInit] = useState(props.journey.initial_date);
+  const [dateEnd, setDateEnd] = useState(props.journey.end_date);
+  const [description, setDescription] = useState(props.journey.description);
+  const [files, setFiles] = useState([]);
+  const [fileUrl, setFileUrl] = useState(props.journey.image_path)
+
+  const { fileRejections, getRootProps, getInputProps, open } = useDropzone({
+    onDropAccepted: setFiles,
+    noClick: true,
+    noKeyboard: true,
+    multiple: false,
+    onDrop: (filesUpload) => {
+      const formData = new FormData();
+      const token = process.env.CMS_TOKEN;
+
+      const file = filesUpload[0];
+
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        const base64 = reader.result.split(",")[1];
+        const url = 'data:image/png;base64,'+base64
+        setFileUrl(url)
+      };
+
+      reader.readAsDataURL(file);
+    },
+  });
+
+  const editJourney = async () => {
+	      
+    // console.log("NAME ", name)
+    // console.log("END ", dateEnd)
+    // console.log("INIT", dateInit)
+    // console.log("URL", fileUrl)
+    // console.log("DESCRIPTION", description)
+
+    if (fileUrl != "" && name != "" && dateInit != "" && dateEnd != "" && description != "") {
+      let newJourneys = JSON.parse(JSON.stringify(props.journeys));
+
+      const index = newJourneys.findIndex((j) => j.id == props.journey.id);  
+	  
+	  console.log(newJourneys);
+      const journey = {
+        name: name,
+        description: description,
+        initial_date: dateInit,
+        end_date: dateEnd,
+        picturePath: fileUrl,
+		userId:props.journey.author_id,
+		id: props.journey.id
+      };
+	  	  
+	  /*const localJourney = {
+        name: props.journey.name,
+        description: props.journey.description,
+        initial_date: props.journey.initial_date,
+        end_date: props.journey.end_date,
+        picturePath: props.journey.image_path,
+		userId: props.journey.author_id,
+        stages: [],
+      };*/
+	  
+
+      //console.log("NEW ", journey)
+      //console.log("INDEX ", index)
+	  
+	  console.log(journey)
+    
+      newJourneys[index] = journey
+	  console.log(newJourneys);
+	  
+	  await fetch("http://localhost:3000/api/journey/edit",{
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(journey)
+      }).then(()=>props.setJourneys(newJourneys)).then(()=>props.setEdit(false)).then(()=>reloadPage());
+
+      /*await fetch("http://localhost:3001/journeys/"+props.journey.id, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(journey)
+      });*/
+      //props.setJourneys(newJourneys);
+      //props.setEdit(false)
+      /*props.setJourneys(arr);*/
+    }
+  };
+
+  return (<div className="box-create-journey">
+    <div class="card-create-journey">
+      <div class="card-header">
+        <h3>Editar jornada</h3>
+      </div>
+      <div class="card-body">
+        <form>
+          
+          <div class="form-group">
+          {fileUrl == "" ?
+            <IconButton onClick={open}>
+              <input {...getInputProps()} />
+              <CloudUploadIcon sx={{ fontSize: 60 }} />
+            </IconButton>
+            :
+            <>
+            <img src={fileUrl} />
+            </>
+          }
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control-name"
+              id="name"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="date"
+              class="form-control-date"
+              id="initial_date"
+              value={dateInit}
+              onChange={(e) => setDateInit(e.target.value)}
+            />
+          </div>
+          <div class="form-group">
+            <input
+              type="date"
+              class="form-control-date"
+              id="end_date"
+              value={dateEnd}
+              onChange={(e) => setDateEnd(e.target.value)}
+            />
+          </div>
+          <div class="form-group">
+            <textarea
+              class="form-control-description"
+              id="description"
+              rows="3"
+              value={description}
+              placeholder="Description"
+              onChange={(e) => setDescription(e.target.value)}
+            ></textarea>
+          </div>
+        </form>
+        <button className="button-create" onClick={editJourney}>Editar Jornada</button>
+        <button className="button-create" onClick={() => {
+          setName("")
+          setDateInit("")
+          setDateEnd("")
+          setFileUrl("")
+          setFiles([])
+          setDescription("")
+          props.setEdit(false)
+        }}>Back</button>
+      </div>
+    </div>
+    </div>
+  );
+};
 
 const Journey = (props) => {
   const [showStages, setShowStages] = useState(false);
+	const [edit, setEdit] = useState(false);
 
   return (
-  
+	<>
+	{edit == false ? 
     <div className="journey">
       <h1 className="title-journey">{props.journey.name}</h1>
       <img src={props.journey.image_path} />
@@ -237,16 +412,18 @@ const Journey = (props) => {
         <button className="button-open">OPEN</button>
       </Link>
 	  
-		<Link to={`/Journeys`}>
-			<button className="button-open" onClick={()=>
-				{
-					console.log("edit");
-				}
-			}>EDIT</button>
-		</Link>
+		<button className="button-open" onClick={() => 
+		{
+			var localJourneys=props.journeys;
+		
+			localJourneys[props.journey.id-1].image_path=document.getElementById(props.journey.id).src;
+
+			props.setJourneys(localJourneys);
+
+			setEdit(true)
+		}}>EDIT</button>
 	  
-		<Link >
-			<button className="button-open" onClick={()=>
+		<button className="button-open" onClick={()=>
 				{	
 					var information = {
 						id: props.journey.id
@@ -260,10 +437,18 @@ const Journey = (props) => {
 					
 				}
 			}>DELETE</button>
-		</Link>
 	  </div>
-    </div>
-  
+   </div>
+    :
+    <EditJourney 
+      setJourneys={props.setJourneys}
+      journey={props.journey}
+      setEdit={setEdit}
+      journeys={props.journeys}
+      />
+    }
+    </>
+
   );
 };
 
@@ -286,12 +471,14 @@ function Journeys() {
 
 		const resJson = await res.json();
 		const resJourneys=resJson.journeys;
+		
+		setJourneys(resJourneys);
 
-		setImgs("journey").then(text=>{
+		 var imagePaths= setImgs('journey').then(text=>{
 			changeImgs(text);
 		});
 		
-		setJourneys(resJourneys);
+		
 
     })();
   }, []);
@@ -327,11 +514,12 @@ function Journeys() {
          
           <div className="box-journeys">
           <div className="journeys">
-            <Swiper spaceBetween={50} slidesPerView={journeys.length == 1 ? 1: journeys.length == 2 ? 2: 3 }>
+           <Swiper spaceBetween={50} slidesPerView={journeys.length == 1 ? 1: journeys.length == 2 ? 2: 3 }>
              {
 				  Array.from(journeys).map((journey) => (
                 <SwiperSlide>
-                  <Journey journey={journey} />
+				
+                   <Journey  journeys={journeys} setJourneys={setJourneys} journey={journey} />
                 </SwiperSlide>
               ))}
             </Swiper>

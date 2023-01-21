@@ -3,6 +3,7 @@ export async function setImgs(type)
 
 	var url =document.URL;
 	var images=[];
+	var imgIds=[];
 	
 	var tmpUrl1=url.substr(0,30);
 	
@@ -32,7 +33,10 @@ export async function setImgs(type)
 		for(var i=0;i<ids.length;i++)
 		{
 			var res = await fetch("http://localhost:5000/api/"+type+"/"+ids[i]+"/images"
-			).then((response) => response.json()).then((resp)=> images=images.concat(resp.images[0]));//tutaj musi być for
+			).then((response) => response.json()).then((resp)=> {
+				images=images.concat(resp.images[0])
+				imgIds.push(ids[i]);
+			});
 		}
 		
 		
@@ -46,6 +50,8 @@ export async function setImgs(type)
 		
 			for(var i=0;i<r.stages.length;i++)
 			{
+				//console.log(r.stages[i].id);
+				imgIds.push(r.stages[i].id);
 				var res = await fetch("http://localhost:5000/api/stage/"+r.stages[i].id+"/images"
 				).then((response) => response.json()).then((resp)=> 
 				{
@@ -58,7 +64,13 @@ export async function setImgs(type)
 		});
 	}
 		
-	return images;
+	var tmp={
+		images:images,
+		imgsIds:imgIds,
+	}
+	console.log(tmp);
+		
+	return tmp;
 }
 
 export default setImgs

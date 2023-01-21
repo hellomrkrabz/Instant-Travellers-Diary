@@ -29,6 +29,7 @@
     "react-google-maps": "^9.4.5",
     "react-router-dom": "^5.3.4",
     "react-scripts": "^5.0.1",
+    "reactjs-popup": "^2.0.5",
     "recompose": "^0.30.0",
     "swiper": "^8.4.5",
     "web-vitals": "^2.1.4"
