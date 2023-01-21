@@ -4,7 +4,7 @@ import { useKeenSlider } from "keen-slider/react";
 import { DropzoneOptions, useDropzone } from "react-dropzone";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { IconButton } from "@mui/material";
-import getCookie from "./getCookie"
+import getJourneyCookie from "./getJourneyCookie"
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import setImgs from "./setImgsInEvents"
@@ -16,6 +16,7 @@ import Map from "./GoogleMapsWithCoords"
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import setCSS from "./setCSS";
+import GetJourneyCookie from "./getJourneyCookie";
 
 var globalEvents=[0];
 var img;
@@ -41,8 +42,24 @@ function setCoords(lat, lng)
 	document.getElementById("lng").value=lng;
 }
 
+function setCookie(stageID)
+{
+	var days =1;
+	var name='stage_id';
+	var date, expires;
+    if (days) {
+        date = new Date();
+        date.setTime(date.getTime()+(days*24*60*60*1000));
+        expires = "; expires=" + date.toGMTString();
+            }else{
+        expires = "";
+    }
+    document.cookie = name + "=" + stageID + expires + "; path=/";
+}
+
 function handleUploadImage(res)
 {
+    console.log(getJourneyId());
     const IDCookie = document
           .cookie
           .split('; ')
@@ -210,8 +227,7 @@ const EventComponent = (props) => {//to byl stage
         <div className="box-description">
       <span className="text-description">{props.ev.description}</span>
         </div>
-
-	  
+      <button className="button-open">OPEN</button>
 	  <Link to={`/Event/`}>
 			<button className="button-open" onClick={()=>
 				{
@@ -244,7 +260,7 @@ const EventComponent = (props) => {//to byl stage
   );
 };
 
-const Event = () => {
+const Event = (props) => {
   let { id } = useParams();
 
   var [stage, setStage] = useState({
@@ -313,6 +329,9 @@ const Event = () => {
       {createEvent == false ? 
       <>
       <button className="button-add" onClick={() => setCreateEvent(1)}>CREATE EVENT</button>
+	  <Link to={`/journey/`+GetJourneyCookie()}>
+      <button className="button-add">GO BACK</button>
+      </Link>
       <div className="box-events">
       <div className="events">
       <br/>

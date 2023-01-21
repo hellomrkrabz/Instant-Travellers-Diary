@@ -14,6 +14,7 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import setCSS from "./setCSS"
+import { NavigateProvider } from 'react-use-navigate';
 
 var globalStages=[0];
 var img;
@@ -288,6 +289,9 @@ const Journey = () => {
       {createStage == false ? 
       <>
       <button className="button-add" onClick={() => setCreateStage(1)}>ADD STAGE</button>
+      <Link to={`/Journeys`}>
+      <button className="button-add" onClick={() => setCreateStage(1)}>GO BACK</button>
+      </Link>
       <div className="box-stages">
       <div className="stages">
       <br/>
