@@ -48,6 +48,30 @@ def get_user_journeys(user_id):
 
     return jsonify({'journeys': journeys_json})
 
+@bp.route('/EventIds/<user_id>', methods=['GET'])
+def get_user_all_event_ids(user_id):
+    stages = []
+    events = []
+    user = User.query.filter_by(id=user_id).first()
+    if user is None:
+        return jsonify({'msg': 'Specified user does not exist'})
+    journeys = Journey.query.filter_by(
+        author_id=user.get_id()
+    ).all()
+    for journey in journeys:
+        stages += Stage.query.filter_by(
+            journey_id=journey.get_id()
+        ).all()
+    for stage in stages:
+        events += Event.query.filter_by(
+            stage_id=stage.get_id()
+        ).all()
+    ids_json = [{'id': e.get_id(),
+                 'lat': e.get_lat(),
+                 'lng': e.get_lng()} for e in events]
+
+    return jsonify({'ids': ids_json})
+
 
 @bp.route('/Stages/<journey_id>', methods=['GET'])
 def get_journey_stages(journey_id):
