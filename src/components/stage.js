@@ -146,8 +146,7 @@ const AddEvent = (props) => {
     };
 
 
-    return 
-	(<div className="box-create-stage">
+    return (<div className="box-create-stage">
             <div class="card-create-stage">
                 <div class="card-body" style={{backgroundColor: "white"}}>
                     <form>
