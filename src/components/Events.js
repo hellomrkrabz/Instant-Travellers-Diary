@@ -322,11 +322,11 @@ const EditEvent = (props) => {
             <textarea value={description} onChange={(e) => setDescription(e.target.value)} class="form-control-description" id="description" placeholder="Description" rows="3"></textarea>
           </div>
         </div>
-        <button className="button-edit" onClick={editEvent}>EDIT event</button>
+        <button className="button-edit" onClick={editEvent}>EDIT EVENT</button>
         <button className="button-edit" onClick={() => {
 		  reloadPage();
           props.setEdit(false)
-        }}>Back</button>
+        }}>BACK</button>
       </div>
     </div>
     </div>

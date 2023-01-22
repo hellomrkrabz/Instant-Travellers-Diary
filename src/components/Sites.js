@@ -263,11 +263,11 @@ const EditSite = (props) => {
             <textarea value={description} onChange={(e) => setDescription(e.target.value)} class="form-control-description" id="description" placeholder="Description" rows="3"></textarea>
           </div>
         </div>
-        <button className="button-create" onClick={editSite}>EDIT site</button>
+        <button className="button-create" onClick={editSite}>EDIT SITE</button>
         <button className="button-create" onClick={() => {
 		  reloadPage();
           props.setEdit(false)
-        }}>Back</button>
+        }}>BACK</button>
       </div>
     </div>
     </div>
@@ -403,14 +403,14 @@ const Site = (props) => {
   
 useEffect(() => {
     (async () => {
-      const res = await fetch("http://localhost:3000/api/Sites/"+id);//+"/"+id)//retrive  ####### to potem zmienić
+      const res = await fetch("http://localhost:3000/api/Sites/"+id); //retrive
       const resJson = await res.json();
 
 	  setSites(resJson.sites);
 		globalSites=resJson.sites;
 	  resJ=resJson.sites;
 	  
-	  var tmp={//to chyba ma być event
+	  var tmp={
         name: "",
         description: "",
         initialDate: "",
@@ -438,7 +438,7 @@ useEffect(() => {
     {setCSS()}
       {createSite == false ? 
       <>
-		  <button className="button-add" onClick={() => setCreateSite(1)}>CREATE Site</button>
+		  <button className="button-add" onClick={() => setCreateSite(1)}>CREATE SITE</button>
 		  <Link to={`/Events/`+GetJourneyCookie()}>
 			<button className="button-add">GO BACK</button>
 		  </Link>

@@ -380,7 +380,7 @@ const EditJourney = (props) => {
             ></textarea>
           </div>
         </form>
-        <button className="button-edit" onClick={editJourney}>Edit Journey</button>
+        <button className="button-edit" onClick={editJourney}>EDIT JOURNEY</button>
         <button className="button-edit" onClick={() => {
 		  reloadPage();
           setName("")
@@ -390,7 +390,7 @@ const EditJourney = (props) => {
           setFiles([])
           setDescription("")
           props.setEdit(false)
-        }}>Back</button>
+        }}>BACK</button>
       </div>
     </div>
     </div>

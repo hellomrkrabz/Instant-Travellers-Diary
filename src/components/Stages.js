@@ -280,11 +280,11 @@ const EditStage = (props) => {
             <textarea value={description} onChange={(e) => setDescription(e.target.value)} class="form-control-description" id="description" placeholder="Description" rows="3"></textarea>
           </div>
         </div>
-        <button className="button-edit" onClick={editStage}>EDIT Stage</button>
+        <button className="button-edit" onClick={editStage}>EDIT STAGE</button>
         <button className="button-edit" onClick={() => {
 			reloadPage();
           props.setEdit(false)
-        }}>Back</button>
+        }}>BACK</button>
       </div>
     </div>
     </div>
