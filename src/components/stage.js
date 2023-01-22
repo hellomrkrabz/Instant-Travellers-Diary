@@ -324,6 +324,7 @@ const EditEvent = (props) => {
         </div>
         <button className="button-create" onClick={editEvent}>EDIT event</button>
         <button className="button-create" onClick={() => {
+		  reloadPage();
           props.setEdit(false)
         }}>Back</button>
       </div>

@@ -381,6 +381,7 @@ const EditJourney = (props) => {
         </form>
         <button className="button-edit" onClick={editJourney}>Editar Jornada</button>
         <button className="button-edit" onClick={() => {
+		  reloadPage();
           setName("")
           setDateInit("")
           setDateEnd("")
