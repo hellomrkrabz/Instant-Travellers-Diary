@@ -40,8 +40,7 @@ class Journey(db.Model):
         return str(self.end_date.date())
 
     def get_initial_date_datetime(self):
-        return self.initial_date.datetime()
+        return self.initial_date.date()
 
     def get_end_date_datetime(self):
-        return self.end_date.datetime()
-
+        return self.end_date.date()

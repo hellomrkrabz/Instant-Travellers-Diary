@@ -282,6 +282,7 @@ const EditStage = (props) => {
         </div>
         <button className="button-edit" onClick={editStage}>EDIT Stage</button>
         <button className="button-edit" onClick={() => {
+			reloadPage();
           props.setEdit(false)
         }}>Back</button>
       </div>
