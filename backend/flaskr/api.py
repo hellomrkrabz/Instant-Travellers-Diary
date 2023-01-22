@@ -3,6 +3,7 @@ from .journey import Journey
 from .stage import Stage
 from .event import Event
 from .user import User
+from .visited_site import VisitedSite
 from . import db
 from datetime import datetime
 
@@ -30,6 +31,17 @@ def get_user_data(u_id):
     })
 
 
+@bp.route('/journey_info/<j_id>', methods=['GET'])
+def get_journey_info(j_id):
+    journey = Journey.query.filter_by(id=j_id).first()
+    if journey is not None:
+        return jsonify({
+            'author_id': journey.get_author_id(),
+            'public': journey.is_public()
+        })
+    return jsonify({'msg': 'Specified journey does not exist'})
+
+
 @bp.route('/Journeys/<user_id>', methods=['GET'])
 def get_user_journeys(user_id):
     user = User.query.filter_by(id=user_id).first()
@@ -38,14 +50,16 @@ def get_user_journeys(user_id):
     journeys = Journey.query.filter_by(
         author_id=user.get_id()
     ).all()
-    journeys_json = [{'id': j.get_id(),
-                      'name': j.get_name(),
-                      'author_id': j.get_author_id(),
-                      'initial_date': j.get_initial_date(),
-                      'end_date': j.get_end_date(),
-                      'image_path': 'najn',
-                      'public': j.is_public(),
-                      'description': j.get_description()} for j in journeys]
+    journeys_json = [{
+        'id': j.get_id(),
+        'name': j.get_name(),
+        'author_id': j.get_author_id(),
+        'initial_date': j.get_initial_date(),
+        'end_date': j.get_end_date(),
+        'image_path': 'najn',
+        'public': j.is_public(),
+        'description': j.get_description()
+    } for j in journeys]
 
     return jsonify({'journeys': journeys_json})
 
@@ -68,9 +82,11 @@ def get_user_all_event_ids(user_id):
         events += Event.query.filter_by(
             stage_id=stage.get_id()
         ).all()
-    ids_json = [{'id': e.get_id(),
-                 'lat': e.get_lat(),
-                 'lng': e.get_lng()} for e in events]
+    ids_json = [{
+        'id': e.get_id(),
+        'lat': e.get_lat(),
+        'lng': e.get_lng()
+    } for e in events]
 
     return jsonify({'ids': ids_json})
 
@@ -83,41 +99,21 @@ def get_journey_stages(journey_id):
     stages = Stage.query.filter_by(
         journey_id=journey.get_id()
     ).all()
-    stages_json = [{'id': s.get_id(),
-                    'name': s.get_name(),
-                    'timestamp': s.get_timestamp(),
-                    'description': s.get_description(),
-                    'public': s.is_public(),
-                    'events': get_stage_events(
-                                  s.get_id()
-                              ).get_json()['events']} for s in stages]
+    stages_json = [{
+        'id': s.get_id(),
+        'name': s.get_name(),
+        'timestamp': s.get_timestamp(),
+        'description': s.get_description(),
+        'public': s.is_public(),
+        'events': get_stage_events(
+            s.get_id()
+        ).get_json()['events']
+    } for s in stages]
 
     stages_json = sorted(
         stages_json, key=lambda s: s['timestamp']
     )
     return jsonify({'stages': stages_json})
-
-
-@bp.route('/Events/<journey_id>/<stage_id>', methods=['GET'])
-def get_stage_events_old(journey_id, stage_id):
-    journey = Journey.query.filter_by(id=journey_id).first()
-    if journey is None:
-        return jsonify({'msg': 'Specified journey does not exist'})
-    stage = Stage.query.filter_by(id=stage_id).first()
-    if stage is None:
-        return jsonify({'msg': 'Specified stage does not exist'})
-    events = Event.query.filter_by(
-        stage_id=stage.get_id(),
-        journey_id=journey.get_id()
-    ).all()
-    events_json = [{'id': e.get_id(),
-                    'name': e.get_name(),
-                    'timestamp': e.get_timestamp(),
-                    'lat': e.get_lat(),
-                    'lng': e.get_lng(),
-                    'description': e.get_description()} for e in events]
-
-    return jsonify({'events': events_json})
 
 
 @bp.route('/Events/<stage_id>', methods=['GET'])
@@ -128,15 +124,34 @@ def get_stage_events(stage_id):
     events = Event.query.filter_by(
         stage_id=stage.get_id()
     ).all()
-    events_json = [{'id': e.get_id(),
-                    'name': e.get_name(),
-                    'timestamp': e.get_timestamp(),
-                    'lat': e.get_lat(),
-                    'lng': e.get_lng(),
-                    'public': e.is_public(),
-                    'description': e.get_description()} for e in events]
+    events_json = [{
+        'id': e.get_id(),
+        'name': e.get_name(),
+        'timestamp': e.get_timestamp(),
+        'lat': e.get_lat(),
+        'lng': e.get_lng(),
+        'public': e.is_public(),
+        'description': e.get_description()
+    } for e in events]
 
     return jsonify({'events': events_json})
+
+
+@bp.route('/Sites/<event_id>', methods=['GET'])
+def get_event_sites(event_id):
+    event = Event.query.filter_by(id=event_id).first()
+    if event is None:
+        return jsonify({'msg': 'Specified event does not exist'})
+    sites = VisitedSite.query.filter_by(
+        event_id=event.get_id()
+    ).all()
+    sites_json = [{
+        'id': s.get_id(),
+        'description': s.get_description(),
+        'public': s.is_public()
+    } for s in sites]
+
+    return jsonify({'sites': sites_json})
 
 
 @bp.route('/<entity_type>/<action>', methods=['POST'])
@@ -160,11 +175,13 @@ def add_or_edit_entity(entity_type, action):
                 initial_date, end_date = end_date, initial_date
 
             if action == "add":
-                entity = Journey(name=name,
-                                 description=description,
-                                 initial_date=initial_date,
-                                 end_date=end_date,
-                                 author_id=relationship_id)
+                entity = Journey(
+                    name=name,
+                    description=description,
+                    initial_date=initial_date,
+                    end_date=end_date,
+                    author_id=relationship_id
+                )
             elif action == "edit":
                 entity = Journey.query.filter_by(id=data['id']).first()
                 entity.name = name
@@ -201,10 +218,12 @@ def add_or_edit_entity(entity_type, action):
                 timestamp = journey.get_end_date_datetime()
 
             if action == "add":
-                entity = Stage(name=name,
-                               description=description,
-                               timestamp=timestamp,
-                               journey_id=relationship_id)
+                entity = Stage(
+                    name=name,
+                    description=description,
+                    timestamp=timestamp,
+                    journey_id=relationship_id
+                )
             elif action == "edit":
                 entity = Stage.query.filter_by(id=data['id']).first()
                 entity.name = name
@@ -218,7 +237,49 @@ def add_or_edit_entity(entity_type, action):
             name = data['name']
             description = data['description']
             timestamp = data['timestamp']
-            relationship_id = data['userId']
+            relationship_id = data['userId']    # it's stage ID actually :P
+            journey_id = data['journeyId']      # this can be ignored
+
+            lat = float(data['lat'])
+            lng = float(data['lng'])
+
+            timestamp = datetime.strptime(timestamp, '%Y-%m-%d')
+
+            # Check if event's stage exists
+            exists = db.session.query(
+                db.session.query(Stage).filter_by(
+                    id=relationship_id
+                ).exists()
+            ).scalar()
+            if not exists:
+                error = f"Couldn't find a Stage with id {relationship_id}"
+                print('[ERROR] ::', error)
+                return jsonify({'msg': error})
+
+            stage = Stage.query.filter_by(id=relationship_id).first()
+            if timestamp.date() != stage.get_timestamp_datetime():
+                timestamp = stage.get_timestamp_datetime()
+
+            if action == "add":
+                entity = Event(
+                    name=name,
+                    description=description,
+                    timestamp=timestamp,
+                    journey_id=journey_id,
+                    stage_id=relationship_id,
+                    latitude=lat,
+                    longitude=lng
+                )
+            elif action == "edit":
+                entity = Stage.query.filter_by(id=data['id']).first()
+                entity.name = name
+                entity.description = description
+                entity.timestamp = timestamp
+                entity.latitude = lat
+                entity.longitude = lng
+        elif entity_type == 'site':
+            description = data['description']
+            relationship_id = data['eventId']
             journey_id = data['journeyId']
 
             lat = float(data['lat'])
@@ -242,13 +303,15 @@ def add_or_edit_entity(entity_type, action):
                 timestamp = stage.get_timestamp_datetime()
 
             if action == "add":
-                entity = Event(name=name,
-                               description=description,
-                               timestamp=timestamp,
-                               journey_id=journey_id,
-                               stage_id=relationship_id,
-                               latitude=lat,
-                               longitude=lng)
+                entity = Event(
+                    name=name,
+                    description=description,
+                    timestamp=timestamp,
+                    journey_id=journey_id,
+                    stage_id=relationship_id,
+                    latitude=lat,
+                    longitude=lng
+                )
             elif action == "edit":
                 entity = Stage.query.filter_by(id=data['id']).first()
                 entity.name = name
@@ -349,7 +412,6 @@ def delete(entity_type):
         return jsonify({'msg': error})
 
 
-#               v- journey / stage / event
 @bp.route('/<relationship_type>/<relationship_id>/images', methods=['GET'])
 def get_image_names(relationship_type, relationship_id):
     images = Image.query.filter_by(
@@ -360,34 +422,9 @@ def get_image_names(relationship_type, relationship_id):
     if images is None:
         return jsonify({'msg': 'Specified image does not exist'})
 
-    images_json = [{'id': i.get_id(),
-                    'filename': i.get_filename()} for i in images]
-
-    return jsonify({'images': images_json})
-
-
-@bp.route('/get_image_names', methods=['GET'])
-def get_image_names_old():
-    data = request.get_json()
-    u_id = data['userID']
-    j_id = data['journeyID']
-    s_id = data['stageID']
-    e_id = data['eventID']
-
-    images = Image.query.filter_by(
-        user_id=u_id,
-        journey_id=j_id,
-        stage_id=s_id,
-        event_id=e_id
-    ).all()
-
-    if images is None:
-        return jsonify({'msg': 'Specified image does not exist'})
-
-    images_json = [{'u_id': i.get_user_id(),
-                    'j_id': i.get_journey_id(),
-                    's_id': i.get_stage_id(),
-                    'e_id': i.get_event_id(),
-                    'filename': i.get_full_filename} for i in images]
+    images_json = [{
+        'id': i.get_id(),
+        'filename': i.get_filename()
+    } for i in images]
 
     return jsonify({'images': images_json})
