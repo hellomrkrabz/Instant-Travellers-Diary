@@ -187,9 +187,9 @@ def add_or_edit_entity(entity_type, action):
                 return jsonify({'msg': error})
 
             journey = Journey.query.filter_by(id=relationship_id).first()
-            if timestamp.datetime() < journey.get_initial_date_datetime():
+            if timestamp < journey.get_initial_date_datetime():
                 timestamp = journey.get_initial_date_datetime()
-            elif timestamp.datetime() > journey.get_end_date_datetime():
+            elif timestamp > journey.get_end_date_datetime():
                 timestamp = journey.get_end_date_datetime()
 
             if action == "add":
@@ -230,7 +230,7 @@ def add_or_edit_entity(entity_type, action):
                 return jsonify({'msg': error})
 
             stage = Stage.query.filter_by(id=relationship_id).first()
-            if timestamp.datetime() != stage.get_timestamp_datetime():
+            if timestamp != stage.get_timestamp_datetime():
                 timestamp = stage.get_timestamp_datetime()
 
             if action == "add":
