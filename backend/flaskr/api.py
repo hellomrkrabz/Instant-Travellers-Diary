@@ -91,8 +91,10 @@ def get_journey_stages(journey_id):
                     'events': get_stage_events(
                                   s.get_id()
                               ).get_json()['events']} for s in stages]
-    print("[INFO]", stages_json)
 
+    stages_json = sorted(
+        stages_json, key=lambda s: s['timestamp']
+    )
     return jsonify({'stages': stages_json})
 
 
