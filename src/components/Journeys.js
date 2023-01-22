@@ -12,6 +12,7 @@ import setImgs from "./setImgs"
 import GoogleMaps from "./GoogleMaps"
 import Popup from 'reactjs-popup';
 import Map from "./GoogleMapsWithCoords";
+import Checkbox from '@mui/material/Checkbox';
 
 var img;
 var isMapEnabled = false;
@@ -232,6 +233,7 @@ const EditJourney = (props) => {
   const [dateInit, setDateInit] = useState(props.journey.initial_date);
   const [dateEnd, setDateEnd] = useState(props.journey.end_date);
   const [description, setDescription] = useState(props.journey.description);
+  const [isPublic, setPublic] = useState(props.journey.public);
   const [files, setFiles] = useState([]);
   const [fileUrl, setFileUrl] = useState(props.journey.image_path)
 
@@ -279,7 +281,8 @@ const EditJourney = (props) => {
         end_date: dateEnd,
         picturePath: fileUrl,
 		userId:props.journey.author_id,
-		id: props.journey.id
+		id: props.journey.id,
+        public: isPublic
       };
 	  	  
 	  /*const localJourney = {
@@ -318,6 +321,7 @@ const EditJourney = (props) => {
     }
   };
 
+console.log(typeof isPublic);
   return (
     <div className="box-edit-journey">
     <div class="card-edit-journey">
@@ -328,7 +332,7 @@ const EditJourney = (props) => {
             <h3>Edit Journey</h3>
         </div>
         <form>
-          <div class="form-edit-group">
+          <div class="form-edit-group-journey">
           {fileUrl == "" ?
             <IconButton onClick={open}>
               <input {...getInputProps()} />
@@ -341,7 +345,7 @@ const EditJourney = (props) => {
           }
           </div>
 
-          <div class="form-edit-group">
+          <div class="form-edit-group-journey">
             <input
               type="text"
               class="form-control-name"
@@ -351,7 +355,7 @@ const EditJourney = (props) => {
               onChange={(e) => setName(e.target.value)}
             />
           </div>
-          <div class="form-edit-group">
+          <div class="form-edit-group-journey">
             <input
               type="date"
               class="form-control-date"
@@ -360,7 +364,7 @@ const EditJourney = (props) => {
               onChange={(e) => setDateInit(e.target.value)}
             />
           </div>
-          <div class="form-edit-group">
+          <div class="form-edit-group-journey">
             <input
               type="date"
               class="form-control-date"
@@ -369,7 +373,7 @@ const EditJourney = (props) => {
               onChange={(e) => setDateEnd(e.target.value)}
             />
           </div>
-          <div class="form-edit-group">
+          <div class="form-edit-group-journey">
             <textarea
               class="form-control-description"
               id="description"
@@ -379,8 +383,15 @@ const EditJourney = (props) => {
               onChange={(e) => setDescription(e.target.value)}
             ></textarea>
           </div>
+            <div class="form-edit-group-checkbox">
+            <Checkbox id="public" checked={Boolean(isPublic)}
+                   onChange={(e) => setPublic(e.target.checked)}
+            />
+
+            <label htmlFor="Public">Public</label>
+          </div>
         </form>
-        <button className="button-edit" onClick={editJourney}>EDIT JOURNEY</button>
+        <button className="button-edit" onClick={editJourney}>Edit Journey</button>
         <button className="button-edit" onClick={() => {
 		  reloadPage();
           setName("")
@@ -389,8 +400,9 @@ const EditJourney = (props) => {
           setFileUrl("")
           setFiles([])
           setDescription("")
+          setPublic("")
           props.setEdit(false)
-        }}>BACK</button>
+        }}>Back</button>
       </div>
     </div>
     </div>
