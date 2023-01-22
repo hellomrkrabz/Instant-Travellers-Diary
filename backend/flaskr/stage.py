@@ -31,3 +31,6 @@ class Stage(db.Model):
 
     def get_timestamp(self):
         return str(self.timestamp.date())
+
+    def get_timestamp_datetime(self):
+        return self.timestamp.datetime()

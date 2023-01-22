@@ -48,6 +48,7 @@ def get_user_journeys(user_id):
 
     return jsonify({'journeys': journeys_json})
 
+
 @bp.route('/EventIds/<user_id>', methods=['GET'])
 def get_user_all_event_ids(user_id):
     stages = []
@@ -147,6 +148,19 @@ def add_or_edit_entity(entity_type, action):
             initial_date = datetime.strptime(initial_date, '%Y-%m-%d')
             end_date = datetime.strptime(end_date, '%Y-%m-%d')
 
+            if initial_date > end_date:
+                print(
+                    "[INFO]",
+                    "Swapping order of dates:\n"
+                )
+                initial_date, end_date = end_date, initial_date
+                print(
+                    "[INFO]",
+                    f"New order: {initial_date} -> {end_date}"
+                )
+            else:
+                print("[INFO] Date order is correct")
+
             if action == "add":
                 entity = Journey(name=name,
                                  description=description,
@@ -181,6 +195,20 @@ def add_or_edit_entity(entity_type, action):
                 error = f"Couldn't find a Journey with id {relationship_id}"
                 print('[ERROR] ::', error)
                 return jsonify({'msg': error})
+
+            journey = Journey.query.filter_by(id=relationship_id).first()
+            print(
+                "[INFO]",
+                f"Timestamp before: {timestamp}"
+            )
+            if timestamp.datetime() < journey.get_initial_date_datetime():
+                timestamp = journey.get_initial_date_datetime()
+            elif timestamp.datetime() > journey.get_end_date_datetime():
+                timestamp = journey.get_end_date_datetime()
+            print(
+                "[INFO]",
+                f"Timestamp after:  {timestamp}"
+            )
 
             if action == "add":
                 entity = Stage(name=name,
@@ -218,6 +246,18 @@ def add_or_edit_entity(entity_type, action):
                 error = f"Couldn't find a Stage with id {relationship_id}"
                 print('[ERROR] ::', error)
                 return jsonify({'msg': error})
+
+            stage = Stage.query.filter_by(id=relationship_id).first()
+            print(
+                "[INFO]",
+                f"Timestamp before: {timestamp}"
+            )
+            if timestamp.datetime() != stage.get_timestamp_datetime():
+                timestamp = stage.get_timestamp_datetime()
+            print(
+                "[INFO]",
+                f"Timestamp before: {timestamp}"
+            )
 
             if action == "add":
                 entity = Event(name=name,

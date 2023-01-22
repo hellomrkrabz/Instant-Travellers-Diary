@@ -39,3 +39,9 @@ class Journey(db.Model):
     def get_end_date(self):
         return str(self.end_date.date())
 
+    def get_initial_date_datetime(self):
+        return self.initial_date.datetime()
+
+    def get_end_date_datetime(self):
+        return self.end_date.datetime()
+
