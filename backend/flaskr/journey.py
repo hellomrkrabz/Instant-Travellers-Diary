@@ -10,6 +10,7 @@ class Journey(db.Model):
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     initial_date = db.Column(db.DateTime, default=datetime.date)
     end_date = db.Column(db.DateTime, default=datetime.date)
+    public = db.Column(db.Boolean, default=False)
     stages = db.relationship('Stage',
                              backref='journey',
                              lazy='dynamic',
@@ -17,6 +18,9 @@ class Journey(db.Model):
 
     def __repr__(self):
         return '<Journey %r>' % self.id
+
+    def __lt__(self, other):
+        return self.initial_date.date() < other.initial_date.date()
 
     def get_id(self):
         return self.id
@@ -44,3 +48,6 @@ class Journey(db.Model):
 
     def get_end_date_datetime(self):
         return self.end_date.date()
+
+    def is_public(self):
+        return self.public

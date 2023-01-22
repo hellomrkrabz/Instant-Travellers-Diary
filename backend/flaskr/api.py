@@ -44,6 +44,7 @@ def get_user_journeys(user_id):
                       'initial_date': j.get_initial_date(),
                       'end_date': j.get_end_date(),
                       'image_path': 'najn',
+                      'public': j.is_public(),
                       'description': j.get_description()} for j in journeys]
 
     return jsonify({'journeys': journeys_json})
@@ -86,7 +87,11 @@ def get_journey_stages(journey_id):
                     'name': s.get_name(),
                     'timestamp': s.get_timestamp(),
                     'description': s.get_description(),
-                    'events': get_stage_events(s.get_id()).get_json()['events']} for s in stages]
+                    'public': s.is_public(),
+                    'events': get_stage_events(
+                                  s.get_id()
+                              ).get_json()['events']} for s in stages]
+    print("[INFO]", stages_json)
 
     return jsonify({'stages': stages_json})
 
@@ -126,6 +131,7 @@ def get_stage_events(stage_id):
                     'timestamp': e.get_timestamp(),
                     'lat': e.get_lat(),
                     'lng': e.get_lng(),
+                    'public': e.is_public(),
                     'description': e.get_description()} for e in events]
 
     return jsonify({'events': events_json})
