@@ -60,10 +60,44 @@ body{
     justify-content: center;
 }
 
+.box-edit-event{
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    min-height: 500px;
+    width: 450px;
+    border: 2px solid black;
+    border-radius: 3%;
+
+}
+
+.card-edit-event{
+    height: 550px;
+    width: 450px;
+    display: flex;
+    justify-content: center;
+}
+
 .title-event{
 text-align: center;
 margin-top: 20px;
 }
+
+.button-edit{
+    color: white;
+    background-color: rgb(59, 41, 127);
+    border-radius: 5px;
+    margin-top: 15px;
+    padding: 10px;
+    width: 150px;
+    margin-left: 75px;
+    height: 40px;
+    border-color: rgba(255, 255, 255, 0);
+    display: flex;
+    justify-content: center;
+}
+
 
 .date-event{
     margin-top: 10px;
@@ -73,6 +107,46 @@ margin-top: 20px;
     color: rgba(53, 48, 48, 0.65);
 
 }
+
+
+.edit-card-body{
+    padding: 20px;
+}
+
+.form-edit-group {
+  box-sizing: border-box;
+  margin-top: 10px;
+  padding: 10px;
+  font-family: 'PT Sans', sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+.edit-card-header{
+    font-size:larger;
+    display: flex;
+    justify-content: center;
+}
+
+.button-edit{
+    color: white;
+    background-color: rgb(59, 41, 127);
+    border-radius: 5px;
+    margin-top: 15px;
+    padding: 10px;
+    width: 150px;
+    margin-left: 75px;
+    height: 40px;
+    border-color: rgba(255, 255, 255, 0);
+    display: flex;
+    justify-content: center;
+}
+
+.form-edit-group img {
+    width: 180px;
+    height: 180px;
+}
+
 
 .form-group img{
     width: 30px;

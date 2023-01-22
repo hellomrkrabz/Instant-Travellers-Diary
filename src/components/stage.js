@@ -286,14 +286,14 @@ const EditEvent = (props) => {
 
 
   return (
-    <div className="box-create-stage">
-    <div class="card-create-stage">
-      <div class="card-header">
-        <h3>Edit Event</h3>
-      </div>
-      <div class="card-body">
+    <div className="box-edit-event">
+    <div class="card-edit-event">
+      <div class="edit-card-body">
+          <div className="edit-card-header">
+              <h3>Edit Event</h3>
+          </div>
         <div>
-        <div class="form-group">
+        <div class="form-edit-group">
           {fileUrl == "" ?
             <IconButton onClick={open}>
               <input {...getInputProps()} />
@@ -305,7 +305,7 @@ const EditEvent = (props) => {
             </>
           }
           </div>
-          <div class="form-group">
+          <div class="form-edit-group">
             <input
               type="text"
               class="form-control-name"
@@ -315,15 +315,15 @@ const EditEvent = (props) => {
               onChange={(e) => setName(e.target.value)}
             />
           </div>
-          <div class="form-group">
+          <div class="form-edit-group">
             <input value={(globalEvents.find(element => element.name==props.event.name)).timestamp} type="date" class="form-control-date" id="end_date" onChange={(e) => setDate(e.target.value)}/>
           </div>
-          <div class="form-group">
+          <div class="form-edit-group">
             <textarea value={description} onChange={(e) => setDescription(e.target.value)} class="form-control-description" id="description" placeholder="Description" rows="3"></textarea>
           </div>
         </div>
-        <button className="button-create" onClick={editEvent}>EDIT event</button>
-        <button className="button-create" onClick={() => {
+        <button className="button-edit" onClick={editEvent}>EDIT event</button>
+        <button className="button-edit" onClick={() => {
           props.setEdit(false)
         }}>Back</button>
       </div>
