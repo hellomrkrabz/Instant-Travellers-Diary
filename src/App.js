@@ -9,14 +9,15 @@ import EditProfile from './components/EditProfile';
 import Logout from './components/Logout';
 import NoPage1 from './components/NoPage1';
 import NoPage2 from './components/NoPage2';
-import Stage from './components/stage';
 import GoogleMaps from './components/GoogleMaps';
-
 
 import { useState, useEffect } from "react";
 import axios, {isCancel, AxiosError} from 'axios';
-import Journey from './components/Journey';
+
 import Journeys from './components/Journeys';
+import Stages from './components/Stages';
+import Events from './components/Events';
+import Sites from  './components/Sites';
 
 function App() {
 	
@@ -78,9 +79,10 @@ function App() {
 				  <Route path="/EditProfile" exact component={EditProfile}/>
 				  <Route path="/Logout" exact component={Logout}/>
 				  <Route path="/Journeys" exact component={Journeys} />
-                  <Route path="/Journey/:id" exact component={Journey}/>
-				  <Route path="/stage/:id" exact component={Stage}/>
+                  <Route path="/Stages/:id" exact component={Stages}/>
+				  <Route path="/Events/:id" exact component={Events}/>
 				  <Route path="/GoogleMaps" exact component={GoogleMaps}/>
+				  <Route path="/Sites/:id" exact component={Sites}/>
 				  <Route path="*" exact component={NoPage2}/>
 
 			</Switch>

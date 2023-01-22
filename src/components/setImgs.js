@@ -5,7 +5,7 @@ export async function setImgs(type)
 	var images=[];
 	var imgIds=[];
 	
-	var tmpUrl1=url.substr(0,30);
+	var tmpUrl1=url.substr(0,29);
 	
 	
 	if(url==="http://localhost:3000/Journeys")
@@ -40,10 +40,10 @@ export async function setImgs(type)
 		}
 		
 		
-	}else if(tmpUrl1==="http://localhost:3000/journey/")
+	}else if(tmpUrl1==="http://localhost:3000/Stages/")
 	{
 		
-		url=url.replace("http://localhost:3000/journey/", "");
+		url=url.replace("http://localhost:3000/Stages/", "");
 		
 		var res = await fetch("http://localhost:5000/api/Stages/"+url
 		).then((response) => response.json()).then(async (r)=> {

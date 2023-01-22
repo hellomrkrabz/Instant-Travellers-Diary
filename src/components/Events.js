@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "./Stage.css";
+import "./Events.css";
 import { useKeenSlider } from "keen-slider/react";
 import { DropzoneOptions, useDropzone } from "react-dropzone";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -280,7 +280,7 @@ const EditEvent = (props) => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(localEvent)
-      }).then(()=>props.setEdit(false));//.then(()=>reloadPage());
+      }).then(()=>props.setEdit(false)).then(()=>reloadPage());
     }
   };
 
@@ -337,7 +337,7 @@ const EditEvent = (props) => {
 const EventComponent = (props) => {
 	const [edit, setEdit] = useState(false)
 
-	console.log(props);
+	console.log(props.event.id);
 
 	return (
 	<>
@@ -352,7 +352,9 @@ const EventComponent = (props) => {
       <span className="text-description">{props.event.description}</span>
         </div>
 
-		<button className="button-open">OPEN</button>
+		<Link to={`/Sites/${props.event.id}`}>
+			<button className="button-open" onClick={setCookie(getJourneyId)}>OPEN</button>
+		</Link>
 	
 
 	  
@@ -431,7 +433,7 @@ const Event = (props) => {
   
 useEffect(() => {
     (async () => {
-      const res = await fetch("http://localhost:3000/api/Events/"+getJourneyIdOld()+"/"+id)//retrive
+      const res = await fetch("http://localhost:3000/api/Events/"+getJourneyIdOld());//+"/"+id)//retrive
 	  	  	  
 		var imgs;
 			  
@@ -477,7 +479,7 @@ console.log(globalEvents);
       {createEvent == false ? 
       <>
 		  <button className="button-add" onClick={() => setCreateEvent(1)}>CREATE EVENT</button>
-		  <Link to={`/journey/`+GetJourneyCookie()}>
+		  <Link to={`/Stages/`+GetJourneyCookie()}>
 			<button className="button-add">GO BACK</button>
 		  </Link>
 		  <div className="box-events">

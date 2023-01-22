@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "./Journey.css";
+import "./Stages.css";
 import { useKeenSlider } from "keen-slider/react";
 import { DropzoneOptions, useDropzone } from "react-dropzone";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
@@ -309,7 +309,7 @@ const Stage = (props) => {
       <span className="text-description">{props.stage.description}</span>
       </div>
 	  <div onClick={setCookie(getJourneyId())}>
-	  <Link to={`/stage/${props.stage.id}`}>
+	  <Link to={`/Events/${props.stage.id}`}>
         <button className="button-open" onclick={setCookie(getJourneyId())}>OPEN</button>
       </Link>
 	  
