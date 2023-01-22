@@ -168,8 +168,7 @@ def add_or_edit_entity(entity_type, action):
             initial_date = data['initial_date']
             end_date = data['end_date']
             relationship_id = data['userId']
-            is_public = data['public'] in ("True", "true")
-
+            is_public = data['public']
             initial_date = datetime.strptime(initial_date, '%Y-%m-%d')
             end_date = datetime.strptime(end_date, '%Y-%m-%d')
 

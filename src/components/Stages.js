@@ -246,12 +246,12 @@ const EditStage = (props) => {
     <div className="box-edit-stage">
     <div class="card-edit-stage">
       <div class="card-body">
-        <div className="edit-card-header">
+        <div className="card-header-stage">
             <h3>Edit Stage</h3>
         </div>
         <div>
 
-        <div class="form-edit-group">
+        <div class="form-edit-group-stage">
           {fileUrl == "" ?
             <IconButton onClick={open}>
               <input {...getInputProps()} />
@@ -263,7 +263,7 @@ const EditStage = (props) => {
             </>
           }
           </div>
-          <div class="form-edit-group">
+          <div class="form-edit-group-stage">
             <input
               type="text"
               class="form-control-name"
@@ -273,15 +273,15 @@ const EditStage = (props) => {
               onChange={(e) => setName(e.target.value)}
             />
           </div>
-          <div class="form-edit-group">
+          <div class="form-edit-group-stage">
             <input value={(globalStages.find(element => element.name==props.stage.name)).timestamp} type="date" class="form-control-date" id="end_date" onChange={(e) => setDate(e.target.value)}/>
           </div>
-          <div class="form-edit-group">
+          <div class="form-edit-group-stage">
             <textarea value={description} onChange={(e) => setDescription(e.target.value)} class="form-control-description" id="description" placeholder="Description" rows="3"></textarea>
           </div>
         </div>
-        <button className="button-edit" onClick={editStage}>EDIT STAGE</button>
-        <button className="button-edit" onClick={() => {
+        <button className="button-edit-stage" onClick={editStage}>EDIT STAGE</button>
+        <button className="button-edit-stage" onClick={() => {
 			reloadPage();
           props.setEdit(false)
         }}>BACK</button>

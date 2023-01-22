@@ -147,7 +147,7 @@ const AddJourney = (props) => {
     <div class="card-create-journey">
         <div class="card-body" style={{backgroundColor: "white"}}>
         <form>
-          
+
           <div class="form-group">
           {files.length == 0 ?
             <IconButton onClick={open}>
@@ -391,8 +391,8 @@ console.log(typeof isPublic);
             <label htmlFor="Public">Public</label>
           </div>
         </form>
-        <button className="button-edit" onClick={editJourney}>Edit Journey</button>
-        <button className="button-edit" onClick={() => {
+        <button className="button-edit-journey" onClick={editJourney}>Edit Journey</button>
+        <button className="button-edit-journey" onClick={() => {
 		  reloadPage();
           setName("")
           setDateInit("")

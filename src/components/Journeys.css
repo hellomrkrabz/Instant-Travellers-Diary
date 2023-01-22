@@ -99,7 +99,7 @@ margin-top: 20px;
     display: flex;
     justify-content: center;
     flex-direction: row;
-    min-height: 660px;
+    min-height: 560px;
     width: 450px;
     border-radius: 3%;
 
@@ -128,7 +128,7 @@ margin-top: 20px;
     justify-content: center
 }
 
-.form-edit-group {
+.form-edit-group-journey {
   box-sizing: border-box;
   margin-top: 10px;
   padding: 0;
@@ -137,11 +137,11 @@ margin-top: 20px;
   justify-content: center;
 }
 
-.button-edit{
+.button-edit-journey{
     color: white;
     background-color: rgb(59, 41, 127);
     border-radius: 5px;
-    margin-top: 15px;
+    margin-top: 5px;
     padding: 10px;
     width: 150px;
     margin-left: 75px;
@@ -182,10 +182,10 @@ margin-top: 20px;
     padding: 10px;
 }
 
-.form-group img{
+.form-edit-group-journey img{
 
-    width: 150px;
-    height: 100px;
+    width: 170px;
+    height: 170px;
 }
 
 .button-create{
