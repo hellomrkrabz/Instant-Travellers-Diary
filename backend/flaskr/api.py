@@ -167,6 +167,7 @@ def add_or_edit_entity(entity_type, action):
             initial_date = data['initial_date']
             end_date = data['end_date']
             relationship_id = data['userId']
+            is_public = data['public'] in ("True", "true")
 
             initial_date = datetime.strptime(initial_date, '%Y-%m-%d')
             end_date = datetime.strptime(end_date, '%Y-%m-%d')
@@ -180,7 +181,8 @@ def add_or_edit_entity(entity_type, action):
                     description=description,
                     initial_date=initial_date,
                     end_date=end_date,
-                    author_id=relationship_id
+                    author_id=relationship_id,
+                    public=is_public
                 )
             elif action == "edit":
                 entity = Journey.query.filter_by(id=data['id']).first()
@@ -188,6 +190,21 @@ def add_or_edit_entity(entity_type, action):
                 entity.description = description
                 entity.initial_date = initial_date
                 entity.end_date = end_date
+                public_changed = (entity.public == is_public)
+                entity.public = is_public
+                if public_changed:
+                    for s in Stage.query.filter_by(
+                        journey_id=entity.get_id()
+                    ):
+                        s.public = is_public
+                        for e in Event.query.filter_by(
+                            stage_id=s.get_id()
+                        ):
+                            e.public = is_public
+                            for vs in VisitedSite.query.filter_by(
+                                event_id=e.get_id()
+                            ):
+                                vs.public = is_public
             else:
                 print(f"[ERROR] :: Unknown action: {action}")
                 return jsonify({'msg': f"Unknown action: {action}"})
@@ -280,45 +297,26 @@ def add_or_edit_entity(entity_type, action):
         elif entity_type == 'site':
             description = data['description']
             relationship_id = data['eventId']
-            journey_id = data['journeyId']
 
-            lat = float(data['lat'])
-            lng = float(data['lng'])
-
-            timestamp = datetime.strptime(timestamp, '%Y-%m-%d')
-
-            # Check if event's stage exists
+            # Check if site's event exists
             exists = db.session.query(
-                db.session.query(Stage).filter_by(
+                db.session.query(Event).filter_by(
                     id=relationship_id
                 ).exists()
             ).scalar()
             if not exists:
-                error = f"Couldn't find a Stage with id {relationship_id}"
+                error = f"Couldn't find an Event with id {relationship_id}"
                 print('[ERROR] ::', error)
                 return jsonify({'msg': error})
 
-            stage = Stage.query.filter_by(id=relationship_id).first()
-            if timestamp.date() != stage.get_timestamp_datetime():
-                timestamp = stage.get_timestamp_datetime()
-
             if action == "add":
-                entity = Event(
-                    name=name,
+                entity = VisitedSite(
                     description=description,
-                    timestamp=timestamp,
-                    journey_id=journey_id,
-                    stage_id=relationship_id,
-                    latitude=lat,
-                    longitude=lng
+                    event_id=relationship_id
                 )
             elif action == "edit":
-                entity = Stage.query.filter_by(id=data['id']).first()
-                entity.name = name
+                entity = VisitedSite.query.filter_by(id=data['id']).first()
                 entity.description = description
-                entity.timestamp = timestamp
-                entity.latitude = lat
-                entity.longitude = lng
             else:
                 print(f"[ERROR] :: Unknown action: {action}")
                 return jsonify({'msg': f"Unknown action: {action}"})
@@ -397,6 +395,8 @@ def delete(entity_type):
             entity = Stage.query.filter_by(id=id).first()
         elif entity_type == 'event':
             entity = Event.query.filter_by(id=id).first()
+        elif entity_type == 'site':
+            entity = VisitedSite.query.filter_by(id=id).first()
         else:
             print(f"[ERROR] :: Unknown entity type: {entity_type}")
             return jsonify({'msg': f"Unknown entity type: {entity_type}"})
