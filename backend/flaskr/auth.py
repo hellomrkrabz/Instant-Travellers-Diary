@@ -66,9 +66,7 @@ def Login():
 
     username = data['username']
     password = data['password']
-
-    print(f"Logging in user {username}...")
-
+    print("[INFO]", f"Logging in user {username}...")
     error = None
 
     user = User.query.filter_by(username=username).first()
@@ -80,7 +78,7 @@ def Login():
     if error is None:
         session.clear()
         session['user_id'] = user.get_id()
-        print(f"user id: {user.get_id()}")
+        print("[INFO]", f"User id: {user.get_id()}")
 
         resp = jsonify({'user_id': user.get_id(), 'msg': 'success'})
 
