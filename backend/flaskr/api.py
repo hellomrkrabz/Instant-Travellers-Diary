@@ -131,7 +131,8 @@ def get_stage_events(stage_id):
         'lat': e.get_lat(),
         'lng': e.get_lng(),
         'public': e.is_public(),
-        'description': e.get_description()
+        'description': e.get_description(),
+        'sites': get_event_sites(e.get_id()).get_json()['sites']
     } for e in events]
 
     return jsonify({'events': events_json})
@@ -205,9 +206,6 @@ def add_or_edit_entity(entity_type, action):
                                 event_id=e.get_id()
                             ):
                                 vs.public = is_public
-            else:
-                print(f"[ERROR] :: Unknown action: {action}")
-                return jsonify({'msg': f"Unknown action: {action}"})
 
         elif entity_type == 'stage':
             name = data['name']
@@ -246,9 +244,6 @@ def add_or_edit_entity(entity_type, action):
                 entity.name = name
                 entity.description = description
                 entity.timestamp = timestamp
-            else:
-                print(f"[ERROR] :: Unknown action: {action}")
-                return jsonify({'msg': f"Unknown action: {action}"})
 
         elif entity_type == 'event':
             name = data['name']
@@ -294,6 +289,7 @@ def add_or_edit_entity(entity_type, action):
                 entity.timestamp = timestamp
                 entity.latitude = lat
                 entity.longitude = lng
+
         elif entity_type == 'site':
             description = data['description']
             relationship_id = data['eventId']
@@ -317,9 +313,6 @@ def add_or_edit_entity(entity_type, action):
             elif action == "edit":
                 entity = VisitedSite.query.filter_by(id=data['id']).first()
                 entity.description = description
-            else:
-                print(f"[ERROR] :: Unknown action: {action}")
-                return jsonify({'msg': f"Unknown action: {action}"})
 
         else:
             print(f"[ERROR] :: Unknown entity type: {entity_type}")
