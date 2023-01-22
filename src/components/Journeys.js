@@ -317,15 +317,17 @@ const EditJourney = (props) => {
     }
   };
 
-  return (<div className="box-create-journey">
-    <div class="card-create-journey">
+  return (
+    <div className="box-edit-journey">
+    <div class="card-edit-journey">
       <div class="card-header">
-        <h3>Editar jornada</h3>
       </div>
       <div class="card-body">
+        <div className="edit-card-header">
+            <h3>Edit Journey</h3>
+        </div>
         <form>
-          
-          <div class="form-group">
+          <div class="form-edit-group">
           {fileUrl == "" ?
             <IconButton onClick={open}>
               <input {...getInputProps()} />
@@ -337,7 +339,8 @@ const EditJourney = (props) => {
             </>
           }
           </div>
-          <div class="form-group">
+
+          <div class="form-edit-group">
             <input
               type="text"
               class="form-control-name"
@@ -347,7 +350,7 @@ const EditJourney = (props) => {
               onChange={(e) => setName(e.target.value)}
             />
           </div>
-          <div class="form-group">
+          <div class="form-edit-group">
             <input
               type="date"
               class="form-control-date"
@@ -356,7 +359,7 @@ const EditJourney = (props) => {
               onChange={(e) => setDateInit(e.target.value)}
             />
           </div>
-          <div class="form-group">
+          <div class="form-edit-group">
             <input
               type="date"
               class="form-control-date"
@@ -365,7 +368,7 @@ const EditJourney = (props) => {
               onChange={(e) => setDateEnd(e.target.value)}
             />
           </div>
-          <div class="form-group">
+          <div class="form-edit-group">
             <textarea
               class="form-control-description"
               id="description"
@@ -376,8 +379,8 @@ const EditJourney = (props) => {
             ></textarea>
           </div>
         </form>
-        <button className="button-create" onClick={editJourney}>Editar Jornada</button>
-        <button className="button-create" onClick={() => {
+        <button className="button-edit" onClick={editJourney}>Editar Jornada</button>
+        <button className="button-edit" onClick={() => {
           setName("")
           setDateInit("")
           setDateEnd("")
@@ -415,8 +418,9 @@ const Journey = (props) => {
 		<button className="button-open" onClick={() => 
 		{
 			var localJourneys=props.journeys;
-		
-			localJourneys[props.journey.id-1].image_path=document.getElementById(props.journey.id).src;
+		    console.log(localJourneys);
+		    console.log(props.journey.id);
+			localJourneys.find((element) => element.name == props.journey.name).image_path=document.getElementById(props.journey.id).src;
 
 			props.setJourneys(localJourneys);
 

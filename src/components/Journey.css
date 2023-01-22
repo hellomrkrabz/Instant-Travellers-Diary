@@ -30,10 +30,31 @@ body{
     width: 200px;
 }
 
-.card-create-journey{
+.card-create-stage{
     border: 2px solid black;
     height: 450px;
     width: 300px;
+    display: flex;
+    justify-content: center;
+}
+
+.box-edit-stage{
+    background-color: white;
+    display: flex;
+    margin-top: 20px;
+    justify-content: center;
+    flex-direction: row;
+    min-height: 500px;
+    width: 450px;
+    border: 2px solid black;
+    border-radius: 3%;
+
+}
+
+.card-edit-stage{
+    border: 2px solid black;
+    height: 550px;
+    width: 450px;
     display: flex;
     justify-content: center;
 }
@@ -43,9 +64,32 @@ text-align: center;
 margin-top: 20px;
 }
 
-.form-group img{
-    width: 30px;
-    height: 30px; 
+.form-edit-group {
+  box-sizing: border-box;
+  margin-top: 10px;
+  padding: 0;
+  font-family: 'PT Sans', sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+.button-edit{
+    color: white;
+    background-color: rgb(59, 41, 127);
+    border-radius: 5px;
+    margin-top: 15px;
+    padding: 10px;
+    width: 150px;
+    margin-left: 75px;
+    height: 40px;
+    border-color: rgba(255, 255, 255, 0);
+    display: flex;
+    justify-content: center;
+}
+
+.form-edit-group img {
+    width: 180px;
+    height: 180px;
 }
 
 .button-create{
@@ -88,6 +132,11 @@ margin-top: 20px;
     
 }
 
+.edit-card-header{
+    font-size:larger;
+    display: flex;
+    justify-content: center;
+}
 
 .button-open{
     color: white;

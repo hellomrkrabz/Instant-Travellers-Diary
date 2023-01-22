@@ -94,6 +94,25 @@ margin-top: 20px;
     min-height: 1000px; 
 }
 
+.box-edit-journey{
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    min-height: 500px;
+    width: 450px;
+    border-radius: 3%;
+
+}
+
+.card-edit-journey{
+    border: 2px solid black;
+    height: 550px;
+    width: 450px;
+    display: flex;
+    justify-content: center;
+}
+
 .box-create-journey.*{
     display: flex;
     justify-content: center;
@@ -109,13 +128,37 @@ margin-top: 20px;
     border-radius: 2%;
     justify-content: center
 }
+
+.form-edit-group {
+  box-sizing: border-box;
+  margin-top: 10px;
+  padding: 0;
+  font-family: 'PT Sans', sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+.button-edit{
+    color: white;
+    background-color: rgb(59, 41, 127);
+    border-radius: 5px;
+    margin-top: 15px;
+    padding: 10px;
+    width: 150px;
+    margin-left: 75px;
+    height: 40px;
+    border-color: rgba(255, 255, 255, 0);
+    display: flex;
+    justify-content: center;
+}
+
 .card-header{
     margin-top: 20px;
     font-size:larger;
 }
 
 .card-body{
-    padding: 20px;
+    padding: 5px;
 }
 .form-group{
     margin-top: 10px;
