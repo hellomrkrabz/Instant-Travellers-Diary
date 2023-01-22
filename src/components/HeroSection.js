@@ -23,9 +23,9 @@ function HeroSection() {
           buttonStyle='btn--primary'
           buttonSize='btn--large'
           onClick={console.log('hey')}
-          path="404"
+          path="/Tutorial"
         >
-          WATCH TRAILER <i className='far fa-play-circle' />
+          ABOUT <i className='far fa-play-circle' />
           
         </Button>
       </div>
