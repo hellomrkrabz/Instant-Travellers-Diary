@@ -99,14 +99,14 @@ margin-top: 20px;
     display: flex;
     justify-content: center;
     flex-direction: row;
-    min-height: 500px;
+    min-height: 660px;
     width: 450px;
     border-radius: 3%;
 
 }
 
 .card-edit-journey{
-    height: 550px;
+    height: 660px;
     width: 450px;
     display: flex;
     justify-content: center;

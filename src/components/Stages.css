@@ -43,7 +43,7 @@ body{
     display: flex;
     justify-content: center;
     flex-direction: row;
-    min-height: 500px;
+    min-height: 630px;
     width: 450px;
     border: 2px solid black;
     border-radius: 3%;
@@ -52,7 +52,7 @@ body{
 
 .card-edit-stage{
     height: 550px;
-    width: 450px;
+    width: 630px;
     display: flex;
     justify-content: center;
 }
