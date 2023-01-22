@@ -379,7 +379,7 @@ const EditJourney = (props) => {
             ></textarea>
           </div>
         </form>
-        <button className="button-edit" onClick={editJourney}>Editar Jornada</button>
+        <button className="button-edit" onClick={editJourney}>Edit Journey</button>
         <button className="button-edit" onClick={() => {
 		  reloadPage();
           setName("")

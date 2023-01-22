@@ -41,7 +41,6 @@ body{
 .box-edit-stage{
     background-color: white;
     display: flex;
-    margin-top: 20px;
     justify-content: center;
     flex-direction: row;
     min-height: 500px;
@@ -52,7 +51,6 @@ body{
 }
 
 .card-edit-stage{
-    border: 2px solid black;
     height: 550px;
     width: 450px;
     display: flex;
