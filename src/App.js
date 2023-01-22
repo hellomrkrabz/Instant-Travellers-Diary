@@ -3,6 +3,7 @@ import Navbar from './components/Navbar';
 import {  BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import Home from'./components/pages/Home';
 import Register from './components/Register';
+import Tutorial from './components/Tutorial';
 import Login from './components/Login';
 import Profile from './components/Profile';
 import EditProfile from './components/EditProfile';
@@ -59,6 +60,7 @@ function App() {
 			<Switch>
 					<Route path="/" exact component={Home}/>
 					<Route path="/Register" exact component={Register}/>
+					<Route path="/Tutorial" exact component={Tutorial}/>
 					<Route path="/Login" exact component={Login}/>
 					<Route path="*" exact component={NoPage1}/>
 			</Switch>
