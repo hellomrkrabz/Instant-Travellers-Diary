@@ -323,6 +323,8 @@ def add_or_edit_entity(entity_type, action):
             lat = float(data['lat'])
             lng = float(data['lng'])
 
+            cost = float(data['price'])
+
             timestamp = datetime.strptime(timestamp, '%Y-%m-%d')
 
             # Check if event's stage exists
@@ -348,7 +350,8 @@ def add_or_edit_entity(entity_type, action):
                     journey_id=journey_id,
                     stage_id=relationship_id,
                     latitude=lat,
-                    longitude=lng
+                    longitude=lng,
+                    cost=cost
                 )
             elif action == "edit":
                 entity = Event.query.filter_by(id=data['id']).first()
@@ -357,11 +360,11 @@ def add_or_edit_entity(entity_type, action):
                 entity.timestamp = timestamp
                 entity.latitude = lat
                 entity.longitude = lng
+                entity.cost = cost
 
         elif entity_type == 'site':
             description = data['description']
             relationship_id = data['eventId']
-            cost = float(data['cost'])
 
             # Check if site's event exists
             exists = db.session.query(
@@ -378,12 +381,10 @@ def add_or_edit_entity(entity_type, action):
                 entity = VisitedSite(
                     description=description,
                     event_id=relationship_id,
-                    cost=cost
                 )
             elif action == "edit":
                 entity = VisitedSite.query.filter_by(id=data['id']).first()
                 entity.description = description
-                entity.cost = cost
 
         else:
             print(f"[ERROR] :: Unknown entity type: {entity_type}")
