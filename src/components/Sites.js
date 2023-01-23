@@ -44,21 +44,6 @@ function setCoords(lat, lng)
 	document.getElementById("lng").value=lng;
 }
 
-function setCookie(eventID)
-{
-	var days =1;
-	var name='event_id';
-	var date, expires;
-    if (days) {
-        date = new Date();
-        date.setTime(date.getTime()+(days*24*60*60*1000));
-        expires = "; expires=" + date.toGMTString();
-            }else{
-        expires = "";
-    }
-    document.cookie = name + "=" + eventID + expires + "; path=/";
-}
-
 function handleUploadImage(res)//res jest odpowiedzią od backa z id
 {
     const IDCookie = document

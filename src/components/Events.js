@@ -47,7 +47,7 @@ function setCoords(lat, lng)
 	document.getElementById("lng").value=lng;
 }
 
-function setCookie(stageID)
+function setCookie()
 {
 	var days =1;
 	var name='stage_id';
@@ -59,7 +59,7 @@ function setCookie(stageID)
             }else{
         expires = "";
     }
-    document.cookie = name + "=" + stageID + expires + "; path=/";
+    document.cookie = name + "=" + getJourneyId() + expires + "; path=/";
 }
 
 function getIDCookie() {
@@ -262,7 +262,7 @@ const EventComponent = (props) => {
         <h4 className="price-event">{props.event.price}</h4>
 
         <Link to={`/Sites/${props.event.id}`}>
-            <button className="button-open" onClick={setCookie(getJourneyId)}>OPEN</button>
+            <button className="button-open" onClick={setCookie}>OPEN</button>
         </Link>
     
 
@@ -330,7 +330,7 @@ const EventComponent = (props) => {
                             <span className="text-description">{props.event.description}</span>
                         </div>
                         <Link to={`/Sites/${props.event.id}`}>
-                            <button className="button-open" onClick={setCookie(getJourneyId)}>OPEN</button>
+                            <button className="button-open" onClick={setCookie}>OPEN</button>
                         </Link>
                     </div>
             </>
@@ -530,7 +530,7 @@ const Event = (props) => {
   
 useEffect(() => {
     (async () => {
-      const res = await fetch("http://localhost:3000/api/Events/"+getJourneyIdOld());//+"/"+id)//retrive
+      const res = await fetch("http://localhost:3000/api/Events/"+id);//+"/"+id)//retrive
 	  	  	  
 		var imgs;
 			  
