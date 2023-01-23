@@ -14,6 +14,8 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import setCSS from "./setCSS"
+import Popup from 'reactjs-popup';
+import Map from "./GoogleMapsStages";
 
 var globalStages=[0];
 var img;
@@ -36,6 +38,12 @@ function changeImgs(imgs)
 		list[i].childNodes[1].setAttribute('id',imgs.imgsIds[i]);
 	}
 	
+}
+
+function setCoords(lat, lng)
+{
+  document.getElementById("lat").value=lat;
+  document.getElementById("lng").value=lng;
 }
 
 function setCookie()
@@ -475,6 +483,24 @@ if (authorID == getIDCookie()) {
       {createStage == false ? 
       <>
       <button className="button-add" onClick={() => setCreateStage(1)}>ADD STAGE</button>
+      <Popup trigger={<button className="button-add">SHOW ON MAP</button>}
+                 position="right center"
+                 modal
+                 nested
+          >
+            {close => (
+                <div className="modal">
+                    <button className="close" onClick={close}>
+                        &times;
+                    </button>
+                    <div className="header"> Locations in stage
+                    </div>
+      <div id="box-create-map">
+      <Map ids={getJourneyId()} />
+      </div>
+                </div>
+            )}
+      </Popup>
       <Link to={`/Journeys`}>
       <button className="button-add" onClick={() => setCreateStage(1)}>GO BACK</button>
       </Link>

@@ -91,7 +91,6 @@ def get_user_all_event_ids(user_id):
 
     return jsonify({'ids': ids_json})
 
-
 @bp.route('/Stages/<journey_id>', methods=['GET'])
 def get_journey_stages(journey_id):
     journey = Journey.query.filter_by(id=journey_id).first()
