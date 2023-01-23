@@ -17,6 +17,8 @@ import setCSS from "./setCSS"
 
 var globalStages=[0];
 var img;
+var isPublic = false;
+var authorID ='';
 
 
 function reloadPage()
@@ -49,6 +51,14 @@ function setCookie(journeyID)
         expires = "";
     }
     document.cookie = name + "=" + journeyID + expires + "; path=/";
+}
+
+function getIDCookie() {
+    const IDCookie = document
+        .cookie
+        .split('; ')
+        .find((row) => row.startsWith('user_id='))?.split('=')[1];
+    return IDCookie;
 }
 
 function handleUploadImage(res)
@@ -293,70 +303,93 @@ const EditStage = (props) => {
 
 const Stage = (props) => {
 	const [edit, setEdit] = useState(false)
-	
-  return (
-	<>
-    {edit == false?
-	
-    <div className="stage">
+	if (authorID == getIDCookie()) {
+        return (
+            <>
+                {edit == false ?
 
-      <h1>{props.stage.name}</h1>
+                    <div className="stage">
 
-      <img id="" src={(globalStages.find(element => element.name==props.stage.name)).image_path} />
+                        <h1>{props.stage.name}</h1>
 
-      <h4 className="date-journey">{props.stage.timestamp}</h4>
-       <div className="box-description">
-      <span className="text-description">{props.stage.description}</span>
-      </div>
-	  <div onClick={setCookie(getJourneyId())}>
-	  <Link to={`/Events/${props.stage.id}`}>
-        <button className="button-open" onclick={setCookie(getJourneyId())}>OPEN</button>
-      </Link>
-	  
-	  <button className="button-open" onClick={()=>
-	  {
-			var localStage={
-				name:props.stage.name,
-				id:props.stage.id,
-				timestamp:props.stage.timestamp,
-				description:props.stage.description,
-				image_path: document.getElementById(props.stage.id).src,
-				events:[],
-			}
+                        <img id="" src={(globalStages.find(element => element.name == props.stage.name)).image_path}/>
 
-			for(var i=0;i<props.globalStages.length;i++)
-			{
-				if(props.globalStages[i].name==localStage.name)
-				{
-					props.globalStages[i]=localStage;
-				}
-			}
-			
-			setEdit(true);
-	  }}>EDIT</button>
-	  
-		<button className="button-open" onClick={()=>
-			{	
-				var information = {
-					id: props.stage.id
-				}
-							
-				fetch("http://localhost:5000/api/stage/delete", {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify(information)//,
-				}).then(setTimeout(reloadPage,500));
-				
-			}
-		}>DELETE</button>
-	  
-	  </div>
-    </div>
-    :
-    <EditStage stage={props.stage} journey={props.journey} setJourney={props.setJourney} setEdit={setEdit} />
+                        <h4 className="date-journey">{props.stage.timestamp}</h4>
+                        <div className="box-description">
+                            <span className="text-description">{props.stage.description}</span>
+                        </div>
+                        <div onClick={setCookie(getJourneyId())}>
+                            <Link to={`/Events/${props.stage.id}`}>
+                                <button className="button-open" onclick={setCookie(getJourneyId())}>OPEN</button>
+                            </Link>
+
+                            <button className="button-open" onClick={() => {
+                                var localStage = {
+                                    name: props.stage.name,
+                                    id: props.stage.id,
+                                    timestamp: props.stage.timestamp,
+                                    description: props.stage.description,
+                                    image_path: document.getElementById(props.stage.id).src,
+                                    events: [],
+                                }
+
+                                for (var i = 0; i < props.globalStages.length; i++) {
+                                    if (props.globalStages[i].name == localStage.name) {
+                                        props.globalStages[i] = localStage;
+                                    }
+                                }
+
+                                setEdit(true);
+                            }}>EDIT
+                            </button>
+
+                            <button className="button-open" onClick={() => {
+                                var information = {
+                                    id: props.stage.id
+                                }
+
+                                fetch("http://localhost:5000/api/stage/delete", {
+                                    method: "POST",
+                                    headers: {"Content-Type": "application/json"},
+                                    body: JSON.stringify(information)//,
+                                }).then(setTimeout(reloadPage, 500));
+
+                            }
+                            }>DELETE
+                            </button>
+
+                        </div>
+                    </div>
+                    :
+                    <EditStage stage={props.stage} journey={props.journey} setJourney={props.setJourney}
+                               setEdit={setEdit}/>
+                }
+            </>
+        );
     }
-    </>
-  );
+    else if (isPublic==true) {
+    return (
+        <>
+                <div className="stage">
+
+                    <h1>{props.stage.name}</h1>
+
+                    <img id="" src={(globalStages.find(element => element.name == props.stage.name)).image_path}/>
+
+                    <h4 className="date-journey">{props.stage.timestamp}</h4>
+                    <div className="box-description">
+                        <span className="text-description">{props.stage.description}</span>
+                    </div>
+                    <div onClick={setCookie(getJourneyId())}>
+                        <Link to={`/Events/${props.stage.id}`}>
+                            <button className="button-open" onclick={setCookie(getJourneyId())}>OPEN</button>
+                        </Link>
+
+                    </div>
+                </div>
+        </>
+    );
+}
 };
 
 const Journey = () => {
@@ -413,39 +446,74 @@ const Journey = () => {
       setJourney(tmp);
     })();
   }, []);
+ useEffect(() => {
+    (async () => {
+      const res = await fetch("http://localhost:3000/api/journey_info/"+getJourneyId())
+      const resJson = await res.json();
+      isPublic  = resJson.public;
+      authorID = resJson.author_id;
+    })();
+  }, []);
+if (authorID == getIDCookie()) {
+    return (
+        <>
+            {setCSS()}
+            {createStage == false ?
+                <>
+                    <button className="button-add" onClick={() => setCreateStage(1)}>ADD STAGE</button>
+                    <Link to={`/Journeys`}>
+                        <button className="button-add" onClick={() => setCreateStage(1)}>GO BACK</button>
+                    </Link>
+                    <div className="box-stages">
+                        <div className="stages">
+                            <br/>
+                            <Swiper spaceBetween={50}
+                                    slidesPerView={stages.length == 1 ? 1 : stages.length == 2 ? 2 : 3}>
+                                {Array.from(globalStages).map((stage) => (
+                                    <SwiperSlide>
+                                        <Stage stage={stage} globalStages={globalStages}/>
+                                    </SwiperSlide>
+                                ))}
+                            </Swiper>
 
-  return (
-    <>
-    {setCSS()}
-      {createStage == false ? 
-      <>
-      <button className="button-add" onClick={() => setCreateStage(1)}>ADD STAGE</button>
-      <Link to={`/Journeys`}>
-      <button className="button-add" onClick={() => setCreateStage(1)}>GO BACK</button>
-      </Link>
-      <div className="box-stages">
-      <div className="stages">
-      <br/>
-      <Swiper spaceBetween={50} slidesPerView={stages.length == 1 ? 1: stages.length == 2 ? 2: 3 }>
-        {Array.from(globalStages).map((stage) => (
-          <SwiperSlide>
-            <Stage stage={stage} globalStages={globalStages} />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-	  
-		</div>
-		</div>
-      </>
-      :
-      <AddStage setJourney={setJourney} journey={journey} addStage={addStage}/>
-    
-	}
+                        </div>
+                    </div>
+                </>
+                :
+                <AddStage setJourney={setJourney} journey={journey} addStage={addStage}/>
 
-    
-	
-	</>
-  );
+            }
+
+
+        </>
+    );
+}
+else if (isPublic == true) {
+    return (
+        <>
+            {setCSS()}
+                <>
+                    <Link to={`/Journeys`}>
+                        <button className="button-add" onClick={() => setCreateStage(1)}>GO BACK</button>
+                    </Link>
+                    <div className="box-stages">
+                        <div className="stages">
+                            <br/>
+                            <Swiper spaceBetween={50}
+                                    slidesPerView={stages.length == 1 ? 1 : stages.length == 2 ? 2 : 3}>
+                                {Array.from(globalStages).map((stage) => (
+                                    <SwiperSlide>
+                                        <Stage stage={stage} globalStages={globalStages}/>
+                                    </SwiperSlide>
+                                ))}
+                            </Swiper>
+
+                        </div>
+                    </div>
+                </>
+        </>
+    );
+}
 };
 
 export default Journey;

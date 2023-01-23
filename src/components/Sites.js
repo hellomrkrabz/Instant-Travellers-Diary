@@ -20,6 +20,8 @@ import GetJourneyCookie from "./getJourneyCookie";
 
 var globalSites=[0];
 var img;
+var isJourneyPublic = false;
+var authorID ='';
 
 function reloadPage()
 {
@@ -57,6 +59,14 @@ function setCookie(eventID)
         expires = "";
     }
     document.cookie = name + "=" + eventID + expires + "; path=/";
+}
+
+function getIDCookie() {
+    const IDCookie = document
+        .cookie
+        .split('; ')
+        .find((row) => row.startsWith('user_id='))?.split('=')[1];
+    return IDCookie;
 }
 
 function handleUploadImage(res)//res jest odpowiedzią od backa z id
@@ -324,59 +334,70 @@ const SiteComponent = (props) => {//mapa z 1 pinem(+edycja), koszty , wysyłanie
 	const [edit, setEdit] = useState(false)
 
 	console.log(props);
+if (authorID == getIDCookie()) {
+    return (
+        <>
+            {edit == false ?
 
-	return (
-	<>
-    {edit == false?
-	
-    <div className="site">
-		<div>
-		<img id="" src={(globalSites.find(element => element.name==props.site.name)).image_path} />	
-		<span className="text-description">{props.site.description}</span>
-		</div>
-	  <button className="button-open" onClick={()=>
-	  {
-		  
-			const localSite = {
-				description: props.site.description,
-				image_path: document.getElementById(props.site.id).src,
-				id: props.site.id,
-			  };
+                <div className="site">
+                    <div>
+                        <img id="" src={(globalSites.find(element => element.name == props.site.name)).image_path}/>
+                        <span className="text-description">{props.site.description}</span>
+                    </div>
+                    <button className="button-open" onClick={() => {
 
-			for(var i=0;i<props.globalSites.length;i++)
-			{
-				if(props.globalSites[i].id==localSite.id)
-				{
-					props.globalSites[i]=localSite;
-				}
-			}
-					
-			setEdit(true);
-	  }}>EDIT</button>
-	  
-		<button className="button-open" onClick={()=>
-				{	
-				
-					var information = {
-						id: props.site.id
-					}					
-								
-					fetch("http://localhost:5000/api/site/delete", {
-						method: "POST",
-						headers: { "Content-Type": "application/json" },
-						body: JSON.stringify(information)//,
-					}).then(setTimeout(reloadPage,500));
-					
-				}
-			}>DELETE</button>
-			
-	  
-    </div>
-    :
-    <EditSite site={props.site} event={props.event} setEvent={props.setEvent} setEdit={setEdit} />
-    }
-    </>
-  );
+                        const localSite = {
+                            description: props.site.description,
+                            image_path: document.getElementById(props.site.id).src,
+                            id: props.site.id,
+                        };
+
+                        for (var i = 0; i < props.globalSites.length; i++) {
+                            if (props.globalSites[i].id == localSite.id) {
+                                props.globalSites[i] = localSite;
+                            }
+                        }
+
+                        setEdit(true);
+                    }}>EDIT
+                    </button>
+
+                    <button className="button-open" onClick={() => {
+
+                        var information = {
+                            id: props.site.id
+                        }
+
+                        fetch("http://localhost:5000/api/site/delete", {
+                            method: "POST",
+                            headers: {"Content-Type": "application/json"},
+                            body: JSON.stringify(information)//,
+                        }).then(setTimeout(reloadPage, 500));
+
+                    }
+                    }>DELETE
+                    </button>
+
+
+                </div>
+                :
+                <EditSite site={props.site} event={props.event} setEvent={props.setEvent} setEdit={setEdit}/>
+            }
+        </>
+    );
+}
+else if (isJourneyPublic == true) {
+    return (
+        <>
+                <div className="site">
+                    <div>
+                        <img id="" src={(globalSites.find(element => element.name == props.site.name)).image_path}/>
+                        <span className="text-description">{props.site.description}</span>
+                    </div>
+                </div>
+        </>
+    );
+}
 }
 
 const Site = (props) => {
@@ -432,7 +453,17 @@ useEffect(() => {
       setEvent(tmp);
     })();
   }, []);
-  
+
+ useEffect(() => {
+    (async () => {
+      const res = await fetch("http://localhost:3000/api/journey_info/"+getJourneyId())
+      const resJson = await res.json();
+      isJourneyPublic  = resJson.public;
+      authorID = resJson.author_id;
+    })();
+  }, []);
+
+if (authorID == getIDCookie()) {
   return (
     <>
     {setCSS()}
@@ -465,6 +496,32 @@ useEffect(() => {
 
     </>
   );
+}
+else if(isJourneyPublic == true) {
+  return (
+    <>
+    {setCSS()}
+      <>
+		  <Link to={`/Events/`+GetJourneyCookie()}>
+			<button className="button-add">GO BACK</button>
+		  </Link>
+		  <div className="box-events">
+			  <div className="events">
+				  <br/>
+				  <Swiper spaceBetween={50} slidesPerView={sites.length == 1 ? 1: sites.length == 2 ? 2: 3 }>
+					{Array.from(globalSites).map((site) => (
+					  <SwiperSlide>
+						<SiteComponent site={site} globalSites={globalSites}/>
+					  </SwiperSlide>
+					))}
+				  </Swiper>
+
+				</div>
+			</div>
+      </>
+    </>
+  );
+}
 };
 
 export default Site;

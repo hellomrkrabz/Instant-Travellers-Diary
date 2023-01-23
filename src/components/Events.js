@@ -20,6 +20,8 @@ import GetJourneyCookie from "./getJourneyCookie";
 
 var globalEvents=[0];
 var img;
+var isJourneyPublic = false;
+var authorID ='';
 
 function reloadPage()
 {
@@ -57,6 +59,14 @@ function setCookie(stageID)
         expires = "";
     }
     document.cookie = name + "=" + stageID + expires + "; path=/";
+}
+
+function getIDCookie() {
+    const IDCookie = document
+        .cookie
+        .split('; ')
+        .find((row) => row.startsWith('user_id='))?.split('=')[1];
+    return IDCookie;
 }
 
 function handleUploadImage(res)
@@ -338,74 +348,90 @@ const EventComponent = (props) => {
 	const [edit, setEdit] = useState(false)
 
 	console.log(props.event.id);
+	if (authorID == getIDCookie()) {
+        return (
+            <>
+                {edit == false ?
 
-	return (
-	<>
-    {edit == false?
-	
-    <div className="event">
-      <h1>{props.event.name}</h1>
-      <img id="" src={(globalEvents.find(element => element.name==props.event.name)).image_path} />
-      <h4>{props.event.date}</h4>
-	  <h4 className="date-event">{props.event.timestamp}</h4>
-        <div className="box-description">
-      <span className="text-description">{props.event.description}</span>
-        </div>
+                    <div className="event">
+                        <h1>{props.event.name}</h1>
+                        <img id="" src={(globalEvents.find(element => element.name == props.event.name)).image_path}/>
+                        <h4>{props.event.date}</h4>
+                        <h4 className="date-event">{props.event.timestamp}</h4>
+                        <div className="box-description">
+                            <span className="text-description">{props.event.description}</span>
+                        </div>
 
-		<Link to={`/Sites/${props.event.id}`}>
-			<button className="button-open" onClick={setCookie(getJourneyId)}>OPEN</button>
-		</Link>
-	
+                        <Link to={`/Sites/${props.event.id}`}>
+                            <button className="button-open" onClick={setCookie(getJourneyId)}>OPEN</button>
+                        </Link>
 
-	  
-	  <button className="button-open" onClick={()=>
-	  {
-		  
-			const localEvent = {
-				name: props.event.name,
-				timestamp: props.event.timestamp,
-				description: props.event.description,
-				userId: getJourneyId(),
-				journeyId: getJourneyIdOld(),
-				image_path: document.getElementById(props.event.id).src,
-				id: props.event.id,
-				lat: props.event.lat,
-				lng: props.event.lng,
-			  };
 
-			for(var i=0;i<props.globalEvents.length;i++)
-			{
-				if(props.globalEvents[i].name==localEvent.name)
-				{
-					props.globalEvents[i]=localEvent;
-				}
-			}
-						
-			setEdit(true);
-	  }}>EDIT</button>
-	  
-		<button className="button-open" onClick={()=>
-				{	
-					var information = {
-						id: props.ev.id
-					}					
-								
-					fetch("http://localhost:5000/api/event/delete", {
-						method: "POST",
-						headers: { "Content-Type": "application/json" },
-						body: JSON.stringify(information)//,
-					}).then(setTimeout(reloadPage,500));
-					
-				}
-			}>DELETE</button>
-			
-	  
-    </div>
-    :
-    <EditEvent event={props.event} stage={props.stage} setStage={props.setStage} setEdit={setEdit} />
+                        <button className="button-open" onClick={() => {
+                            const localEvent = {
+                                name: props.event.name,
+                                timestamp: props.event.timestamp,
+                                description: props.event.description,
+                                userId: getJourneyId(),
+                                journeyId: getJourneyIdOld(),
+                                image_path: document.getElementById(props.event.id).src,
+                                id: props.event.id,
+                                lat: props.event.lat,
+                                lng: props.event.lng,
+                            };
+
+                            for (var i = 0; i < props.globalEvents.length; i++) {
+                                if (props.globalEvents[i].name == localEvent.name) {
+                                    props.globalEvents[i] = localEvent;
+                                }
+                            }
+
+                            setEdit(true);
+                        }}>EDIT
+                        </button>
+
+                        <button className="button-open" onClick={() => {
+                            var information = {
+                                id: props.ev.id
+                            }
+
+                            fetch("http://localhost:5000/api/event/delete", {
+                                method: "POST",
+                                headers: {"Content-Type": "application/json"},
+                                body: JSON.stringify(information)//,
+                            }).then(setTimeout(reloadPage, 500));
+
+                        }
+                        }>DELETE
+                        </button>
+
+
+                    </div>
+                    :
+                    <EditEvent event={props.event} stage={props.stage} setStage={props.setStage} setEdit={setEdit}/>
+                }
+            </>
+        );
     }
-    </>
-  );
+    else if(isJourneyPublic == true) {
+        return (
+            <>
+
+                    <div className="event">
+                        <h1>{props.event.name}</h1>
+                        <img id="" src={(globalEvents.find(element => element.name == props.event.name)).image_path}/>
+                        <h4>{props.event.date}</h4>
+                        <h4 className="date-event">{props.event.timestamp}</h4>
+                        <div className="box-description">
+                            <span className="text-description">{props.event.description}</span>
+                        </div>
+                        <Link to={`/Sites/${props.event.id}`}>
+                            <button className="button-open" onClick={setCookie(getJourneyId)}>OPEN</button>
+                        </Link>
+                    </div>
+            </>
+        );
+    }
 }
 
 const Event = (props) => {
@@ -472,41 +498,77 @@ useEffect(() => {
   }, []);
   
 console.log(globalEvents);
+ useEffect(() => {
+    (async () => {
+      const res = await fetch("http://localhost:3000/api/journey_info/"+getJourneyId())
+      const resJson = await res.json();
+      isJourneyPublic  = resJson.public;
+      authorID = resJson.author_id;
+    })();
+  }, []);
+if (authorID == getIDCookie()) {
+    return (
+        <>
+            {setCSS()}
+            {createEvent == false ?
+                <>
+                    <button className="button-add" onClick={() => setCreateEvent(1)}>CREATE EVENT</button>
+                    <Link to={`/Stages/` + GetJourneyCookie()}>
+                        <button className="button-add">GO BACK</button>
+                    </Link>
+                    <div className="box-events">
+                        <div className="events">
+                            <br/>
+                            <Swiper spaceBetween={50}
+                                    slidesPerView={events.length == 1 ? 1 : events.length == 2 ? 2 : 3}>
+                                {Array.from(globalEvents).map((event) => (
+                                    <SwiperSlide>
+                                        <EventComponent event={event} globalEvents={globalEvents}/>
+                                    </SwiperSlide>
+                                ))}
+                            </Swiper>
 
-  return (
-    <>
-    {setCSS()}
-      {createEvent == false ? 
-      <>
-		  <button className="button-add" onClick={() => setCreateEvent(1)}>CREATE EVENT</button>
-		  <Link to={`/Stages/`+GetJourneyCookie()}>
-			<button className="button-add">GO BACK</button>
-		  </Link>
-		  <div className="box-events">
-			  <div className="events">
-				  <br/>
-				  <Swiper spaceBetween={50} slidesPerView={events.length == 1 ? 1: events.length == 2 ? 2: 3 }>
-					{Array.from(globalEvents).map((event) => (
-					  <SwiperSlide>
-						<EventComponent event={event} globalEvents={globalEvents}/>
-					  </SwiperSlide>
-					))}
-				  </Swiper>
-				  
-				</div>
-			</div>
-      </>
-      :
-	  <>
-		  <AddEvent setStage={setStage} stage={stage} addEvent={addEvent} />
-		  <div className="box-create-map">
-			<Map setCoords={setCoords} />
-		  </div>
-	  </>
-    }
+                        </div>
+                    </div>
+                </>
+                :
+                <>
+                    <AddEvent setStage={setStage} stage={stage} addEvent={addEvent}/>
+                    <div className="box-create-map">
+                        <Map setCoords={setCoords}/>
+                    </div>
+                </>
+            }
 
-    </>
-  );
+        </>
+    );
+}
+else if (isJourneyPublic == true) {
+    return (
+        <>
+            {setCSS()}
+                <>
+                    <Link to={`/Stages/` + GetJourneyCookie()}>
+                        <button className="button-add">GO BACK</button>
+                    </Link>
+                    <div className="box-events">
+                        <div className="events">
+                            <br/>
+                            <Swiper spaceBetween={50}
+                                    slidesPerView={events.length == 1 ? 1 : events.length == 2 ? 2 : 3}>
+                                {Array.from(globalEvents).map((event) => (
+                                    <SwiperSlide>
+                                        <EventComponent event={event} globalEvents={globalEvents}/>
+                                    </SwiperSlide>
+                                ))}
+                            </Swiper>
+                        </div>
+                    </div>
+                </>
+            }
+        </>
+    );
+}
 };
 
 export default Event;
