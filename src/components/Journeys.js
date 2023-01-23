@@ -235,7 +235,8 @@ const EditJourney = (props) => {
   const [description, setDescription] = useState(props.journey.description);
   const [isPublic, setPublic] = useState(props.journey.public);
   const [files, setFiles] = useState([]);
-  const [fileUrl, setFileUrl] = useState(props.journey.image_path)
+  const [fileUrl, setFileUrl] = useState(props.journey.image_path);
+  const [price, setPrice] = useState(props.journey.price);
 
   const { fileRejections, getRootProps, getInputProps, open } = useDropzone({
     onDropAccepted: setFiles,
@@ -282,7 +283,8 @@ const EditJourney = (props) => {
         picturePath: fileUrl,
 		userId:props.journey.author_id,
 		id: props.journey.id,
-        public: isPublic
+        public: isPublic,
+		price: price,
       };
 	  	  
 	  /*const localJourney = {
@@ -421,6 +423,7 @@ const Journey = (props) => {
       <img src={props.journey.image_path} />
   
       <h4 className="date-journey">{props.journey.initial_date} to {props.journey.end_date}</h4>
+	  <h4 className="price-journey">{props.journey.price}</h4>
       <div className="box-description">
       <span className="text-description">{props.journey.description}</span>
       </div>

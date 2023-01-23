@@ -101,6 +101,7 @@ const AddEvent = (props) => {
     const [fileUrl, setFileUrl] = useState("")
     const [lat, setLat] = useState(1);
     const [lng, setLng] = useState(1);
+	const [price, setPrice] = useState(0);
 
     const {fileRejections, getRootProps, getInputProps, open} = useDropzone({
         onDropAccepted: setFiles,
@@ -139,7 +140,8 @@ const AddEvent = (props) => {
                 userId: getJourneyId(),
                 journeyId: getJourneyIdOld(),
                 lat: document.getElementById("lat").value,
-                lng: document.getElementById("lng").value
+                lng: document.getElementById("lng").value,
+				price: price,
             };
 
             events.push(event)
@@ -201,6 +203,15 @@ const AddEvent = (props) => {
 								onChange={(e) => setDescription(e.target.value)}
 							></textarea>
                         </div>
+						<div className="form-group">
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="price"
+                                placeholder="Price"
+                                onChange={(e) => setPrice(e.target.value)}
+                            />
+                        </div>
                         <div className="form-group">
                             <input
                                 type="text"
@@ -239,6 +250,7 @@ const EditEvent = (props) => {
   const [description, setDescription] = useState(props.event.description);
   const [files, setFiles] = useState([]);
   const [fileUrl, setFileUrl] = useState((globalEvents.find((element) => element.name == props.event.name).image_path))
+  const [price, setPrice] = useState(props.event.price);
 
   const { fileRejections, getRootProps, getInputProps, open } = useDropzone({
     onDropAccepted: setFiles,
@@ -282,6 +294,7 @@ const EditEvent = (props) => {
 		id: event.id,
 		lat: event.lat,
 		lng: event.lng,
+		price: event.price,
       };
 	  
 	  console.log(localEvent);
@@ -294,6 +307,7 @@ const EditEvent = (props) => {
     }
   };
 
+console.log(globalEvents);
 
   return (
     <div className="box-edit-event">
@@ -331,6 +345,9 @@ const EditEvent = (props) => {
           <div class="form-edit-group">
             <textarea value={description} onChange={(e) => setDescription(e.target.value)} class="form-control-description" id="description" placeholder="Description" rows="3"></textarea>
           </div>
+		  <div class="form-edit-group">
+            <input value={price} type="text" class="form-control-date" id="price" onChange={(e) => setPrice(e.target.value)}/>
+          </div>
         </div>
         <button className="button-edit" onClick={editEvent}>EDIT EVENT</button>
         <button className="button-edit" onClick={() => {
@@ -348,72 +365,78 @@ const EventComponent = (props) => {
 	const [edit, setEdit] = useState(false)
 
 	console.log(props.event.id);
-	if (authorID == getIDCookie()) {
-        return (
-            <>
-                {edit == false ?
+	
+if (authorID == getIDCookie()) {
+	return (
+	<>
+    {edit == false?
+	
+    <div className="event">
+      <h1>{props.event.name}</h1>
+      <img id="" src={(globalEvents.find(element => element.name==props.event.name)).image_path} />
+      <h4>{props.event.date}</h4>
+	  <h4 className="date-event">{props.event.timestamp}</h4>
+        <div className="box-description">
+      <span className="text-description">{props.event.description}</span>
+        </div>
+		<h4 className="price-event">{props.event.price}</h4>
 
-                    <div className="event">
-                        <h1>{props.event.name}</h1>
-                        <img id="" src={(globalEvents.find(element => element.name == props.event.name)).image_path}/>
-                        <h4>{props.event.date}</h4>
-                        <h4 className="date-event">{props.event.timestamp}</h4>
-                        <div className="box-description">
-                            <span className="text-description">{props.event.description}</span>
-                        </div>
+		<Link to={`/Sites/${props.event.id}`}>
+			<button className="button-open" onClick={setCookie(getJourneyId)}>OPEN</button>
+		</Link>
+	
 
-                        <Link to={`/Sites/${props.event.id}`}>
-                            <button className="button-open" onClick={setCookie(getJourneyId)}>OPEN</button>
-                        </Link>
+	  
+	  <button className="button-open" onClick={()=>
+	  {
+		  
+			const localEvent = {
+				name: props.event.name,
+				timestamp: props.event.timestamp,
+				description: props.event.description,
+				userId: getJourneyId(),
+				journeyId: getJourneyIdOld(),
+				image_path: document.getElementById(props.event.id).src,
+				id: props.event.id,
+				lat: props.event.lat,
+				lng: props.event.lng,
+				price: props.event.price,
+			  };
 
-
-                        <button className="button-open" onClick={() => {
-                            const localEvent = {
-                                name: props.event.name,
-                                timestamp: props.event.timestamp,
-                                description: props.event.description,
-                                userId: getJourneyId(),
-                                journeyId: getJourneyIdOld(),
-                                image_path: document.getElementById(props.event.id).src,
-                                id: props.event.id,
-                                lat: props.event.lat,
-                                lng: props.event.lng,
-                            };
-
-                            for (var i = 0; i < props.globalEvents.length; i++) {
-                                if (props.globalEvents[i].name == localEvent.name) {
-                                    props.globalEvents[i] = localEvent;
-                                }
-                            }
-
-                            setEdit(true);
-                        }}>EDIT
-                        </button>
-
-                        <button className="button-open" onClick={() => {
-                            var information = {
-                                id: props.ev.id
-                            }
-
-                            fetch("http://localhost:5000/api/event/delete", {
-                                method: "POST",
-                                headers: {"Content-Type": "application/json"},
-                                body: JSON.stringify(information)//,
-                            }).then(setTimeout(reloadPage, 500));
-
-                        }
-                        }>DELETE
-                        </button>
-
-
-                    </div>
-                    :
-                    <EditEvent event={props.event} stage={props.stage} setStage={props.setStage} setEdit={setEdit}/>
-                }
-            </>
-        );
+			for(var i=0;i<props.globalEvents.length;i++)
+			{
+				if(props.globalEvents[i].name==localEvent.name)
+				{
+					props.globalEvents[i]=localEvent;
+				}
+			}
+						
+			setEdit(true);
+	  }}>EDIT</button>
+	  
+		<button className="button-open" onClick={()=>
+				{	
+					var information = {
+						id: props.ev.id
+					}					
+								
+					fetch("http://localhost:5000/api/event/delete", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify(information)//,
+					}).then(setTimeout(reloadPage,500));
+					
+				}
+			}>DELETE</button>
+			
+	  
+    </div>
+    :
+    <EditEvent event={props.event} stage={props.stage} setStage={props.setStage} setEdit={setEdit} />
     }
-    else if(isJourneyPublic == true) {
+    </>
+	);
+}else if(isJourneyPublic == true) {
         return (
             <>
 
@@ -422,6 +445,7 @@ const EventComponent = (props) => {
                         <img id="" src={(globalEvents.find(element => element.name == props.event.name)).image_path}/>
                         <h4>{props.event.date}</h4>
                         <h4 className="date-event">{props.event.timestamp}</h4>
+						<h4 className="price-event">{props.event.price}</h4>
                         <div className="box-description">
                             <span className="text-description">{props.event.description}</span>
                         </div>
@@ -498,7 +522,8 @@ useEffect(() => {
   }, []);
   
 console.log(globalEvents);
- useEffect(() => {
+
+useEffect(() => {
     (async () => {
       const res = await fetch("http://localhost:3000/api/journey_info/"+getJourneyId())
       const resJson = await res.json();
@@ -506,44 +531,44 @@ console.log(globalEvents);
       authorID = resJson.author_id;
     })();
   }, []);
+  
 if (authorID == getIDCookie()) {
-    return (
-        <>
-            {setCSS()}
-            {createEvent == false ?
-                <>
-                    <button className="button-add" onClick={() => setCreateEvent(1)}>CREATE EVENT</button>
-                    <Link to={`/Stages/` + GetJourneyCookie()}>
-                        <button className="button-add">GO BACK</button>
-                    </Link>
-                    <div className="box-events">
-                        <div className="events">
-                            <br/>
-                            <Swiper spaceBetween={50}
-                                    slidesPerView={events.length == 1 ? 1 : events.length == 2 ? 2 : 3}>
-                                {Array.from(globalEvents).map((event) => (
-                                    <SwiperSlide>
-                                        <EventComponent event={event} globalEvents={globalEvents}/>
-                                    </SwiperSlide>
-                                ))}
-                            </Swiper>
 
-                        </div>
-                    </div>
-                </>
-                :
-                <>
-                    <AddEvent setStage={setStage} stage={stage} addEvent={addEvent}/>
-                    <div className="box-create-map">
-                        <Map setCoords={setCoords}/>
-                    </div>
-                </>
-            }
+  return (
+    <>
+    {setCSS()}
+      {createEvent == false ? 
+      <>
+		  <button className="button-add" onClick={() => setCreateEvent(1)}>CREATE EVENT</button>
+		  <Link to={`/Stages/`+GetJourneyCookie()}>
+			<button className="button-add">GO BACK</button>
+		  </Link>
+		  <div className="box-events">
+			  <div className="events">
+				  <br/>
+				  <Swiper spaceBetween={50} slidesPerView={events.length == 1 ? 1: events.length == 2 ? 2: 3 }>
+					{Array.from(globalEvents).map((event) => (
+					  <SwiperSlide>
+						<EventComponent event={event} globalEvents={globalEvents}/>
+					  </SwiperSlide>
+					))}
+				  </Swiper>
+				  
+				</div>
+			</div>
+      </>
+      :
+	  <>
+		  <AddEvent setStage={setStage} stage={stage} addEvent={addEvent} />
+		  <div className="box-create-map">
+			<Map setCoords={setCoords} />
+		  </div>
+	  </>
+    }
 
-        </>
-    );
-}
-else if (isJourneyPublic == true) {
+    </>
+  );
+}else if (isJourneyPublic == true) {
     return (
         <>
             {setCSS()}

@@ -131,6 +131,16 @@ margin-top: 20px;
     border-radius: 5px;
     
 }
+
+.price-stage{
+    margin-top: 10px;
+    margin-right: 20px;
+    font-size: 13px;
+    text-align: right;
+    color: rgba(53, 48, 48, 0.9);
+    
+}
+
 .text-description{
     margin-left: 20px;
     color: rgb(51, 51, 58);

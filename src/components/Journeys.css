@@ -57,6 +57,15 @@ margin-top: 20px;
     
 }
 
+.price-journey{
+    margin-top: 10px;
+    margin-right: 20px;
+    font-size: 13px;
+    text-align: right;
+    color: rgba(53, 48, 48, 0.9);
+    
+}
+
 .box-description{
     margin-top: 20px;
     margin-left: 25px;

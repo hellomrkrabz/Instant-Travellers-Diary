@@ -58,6 +58,7 @@ def get_user_journeys(user_id):
         'end_date': j.get_end_date(),
         'image_path': 'najn',
         'public': j.is_public(),
+        'price': '50 Groszy',
         'description': j.get_description()
     } for j in journeys]
 
@@ -105,6 +106,7 @@ def get_journey_stages(journey_id):
         'timestamp': s.get_timestamp(),
         'description': s.get_description(),
         'public': s.is_public(),
+        'price': '50 Groszy',
         'events': get_stage_events(
             s.get_id()
         ).get_json()['events']
@@ -132,7 +134,8 @@ def get_stage_events(stage_id):
         'lng': e.get_lng(),
         'public': e.is_public(),
         'description': e.get_description(),
-        'sites': get_event_sites(e.get_id()).get_json()['sites']
+        'sites': get_event_sites(e.get_id()).get_json()['sites'],
+        'price': '50 Groszy'
     } for e in events]
 
     return jsonify({'events': events_json})
