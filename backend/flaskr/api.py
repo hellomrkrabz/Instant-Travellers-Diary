@@ -58,7 +58,7 @@ def get_user_journeys(user_id):
         'end_date': j.get_end_date(),
         'image_path': 'najn',
         'public': j.is_public(),
-        'price': '50 Groszy',
+        'price': get_journey_cost(j.get_id()).get_json()['cost'],
         'description': j.get_description()
     } for j in journeys]
 
@@ -106,7 +106,9 @@ def get_journey_stages(journey_id):
         'timestamp': s.get_timestamp(),
         'description': s.get_description(),
         'public': s.is_public(),
-        'price': '50 Groszy',
+        'price': get_stage_cost(
+            s.get_id()
+        ).get_json()['cost'],
         'events': get_stage_events(
             s.get_id()
         ).get_json()['events']
@@ -126,6 +128,7 @@ def get_stage_events(stage_id):
     events = Event.query.filter_by(
         stage_id=stage.get_id()
     ).all()
+
     events_json = [{
         'id': e.get_id(),
         'name': e.get_name(),
@@ -135,10 +138,63 @@ def get_stage_events(stage_id):
         'public': e.is_public(),
         'description': e.get_description(),
         'sites': get_event_sites(e.get_id()).get_json()['sites'],
-        'price': '50 Groszy'
+        'price': get_event_cost(e.get_id()).get_json()['cost']
     } for e in events]
 
     return jsonify({'events': events_json})
+
+
+@bp.route('/Sites/<site_id>/cost', methods=['GET'])
+def get_site_cost(site_id):
+    site = VisitedSite.query.filter_by(id=site_id).first()
+    if site is not None:
+        return jsonify({
+            'cost': site.get_cost()
+        })
+    return jsonify({'msg': 'Specified site does not exist'})
+
+
+@bp.route('/Event/<event_id>/cost', methods=['GET'])
+def get_event_cost(event_id):
+    cost = 0.0
+
+    sites = VisitedSite.query.filter_by(event_id=event_id).all()
+    for site in sites:
+        cost += float(site.get_cost())
+
+    return jsonify({
+        'cost': cost
+    })
+
+
+@bp.route('/Stage/<stage_id>/cost', methods=['GET'])
+def get_stage_cost(stage_id):
+    cost = 0.0
+
+    events = Event.query.filter_by(stage_id=stage_id).all()
+    for event in events:
+        cost += float(
+            get_event_cost(event.get_id()).get_json()['cost']
+        )
+
+    return jsonify({
+        'cost': cost
+    })
+
+
+@bp.route('/Journey/<journey_id>/cost', methods=['GET'])
+def get_journey_cost(journey_id):
+    cost = 0.0
+
+    stages = Stage.query.filter_by(journey_id=journey_id).all()
+    for stage in stages:
+        cost += float(
+            get_stage_cost(stage.get_id()).get_json()['cost']
+        )
+
+    return jsonify({
+        'cost': cost
+    })
 
 
 @bp.route('/Sites/<event_id>', methods=['GET'])
@@ -152,7 +208,8 @@ def get_event_sites(event_id):
     sites_json = [{
         'id': s.get_id(),
         'description': s.get_description(),
-        'public': s.is_public()
+        'public': s.is_public(),
+        'cost': s.cost()
     } for s in sites]
 
     return jsonify({'sites': sites_json})
@@ -295,6 +352,7 @@ def add_or_edit_entity(entity_type, action):
         elif entity_type == 'site':
             description = data['description']
             relationship_id = data['eventId']
+            cost = float(data['cost'])
 
             # Check if site's event exists
             exists = db.session.query(
@@ -310,11 +368,13 @@ def add_or_edit_entity(entity_type, action):
             if action == "add":
                 entity = VisitedSite(
                     description=description,
-                    event_id=relationship_id
+                    event_id=relationship_id,
+                    cost=cost
                 )
             elif action == "edit":
                 entity = VisitedSite.query.filter_by(id=data['id']).first()
                 entity.description = description
+                entity.cost = cost
 
         else:
             print(f"[ERROR] :: Unknown entity type: {entity_type}")
