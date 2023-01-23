@@ -21,27 +21,41 @@ body{
     left: 50%;
 }
 
-.stages-slide{
-    width: 600px;
-    background-color: red;
+.box-edit-site{
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    min-height: 400px;
+    width: 450px;
+    border: 2px solid black;
+    border-radius: 3%;
+
+}
+
+.card-edit-site{
+    height: 500px;
+    width: 630px;
+    display: flex;
+    justify-content: center;
+}
+
+.form-edit-group-site {
+  box-sizing: border-box;
+  margin-top: 10px;
+  padding: 0;
+  font-family: 'PT Sans', sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+.form-edit-group-site img {
+    width: 180px;
+    height: 180px;
 }
 
 .slider-test{
     width: 200px;
-}
-
-.box-create-stage{
-    display: flex;
-    margin-top: 50px;
-    justify-content: center;
-    flex-direction: row;
-}
-
-.box-create-stage.*{
-    display: flex;
-    justify-content: center;
-    break-before: always;
-    justify-content: center;
 }
 
 .box-create-map{
@@ -52,74 +66,8 @@ body{
     width: 100%;
 }
 
-.card-create-stage{
-    border: 2px solid black;
-    height: 450px;
-    width: 300px;
-    display: flex;
-    justify-content: center;
-}
-
-.box-edit-event{
-    background-color: white;
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-    min-height: 850px;
-    width: 450px;
-    border: 2px solid black;
-    border-radius: 3%;
-
-}
-
-.card-edit-event{
-    height: 665px;
-    width: 450px;
-    display: flex;
-    justify-content: center;
-}
-
-.title-event{
-text-align: center;
-margin-top: 20px;
-}
-
-.button-edit{
-    color: white;
-    background-color: rgb(59, 41, 127);
-    border-radius: 5px;
-    margin-top: 15px;
-    padding: 10px;
-    width: 150px;
-    margin-left: 75px;
-    height: 40px;
-    border-color: rgba(255, 255, 255, 0);
-    display: flex;
-    justify-content: center;
-}
-
-
-.date-event{
-    margin-top: 10px;
-    margin-right: 20px;
-    font-size: 10px;
-    text-align: right;
-    color: rgba(53, 48, 48, 0.65);
-
-}
-
-
 .edit-card-body{
     padding: 20px;
-}
-
-.form-edit-group {
-  box-sizing: border-box;
-  margin-top: 10px;
-  padding: 10px;
-  font-family: 'PT Sans', sans-serif;
-  display: flex;
-  justify-content: center;
 }
 
 .edit-card-header{
@@ -142,12 +90,6 @@ margin-top: 20px;
     justify-content: center;
 }
 
-.form-edit-group img {
-    width: 180px;
-    height: 180px;
-}
-
-
 .form-group img{
     width: 30px;
     height: 30px;
@@ -159,21 +101,6 @@ margin-top: 20px;
     display: flex;
     justify-content: center;
     border-color: rgba(255, 255, 255, 0);
-}
-
-.box-events{
-
-    width: 100%;
-    height: 100%;
-    margin-left: 50px;
-    margin-right: 50px;
-    margin-top: 30px;
-}
-
-.events {
-    display: flex;
-    flex-direction: row;
-    min-height: 100%;
 }
 
 .box-description{

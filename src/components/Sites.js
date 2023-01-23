@@ -227,14 +227,14 @@ const EditSite = (props) => {
 
 
   return (
-    <div className="box-create-stage">
-    <div class="card-create-stage">
-      <div class="card-header">
-        <h3>Edit Site</h3>
-      </div>
-      <div class="card-body">
+    <div className="box-edit-site">
+    <div class="card-edit-site">
+      <div class="edit-card-body">
+          <div className="edit-card-header">
+              <h3>Edit Site</h3>
+          </div>
         <div>
-        <div class="form-group">
+        <div class="form-edit-group-site">
           {fileUrl == "" ?
             <IconButton onClick={open}>
               <input {...getInputProps()} />
@@ -247,12 +247,12 @@ const EditSite = (props) => {
           }
           </div>
           
-          <div class="form-group">
+          <div class="form-edit-group-site">
             <textarea value={description} onChange={(e) => setDescription(e.target.value)} class="form-control-description" id="description" placeholder="Description" rows="3"></textarea>
           </div>
         </div>
-        <button className="button-create" onClick={editSite}>EDIT SITE</button>
-        <button className="button-create" onClick={() => {
+        <button className="button-edit" onClick={editSite}>EDIT SITE</button>
+        <button className="button-edit" onClick={() => {
 		  reloadPage();
           props.setEdit(false)
         }}>BACK</button>
