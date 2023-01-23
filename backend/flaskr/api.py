@@ -214,6 +214,25 @@ def get_event_sites(event_id):
 
     return jsonify({'sites': sites_json})
 
+@bp.route('/Event/<event_id>', methods=['GET'])
+def get_event(event_id):
+    event = Event.query.filter_by(id=event_id).first()
+    if event is None:
+        return jsonify({'msg': 'Specified event does not exist'})
+    event_json = {
+        'id': event.get_id(),
+        'name': event.get_name(),
+        'timestamp': event.get_timestamp(),
+        'lat': event.get_lat(),
+        'lng': event.get_lng(),
+        'public': event.is_public(),
+        'description': event.get_description(),
+        'sites': get_event_sites(event.get_id()).get_json()['sites'],
+        'price': '50 Groszy'
+    } 
+
+    return event_json
+
 
 @bp.route('/<entity_type>/<action>', methods=['POST'])
 def add_or_edit_entity(entity_type, action):

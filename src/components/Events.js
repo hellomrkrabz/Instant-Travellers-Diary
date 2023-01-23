@@ -19,6 +19,7 @@ import axios from "axios";
 import setCSS from "./setCSS";
 import GetJourneyCookie from "./getJourneyCookie";
 
+
 var globalEvents=[0];
 var img;
 var isJourneyPublic = false;
