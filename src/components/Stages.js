@@ -462,19 +462,16 @@ const Journey = () => {
 	  var imagePaths=setImgs('stage').then(text=>{
 			changeImgs(text);
 		});
+		
+		const res1 = await fetch("http://localhost:3000/api/journey_info/"+getJourneyId())
+      const resJson1 = await res1.json();
+      isPublic  = resJson1.public;
+      authorID = resJson1.author_id;
 	  
       setJourney(tmp);
     })();
   }, []);
   
-   useEffect(() => {
-    (async () => {
-      const res = await fetch("http://localhost:3000/api/journey_info/"+getJourneyId())
-      const resJson = await res.json();
-      isPublic  = resJson.public;
-      authorID = resJson.author_id;
-    })();
-  }, []);
 if (authorID == getIDCookie()) {
 
   return (

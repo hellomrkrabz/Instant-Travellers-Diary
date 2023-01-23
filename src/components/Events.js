@@ -564,22 +564,16 @@ useEffect(() => {
 	  var imagePaths=setImgs(eventId).then(text=>{
 			changeImgs(text);
 		});
+		
+		const res1 = await fetch("http://localhost:3000/api/journey_info/"+getJourneyId())
+      const resJson1 = await res1.json();
+      isJourneyPublic  = resJson1.public;
+      authorID = resJson1.author_id;
 	  
       setStage(tmp);
     })();
   }, []);
-  
-console.log(globalEvents);
 
-useEffect(() => {
-    (async () => {
-      const res = await fetch("http://localhost:3000/api/journey_info/"+getJourneyId())
-      const resJson = await res.json();
-      isJourneyPublic  = resJson.public;
-      authorID = resJson.author_id;
-    })();
-  }, []);
-  
 if (authorID == getIDCookie()) {
 
   return (
