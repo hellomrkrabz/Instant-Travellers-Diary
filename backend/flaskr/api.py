@@ -285,7 +285,7 @@ def add_or_edit_entity(entity_type, action):
                     longitude=lng
                 )
             elif action == "edit":
-                entity = Stage.query.filter_by(id=data['id']).first()
+                entity = Event.query.filter_by(id=data['id']).first()
                 entity.name = name
                 entity.description = description
                 entity.timestamp = timestamp
