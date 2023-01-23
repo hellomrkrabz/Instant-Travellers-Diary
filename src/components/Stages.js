@@ -38,7 +38,7 @@ function changeImgs(imgs)
 	
 }
 
-function setCookie(journeyID)
+function setCookie()
 {
 	var days =1;
 	var name='journey_id';
@@ -50,7 +50,7 @@ function setCookie(journeyID)
             }else{
         expires = "";
     }
-    document.cookie = name + "=" + journeyID + expires + "; path=/";
+    document.cookie = name + "=" + getJourneyId() + expires + "; path=/";
 }
 
 function getIDCookie() {
@@ -326,9 +326,9 @@ const Stage = (props) => {
       </div>
 	  
 	  
-	  <div onClick={setCookie(getJourneyId())}>
+	  <div >
 	  <Link to={`/Events/${props.stage.id}`}>
-        <button className="button-open" onclick={setCookie(getJourneyId())}>OPEN</button>
+        <button className="button-open" onClick={setCookie}>OPEN</button>
       </Link>
 	  
 	  <button className="button-open" onClick={()=>
@@ -390,9 +390,9 @@ const Stage = (props) => {
                     <div className="box-description">
                         <span className="text-description">{props.stage.description}</span>
                     </div>
-                    <div onClick={setCookie(getJourneyId())}>
+                    <div>
                         <Link to={`/Events/${props.stage.id}`}>
-                            <button className="button-open" onclick={setCookie(getJourneyId())}>OPEN</button>
+                            <button className="button-open" onClick={setCookie}>OPEN</button>
                         </Link>
 
                     </div>

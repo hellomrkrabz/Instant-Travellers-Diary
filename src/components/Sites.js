@@ -17,7 +17,10 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import setCSS from "./setCSS";
 import GetJourneyCookie from "./getJourneyCookie";
+import GoogleMapsWith1Pin from "./GoogleMaps1Pin";
+import Popup from 'reactjs-popup';
 
+var globalEvent;
 var globalSites=[0];
 var img;
 
@@ -42,21 +45,6 @@ function setCoords(lat, lng)
 {
 	document.getElementById("lat").value=lat;
 	document.getElementById("lng").value=lng;
-}
-
-function setCookie(eventID)
-{
-	var days =1;
-	var name='event_id';
-	var date, expires;
-    if (days) {
-        date = new Date();
-        date.setTime(date.getTime()+(days*24*60*60*1000));
-        expires = "; expires=" + date.toGMTString();
-            }else{
-        expires = "";
-    }
-    document.cookie = name + "=" + eventID + expires + "; path=/";
 }
 
 function handleUploadImage(res)//res jest odpowiedzią od backa z id
@@ -391,13 +379,13 @@ const Site = (props) => {
         sites: [],
       });
 	  
+
 	var [sites,setSites]=useState([]);
 
   const [createSite, setCreateSite] = useState(false)
 
 	var {resJ} = [];
-
-  const addSite = () => {
+  	const addSite = () => {
     setCreateSite(0);
   };
   
@@ -428,7 +416,6 @@ useEffect(() => {
 	  var imagePaths=setImgs(siteId).then(text=>{//dodać setImgsInSites
 			changeImgs(text);
 		});
-	  
       setEvent(tmp);
     })();
   }, []);
@@ -439,6 +426,24 @@ useEffect(() => {
       {createSite == false ? 
       <>
 		  <button className="button-add" onClick={() => setCreateSite(1)}>CREATE SITE</button>
+		  <Popup trigger={<button className="button-add">SHOW ON MAP</button>}
+                 position="right center"
+                 modal
+                 nested
+          >
+            {close => (
+                <div className="modal">
+                    <button className="close" onClick={close}>
+                        &times;
+                    </button>
+                    <div className="header"> Location of the event
+                    </div>
+	  		<div id="box-create-map">
+      		<GoogleMapsWith1Pin id={getJourneyId()}/>
+      		</div>
+                </div>
+            )}
+          </Popup>
 		  <Link to={`/Events/`+GetJourneyCookie()}>
 			<button className="button-add">GO BACK</button>
 		  </Link>
