@@ -108,6 +108,15 @@ margin-top: 20px;
 
 }
 
+.price-event{
+    margin-top: 10px;
+    margin-right: 20px;
+    font-size: 15px;
+    text-align: right;
+    color: rgba(53, 48, 48, 0.9);
+    
+}
+
 
 .edit-card-body{
     padding: 20px;

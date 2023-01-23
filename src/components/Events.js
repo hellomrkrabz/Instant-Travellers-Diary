@@ -21,6 +21,8 @@ import GetJourneyCookie from "./getJourneyCookie";
 
 var globalEvents=[0];
 var img;
+var isJourneyPublic = false;
+var authorID ='';
 
 function reloadPage()
 {
@@ -60,6 +62,14 @@ function setCookie(stageID)
     document.cookie = name + "=" + stageID + expires + "; path=/";
 }
 
+function getIDCookie() {
+    const IDCookie = document
+        .cookie
+        .split('; ')
+        .find((row) => row.startsWith('user_id='))?.split('=')[1];
+    return IDCookie;
+}
+
 function handleUploadImage(res)
 {
     console.log(getJourneyId());
@@ -92,6 +102,7 @@ const AddEvent = (props) => {
     const [fileUrl, setFileUrl] = useState("")
     const [lat, setLat] = useState(1);
     const [lng, setLng] = useState(1);
+	const [price, setPrice] = useState(0);
 
     const {fileRejections, getRootProps, getInputProps, open} = useDropzone({
         onDropAccepted: setFiles,
@@ -130,7 +141,8 @@ const AddEvent = (props) => {
                 userId: getJourneyId(),
                 journeyId: getJourneyIdOld(),
                 lat: document.getElementById("lat").value,
-                lng: document.getElementById("lng").value
+                lng: document.getElementById("lng").value,
+				price: price,
             };
 
             events.push(event)
@@ -192,6 +204,15 @@ const AddEvent = (props) => {
 								onChange={(e) => setDescription(e.target.value)}
 							></textarea>
                         </div>
+						<div className="form-group">
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="price"
+                                placeholder="Price"
+                                onChange={(e) => setPrice(e.target.value)}
+                            />
+                        </div>
                         <div className="form-group">
                             <input
                                 type="text"
@@ -231,9 +252,11 @@ const EditEvent = (props) => {
   const [date, setDate] = useState((globalEvents.find((element) => element.name == props.event.name).timestamp));
   const [description, setDescription] = useState(props.event.description);
   const [files, setFiles] = useState([]);
-  const [fileUrl, setFileUrl] = useState((globalEvents.find((element) => element.name == props.event.name).image_path));
   const [lat, setLat] = useState((globalEvents.find((element) => element.name == props.event.name).lat));
   const [lng, setLng] = useState((globalEvents.find((element) => element.name == props.event.name).lng));
+  const [fileUrl, setFileUrl] = useState((globalEvents.find((element) => element.name == props.event.name).image_path))
+  const [price, setPrice] = useState(props.event.price);
+
 
   const { fileRejections, getRootProps, getInputProps, open } = useDropzone({
     onDropAccepted: setFiles,
@@ -276,6 +299,7 @@ const EditEvent = (props) => {
 		id: event.id,
 		lat: document.getElementById("lat").value,
         lng: document.getElementById("lng").value
+		price: event.price,
       };
 	  
 		
@@ -287,6 +311,7 @@ const EditEvent = (props) => {
     }
   };
 
+console.log(globalEvents);
 
   return (
     <div className="box-edit-event">
@@ -366,6 +391,8 @@ const EditEvent = (props) => {
                 </div>
             )}
           </Popup>
+		  <div class="form-edit-group">
+            <input value={price} type="text" class="form-control-date" id="price" onChange={(e) => setPrice(e.target.value)}/>
           </div>
         </div>
         <button className="button-edit" onClick={editEvent}>EDIT EVENT</button>
@@ -384,7 +411,8 @@ const EventComponent = (props) => {
 	const [edit, setEdit] = useState(false)
 
 	console.log(props.event.id);
-
+	
+if (authorID == getIDCookie()) {
 	return (
 	<>
     {edit == false?
@@ -397,6 +425,7 @@ const EventComponent = (props) => {
         <div className="box-description">
       <span className="text-description">{props.event.description}</span>
         </div>
+		<h4 className="price-event">{props.event.price}</h4>
 
 		<Link to={`/Sites/${props.event.id}`}>
 			<button className="button-open" onClick={setCookie(getJourneyId)}>OPEN</button>
@@ -417,6 +446,7 @@ const EventComponent = (props) => {
 				id: props.event.id,
 				lat: props.event.lat,
 				lng: props.event.lng,
+				price: props.event.price,
 			  };
 
 			for(var i=0;i<props.globalEvents.length;i++)
@@ -451,7 +481,27 @@ const EventComponent = (props) => {
     <EditEvent event={props.event} stage={props.stage} setStage={props.setStage} setEdit={setEdit} />
     }
     </>
-  );
+	);
+}else if(isJourneyPublic == true) {
+        return (
+            <>
+
+                    <div className="event">
+                        <h1>{props.event.name}</h1>
+                        <img id="" src={(globalEvents.find(element => element.name == props.event.name)).image_path}/>
+                        <h4>{props.event.date}</h4>
+                        <h4 className="date-event">{props.event.timestamp}</h4>
+						<h4 className="price-event">{props.event.price}</h4>
+                        <div className="box-description">
+                            <span className="text-description">{props.event.description}</span>
+                        </div>
+                        <Link to={`/Sites/${props.event.id}`}>
+                            <button className="button-open" onClick={setCookie(getJourneyId)}>OPEN</button>
+                        </Link>
+                    </div>
+            </>
+        );
+    }
 }
 
 const Event = (props) => {
@@ -519,6 +569,17 @@ useEffect(() => {
   
 console.log(globalEvents);
 
+useEffect(() => {
+    (async () => {
+      const res = await fetch("http://localhost:3000/api/journey_info/"+getJourneyId())
+      const resJson = await res.json();
+      isJourneyPublic  = resJson.public;
+      authorID = resJson.author_id;
+    })();
+  }, []);
+  
+if (authorID == getIDCookie()) {
+
   return (
     <>
     {setCSS()}
@@ -553,6 +614,32 @@ console.log(globalEvents);
 
     </>
   );
+}else if (isJourneyPublic == true) {
+    return (
+        <>
+            {setCSS()}
+                <>
+                    <Link to={`/Stages/` + GetJourneyCookie()}>
+                        <button className="button-add">GO BACK</button>
+                    </Link>
+                    <div className="box-events">
+                        <div className="events">
+                            <br/>
+                            <Swiper spaceBetween={50}
+                                    slidesPerView={events.length == 1 ? 1 : events.length == 2 ? 2 : 3}>
+                                {Array.from(globalEvents).map((event) => (
+                                    <SwiperSlide>
+                                        <EventComponent event={event} globalEvents={globalEvents}/>
+                                    </SwiperSlide>
+                                ))}
+                            </Swiper>
+                        </div>
+                    </div>
+                </>
+            }
+        </>
+    );
+}
 };
 
 export default Event;
