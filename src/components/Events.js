@@ -242,6 +242,101 @@ const AddEvent = (props) => {
     );
 };
 
+const EventComponent = (props) => {
+    
+    const [edit, setEdit] = useState(false);
+    
+    if (authorID == getIDCookie()) {
+    return (
+    <>
+    {edit == false?
+    
+    <div className="event">
+      <h1>{props.event.name}</h1>
+      <img id="" src={(globalEvents.find(element => element.name==props.event.name)).image_path} />
+      <h4>{props.event.date}</h4>
+      <h4 className="date-event">{props.event.timestamp}</h4>
+        <div className="box-description">
+      <span className="text-description">{props.event.description}</span>
+        </div>
+        <h4 className="price-event">{props.event.price}</h4>
+
+        <Link to={`/Sites/${props.event.id}`}>
+            <button className="button-open" onClick={setCookie(getJourneyId)}>OPEN</button>
+        </Link>
+    
+
+      
+      <button className="button-open" onClick={()=>
+      {
+          
+            const localEvent = {
+                name: props.event.name,
+                timestamp: props.event.timestamp,
+                description: props.event.description,
+                userId: getJourneyId(),
+                journeyId: getJourneyIdOld(),
+                image_path: document.getElementById(props.event.id).src,
+                id: props.event.id,
+                lat: props.event.lat,
+                lng: props.event.lng,
+                price: props.event.price,
+              };
+
+            for(var i=0;i<props.globalEvents.length;i++)
+            {
+                if(props.globalEvents[i].name==localEvent.name)
+                {
+                    props.globalEvents[i]=localEvent;
+                }
+            }
+                        
+            setEdit(true);
+      }}>EDIT</button>
+      
+        <button className="button-open" onClick={()=>
+                {   
+                    var information = {
+                        id: props.ev.id
+                    }                   
+                                
+                    fetch("http://localhost:5000/api/event/delete", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(information)//,
+                    }).then(setTimeout(reloadPage,500));
+                    
+                }
+            }>DELETE</button>
+            
+      
+    </div>
+    :
+    <EditEvent event={props.event} stage={props.stage} setStage={props.setStage} setEdit={setEdit} />
+    }
+    </>
+    );
+}else if(isJourneyPublic == true) {
+        return (
+            <>
+
+                    <div className="event">
+                        <h1>{props.event.name}</h1>
+                        <img id="" src={(globalEvents.find(element => element.name == props.event.name)).image_path}/>
+                        <h4>{props.event.date}</h4>
+                        <h4 className="date-event">{props.event.timestamp}</h4>
+                        <h4 className="price-event">{props.event.price}</h4>
+                        <div className="box-description">
+                            <span className="text-description">{props.event.description}</span>
+                        </div>
+                        <Link to={`/Sites/${props.event.id}`}>
+                            <button className="button-open" onClick={setCookie(getJourneyId)}>OPEN</button>
+                        </Link>
+                    </div>
+            </>
+        );
+    }
+}
 
 
 const EditEvent = (props) => {
@@ -254,7 +349,7 @@ const EditEvent = (props) => {
   const [files, setFiles] = useState([]);
   const [lat, setLat] = useState((globalEvents.find((element) => element.name == props.event.name).lat));
   const [lng, setLng] = useState((globalEvents.find((element) => element.name == props.event.name).lng));
-  const [fileUrl, setFileUrl] = useState((globalEvents.find((element) => element.name == props.event.name).image_path))
+  const [fileUrl, setFileUrl] = useState((globalEvents.find((element) => element.name == props.event.name).image_path));
   const [price, setPrice] = useState(props.event.price);
 
 
@@ -298,7 +393,7 @@ const EditEvent = (props) => {
 		journeyId: getJourneyIdOld(),
 		id: event.id,
 		lat: document.getElementById("lat").value,
-        lng: document.getElementById("lng").value
+        lng: document.getElementById("lng").value,
 		price: event.price,
       };
 	  
@@ -349,22 +444,25 @@ console.log(globalEvents);
           <div class="form-edit-group">
             <textarea value={description} onChange={(e) => setDescription(e.target.value)} class="form-control-description" id="description" placeholder="Description" rows="3"></textarea>
           </div>
-          <div className="form-group">
+        <div class="form-edit-group">
+            <input value={price} type="text" class="form-control-date" id="price" onChange={(e) => setPrice(e.target.value)}/>
+          </div>
+          <div className="form-edit-group">
           <input
             value={(globalEvents.find(element => element.name==props.event.name)).lat}
             type="text"
-            className="form-control"
+            className="form-control-date"
             id="lat"
             placeholder="Latitude"
             onChange={(e) => setLat(e.target.value)}
             />
           </div>
 
-          <div className="form-group">
+          <div className="form-edit-group">
           <input
             value={(globalEvents.find(element => element.name==props.event.name)).lng}
             type="text"
-            className="form-control"
+            className="form-control-date"
             id="lng"
             placeholder="Longitude"
             onChange={(e) => setLng(e.target.value)}
@@ -391,118 +489,21 @@ console.log(globalEvents);
                 </div>
             )}
           </Popup>
-		  <div class="form-edit-group">
-            <input value={price} type="text" class="form-control-date" id="price" onChange={(e) => setPrice(e.target.value)}/>
-          </div>
+        </div>
         </div>
         <button className="button-edit" onClick={editEvent}>EDIT EVENT</button>
         <button className="button-edit" onClick={() => {
 		  reloadPage();
-          props.setEdit(false)
+          props.setEdit(false);
         }}>BACK</button>
       </div>
     </div>
     </div>
-	
   );
 };
 
-const EventComponent = (props) => {
-	const [edit, setEdit] = useState(false)
 
-	console.log(props.event.id);
-	
-if (authorID == getIDCookie()) {
-	return (
-	<>
-    {edit == false?
-	
-    <div className="event">
-      <h1>{props.event.name}</h1>
-      <img id="" src={(globalEvents.find(element => element.name==props.event.name)).image_path} />
-      <h4>{props.event.date}</h4>
-	  <h4 className="date-event">{props.event.timestamp}</h4>
-        <div className="box-description">
-      <span className="text-description">{props.event.description}</span>
-        </div>
-		<h4 className="price-event">{props.event.price}</h4>
 
-		<Link to={`/Sites/${props.event.id}`}>
-			<button className="button-open" onClick={setCookie(getJourneyId)}>OPEN</button>
-		</Link>
-	
-
-	  
-	  <button className="button-open" onClick={()=>
-	  {
-		  
-			const localEvent = {
-				name: props.event.name,
-				timestamp: props.event.timestamp,
-				description: props.event.description,
-				userId: getJourneyId(),
-				journeyId: getJourneyIdOld(),
-				image_path: document.getElementById(props.event.id).src,
-				id: props.event.id,
-				lat: props.event.lat,
-				lng: props.event.lng,
-				price: props.event.price,
-			  };
-
-			for(var i=0;i<props.globalEvents.length;i++)
-			{
-				if(props.globalEvents[i].name==localEvent.name)
-				{
-					props.globalEvents[i]=localEvent;
-				}
-			}
-						
-			setEdit(true);
-	  }}>EDIT</button>
-	  
-		<button className="button-open" onClick={()=>
-				{	
-					var information = {
-						id: props.ev.id
-					}					
-								
-					fetch("http://localhost:5000/api/event/delete", {
-						method: "POST",
-						headers: { "Content-Type": "application/json" },
-						body: JSON.stringify(information)//,
-					}).then(setTimeout(reloadPage,500));
-					
-				}
-			}>DELETE</button>
-			
-	  
-    </div>
-    :
-    <EditEvent event={props.event} stage={props.stage} setStage={props.setStage} setEdit={setEdit} />
-    }
-    </>
-	);
-}else if(isJourneyPublic == true) {
-        return (
-            <>
-
-                    <div className="event">
-                        <h1>{props.event.name}</h1>
-                        <img id="" src={(globalEvents.find(element => element.name == props.event.name)).image_path}/>
-                        <h4>{props.event.date}</h4>
-                        <h4 className="date-event">{props.event.timestamp}</h4>
-						<h4 className="price-event">{props.event.price}</h4>
-                        <div className="box-description">
-                            <span className="text-description">{props.event.description}</span>
-                        </div>
-                        <Link to={`/Sites/${props.event.id}`}>
-                            <button className="button-open" onClick={setCookie(getJourneyId)}>OPEN</button>
-                        </Link>
-                    </div>
-            </>
-        );
-    }
-}
 
 const Event = (props) => {
   let { id } = useParams();
