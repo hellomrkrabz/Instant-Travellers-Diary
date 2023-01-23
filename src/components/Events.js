@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import getJourneyId from "./getJourneyIdFromEvents"
 import getJourneyIdOld from "./getJourneyIdv2"
 import Map from "./GoogleMapsWithCoords"
+import Popup from 'reactjs-popup';
 
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -220,6 +221,8 @@ const AddEvent = (props) => {
     );
 };
 
+
+
 const EditEvent = (props) => {
 	
 	console.log(props);
@@ -228,7 +231,9 @@ const EditEvent = (props) => {
   const [date, setDate] = useState((globalEvents.find((element) => element.name == props.event.name).timestamp));
   const [description, setDescription] = useState(props.event.description);
   const [files, setFiles] = useState([]);
-  const [fileUrl, setFileUrl] = useState((globalEvents.find((element) => element.name == props.event.name).image_path))
+  const [fileUrl, setFileUrl] = useState((globalEvents.find((element) => element.name == props.event.name).image_path));
+  const [lat, setLat] = useState((globalEvents.find((element) => element.name == props.event.name).lat));
+  const [lng, setLng] = useState((globalEvents.find((element) => element.name == props.event.name).lng));
 
   const { fileRejections, getRootProps, getInputProps, open } = useDropzone({
     onDropAccepted: setFiles,
@@ -260,7 +265,6 @@ const EditEvent = (props) => {
       
 	  const event = globalEvents.find((element) => element.name == props.event.name)
 	  
-	  console.log(event);
 	  
 	 const localEvent = 
 	 {
@@ -270,11 +274,10 @@ const EditEvent = (props) => {
 		userId: getJourneyId(),
 		journeyId: getJourneyIdOld(),
 		id: event.id,
-		lat: event.lat,
-		lng: event.lng,
+		lat: document.getElementById("lat").value,
+        lng: document.getElementById("lng").value
       };
 	  
-	  console.log(localEvent);
 		
 	 await fetch("http://localhost:3000/api/event/edit",{
         method: "POST",
@@ -320,6 +323,49 @@ const EditEvent = (props) => {
           </div>
           <div class="form-edit-group">
             <textarea value={description} onChange={(e) => setDescription(e.target.value)} class="form-control-description" id="description" placeholder="Description" rows="3"></textarea>
+          </div>
+          <div className="form-group">
+          <input
+            value={(globalEvents.find(element => element.name==props.event.name)).lat}
+            type="text"
+            className="form-control"
+            id="lat"
+            placeholder="Latitude"
+            onChange={(e) => setLat(e.target.value)}
+            />
+          </div>
+
+          <div className="form-group">
+          <input
+            value={(globalEvents.find(element => element.name==props.event.name)).lng}
+            type="text"
+            className="form-control"
+            id="lng"
+            placeholder="Longitude"
+            onChange={(e) => setLng(e.target.value)}
+          />
+          </div>
+          <div>
+            <Popup trigger={<button className="button-edit">EDIT LOCATION</button>}
+                 position="right center"
+                 modal
+                 nested
+                >
+            {close => (
+                <div className="modal">
+                    <button className="close" onClick={close}>
+                        &times;
+                    </button>
+                    <div className="header"> Pick new location
+                    </div>
+                    
+                    <div className="box-create-map">
+                        <Map setCoords={setCoords} />
+                    </div>
+      
+                </div>
+            )}
+          </Popup>
           </div>
         </div>
         <button className="button-edit" onClick={editEvent}>EDIT EVENT</button>

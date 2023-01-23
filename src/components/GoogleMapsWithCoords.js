@@ -45,7 +45,7 @@ const MyMapComponent = compose(
     mapElement: <div style={{ width: `100%`, height: `50%` }} />,
   }), withScriptjs, withGoogleMap)((props) =>
   <GoogleMap
-    defaultZoom={8}
+    defaultZoom={1.5}
     defaultCenter={{ lat: parseFloat(markers[0].lat), lng: parseFloat(markers[0].lng) }}
 	onClick={(e) => {
     console.log("latitude = ", e.latLng.lat());

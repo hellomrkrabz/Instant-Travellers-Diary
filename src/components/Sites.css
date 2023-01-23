@@ -65,7 +65,7 @@ body{
     display: flex;
     justify-content: center;
     flex-direction: row;
-    min-height: 630px;
+    min-height: 700px;
     width: 450px;
     border: 2px solid black;
     border-radius: 3%;
