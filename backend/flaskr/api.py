@@ -187,9 +187,9 @@ def get_journey_cost(journey_id):
     })
 
 
-@bp.route('/Sites/<event_id>', methods=['GET'])
-def get_event_sites(event_id):
-    event = Event.query.filter_by(id=event_id).first()
+@bp.route('/Sites/<site_id>', methods=['GET'])
+def get_event_sites(site_id):
+    event = Event.query.filter_by(id=site_id).first()
     if event is None:
         return jsonify({'msg': 'Specified event does not exist'})
     sites = VisitedSite.query.filter_by(
@@ -199,10 +199,10 @@ def get_event_sites(event_id):
         'id': s.get_id(),
         'description': s.get_description(),
         'public': s.is_public(),
-        'cost': s.cost()
     } for s in sites]
 
     return jsonify({'sites': sites_json})
+
 
 @bp.route('/Event/<event_id>', methods=['GET'])
 def get_event(event_id):
@@ -218,8 +218,8 @@ def get_event(event_id):
         'public': event.is_public(),
         'description': event.get_description(),
         'sites': get_event_sites(event.get_id()).get_json()['sites'],
-        'price': '50 Groszy'
-    } 
+        'cost': event.get_cost()
+    }
 
     return event_json
 
