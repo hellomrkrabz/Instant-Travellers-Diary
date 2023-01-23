@@ -10,10 +10,10 @@ import "./GoogleMaps.css"
 var markers=[];
 
 function assignMarkers(mar){
-  for(var i=0; i<mar.ids.length; i++){
-    markers.push({id: parseFloat(mar.ids[i].id),
-      lat: parseFloat(mar.ids[i].lat),
-      lng: parseFloat(mar.ids[i].lng)
+  for(var i=0; i<mar.events.length; i++){
+    markers.push({id: parseFloat(mar.events[i].id),
+      lat: parseFloat(mar.events[i].lat),
+      lng: parseFloat(mar.events[i].lng)
     });
   }
 }
