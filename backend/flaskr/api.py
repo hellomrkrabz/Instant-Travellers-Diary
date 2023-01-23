@@ -144,27 +144,17 @@ def get_stage_events(stage_id):
     return jsonify({'events': events_json})
 
 
-@bp.route('/Sites/<site_id>/cost', methods=['GET'])
-def get_site_cost(site_id):
-    site = VisitedSite.query.filter_by(id=site_id).first()
-    if site is not None:
-        return jsonify({
-            'cost': site.get_cost()
-        })
-    return jsonify({'msg': 'Specified site does not exist'})
-
-
 @bp.route('/Event/<event_id>/cost', methods=['GET'])
 def get_event_cost(event_id):
-    cost = 0.0
-
-    sites = VisitedSite.query.filter_by(event_id=event_id).all()
-    for site in sites:
-        cost += float(site.get_cost())
-
-    return jsonify({
-        'cost': cost
-    })
+    event = Event.query.filter_by(id=event_id).first()
+    if event is not None:
+        return jsonify({
+            'cost': float(event.get_cost())
+        })
+    else:
+        return jsonify({
+            'cost': 0.0
+        })
 
 
 @bp.route('/Stage/<stage_id>/cost', methods=['GET'])

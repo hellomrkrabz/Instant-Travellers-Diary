@@ -13,6 +13,7 @@ class Event(db.Model):
     latitude = db.Column(db.Float, default=50.2944923)
     longitude = db.Column(db.Float, default=18.6713802)
     public = db.Column(db.Boolean, default=False)
+    cost = db.Column(db.Float, default=0.0)
 
     def __repr__(self):
         return '<Stage %r>' % self.id
@@ -46,3 +47,6 @@ class Event(db.Model):
 
     def is_public(self):
         return self.public
+
+    def get_cost(self):
+        return self.cost

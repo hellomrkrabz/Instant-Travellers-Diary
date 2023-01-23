@@ -7,7 +7,6 @@ class VisitedSite(db.Model):
     description = db.Column(db.Text)
     event_id = db.Column(db.Integer, db.ForeignKey('events.id'))
     public = db.Column(db.Boolean, default=False)
-    cost = db.Column(db.Float, default=0.0)
 
     def __repr__(self):
         return '<Site %r>' % self.id
@@ -23,6 +22,3 @@ class VisitedSite(db.Model):
 
     def is_public(self):
         return self.public
-
-    def get_cost(self):
-        return self.cost
