@@ -467,7 +467,7 @@ const Journey = (props) => {
              type="text"
              className="box-link"
              id="link"
-             placeholder="link"
+             placeholder="  link"
              value={updated}
              readOnly={'readOnly'}
          />
@@ -543,8 +543,10 @@ function Journeys() {
                 </div>
             )}
           </Popup>
-		   <input type="text" onChange={(e)=>{
-			
+		   <input className={"box-search"}
+               type="text"
+               placeholder="  search"
+               onChange={(e)=>{
 			const list=document.getElementsByClassName("journey");
 			
 			for(var i=0;i<list.length;i++)
@@ -569,7 +571,7 @@ function Journeys() {
              {
 				  Array.from(journeys).map((journey) => (
                 <SwiperSlide>
-				
+
                    <Journey  journeys={journeys} setJourneys={setJourneys} journey={journey} />
                 </SwiperSlide>
               ))}
