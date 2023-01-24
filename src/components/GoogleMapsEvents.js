@@ -10,28 +10,26 @@ import "./GoogleMaps.css"
 var markers=[];
 
 function assignMarkers(mar){
-  var ev = mar.stages
+  var ev = mar.events;
   for(var i=0; i<ev.length; i++){
-    for(var j=0; j<ev[i].events.length; j++){
-    markers.push({id: parseFloat(ev[i].events[j].id),
-      lat: parseFloat(ev[i].events[j].lat),
-      lng: parseFloat(ev[i].events[j].lng),
+    markers.push({id: parseFloat(ev[i].id),
+      lat: parseFloat(ev[i].lat),
+      lng: parseFloat(ev[i].lng),
     });
-  }
   }
 }
 
 async function awaiting(id,refresh){ 
-const res = await fetch("http://localhost:3000/api/Stages/" + id)
+const res = await fetch("http://localhost:3000/api/Events/" + id)
   const resJson = await res.json();
   refresh(true);
+  console.log(resJson);
   assignMarkers(resJson);
 }
 
 
 const GoogleMapsStages = (props) => {
 	const [refresh,setRefresh]=useState(false);
-
   awaiting(props.ids,setRefresh);
   //console.log(markers);
 const MyMapComponent = compose(

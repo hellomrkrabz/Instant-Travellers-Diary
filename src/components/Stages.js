@@ -490,7 +490,7 @@ if (authorID == getIDCookie()) {
                     <button className="close" onClick={close}>
                         &times;
                     </button>
-                    <div className="header"> Locations in stage
+                    <div className="header"> Locations in journey
                     </div>
       <div id="box-create-map">
       <Map ids={getJourneyId()} />

@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import getJourneyId from "./getJourneyIdFromEvents"
 import getJourneyIdOld from "./getJourneyIdv2"
 import Map from "./GoogleMapsWithCoords"
+import GoogleMapsEvents from "./GoogleMapsEvents"
 import Popup from 'reactjs-popup';
 
 import { useParams } from "react-router-dom";
@@ -235,7 +236,7 @@ const AddEvent = (props) => {
                         </div>
 
                     </form>
-                    <button className="button-create-event" onClick={createEvent}>CREATE EVENT</button>
+                    <button className="button-create-event" onClick={createEvent}>CREATE EVENT</button>                   
                 </div>
             </div>
         </div>
@@ -582,6 +583,24 @@ if (authorID == getIDCookie()) {
       {createEvent == false ? 
       <>
 		  <button className="button-add" onClick={() => setCreateEvent(1)}>CREATE EVENT</button>
+           <Popup trigger={<button className="button-add">SHOW ON MAP</button>}
+                        position="right center"
+                        modal
+                        nested
+                    >
+                        {close => (
+                        <div className="modal">
+                            <button className="close" onClick={close}>
+                             &times;
+                             </button>
+                            <div className="header"> Locations in stage
+                        </div>
+                        <div id="box-create-map">
+                            <GoogleMapsEvents ids={getJourneyId()} />
+                        </div>
+                        </div>
+                         )}
+          </Popup>
 		  <Link to={`/Stages/`+GetJourneyCookie()}>
 			<button className="button-add">GO BACK</button>
 		  </Link>

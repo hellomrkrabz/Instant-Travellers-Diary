@@ -435,6 +435,9 @@ const Journey = (props) => {
       <Link to={`/Stages/${props.journey.id}`}>
         <button className="button-open">OPEN</button>
       </Link>
+      <Link to={`/Slideshow/${props.journey.id}`}>
+        <button className="button-open">SLIDES</button>
+      </Link>
 
 		<button className="button-open" onClick={() =>
 		{
@@ -524,7 +527,6 @@ function Journeys() {
         <>
           
           <button className="button-add" onClick={() => setCreateJourney(1)}>ADD JOURNEYS</button>
-
           <Popup trigger={<button className="button-add">SHOW ON MAP</button>}
                  position="right center"
                  modal
