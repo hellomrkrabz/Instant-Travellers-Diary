@@ -18,15 +18,17 @@ function assignMarkers(mar){
   }
 }
 
-async function awaiting(){ 
+async function awaiting(refresh){ 
 const res = await fetch("http://localhost:3000/api/EventIds/" + getCookie())
   const resJson = await res.json()
+  refresh(true);
   assignMarkers(resJson);
 }
 
 
 const GoogleMaps = () => {
-  awaiting();
+	const [refresh,setRefresh] =useState(false);
+  awaiting(setRefresh);
   //console.log(markers);
 const MyMapComponent = compose(
   withProps({

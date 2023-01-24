@@ -637,13 +637,6 @@ if (authorID == getIDCookie()) {
                 </>
         </>
     );
-}else
-{
-	return (
-		<>
-			<p4>XD</p4>
-		</>
-	);
 }
 };
 

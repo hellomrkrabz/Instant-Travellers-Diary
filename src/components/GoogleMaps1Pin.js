@@ -16,16 +16,18 @@ function assignMarkers(mar){
     });
 }
 
-async function awaiting(id){ 
+async function awaiting(id,refresh){ 
 const res = await fetch("http://localhost:3000/api/Event/" + id)
   const resJson = await res.json()
+  refresh(true);
   assignMarkers(resJson);
 }
-
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 const GoogleMaps1Pin = (props) => {
-  awaiting(props.id);
-  //console.log(markers);
+	const [refresh,setRefresh]=useState(false);
+  awaiting(props.id,setRefresh);
+  
 const MyMapComponent = compose(
   withProps({
     googleMapURL: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places",
@@ -33,6 +35,8 @@ const MyMapComponent = compose(
     containerElement: <div style={{ height: `1080px` }} />,
     mapElement: <div style={{ width: `100%`, height: `50%` }} />,
   }), withScriptjs, withGoogleMap)((props) =>
+  
+  
   <GoogleMap
     defaultZoom={1.5}
     defaultCenter={{ lat: 0, lng: 0 }}
@@ -46,6 +50,7 @@ const MyMapComponent = compose(
     ))}
   </GoogleMap>
 );
+
 return (
       <>
         <MyMapComponent isMarkerShown />

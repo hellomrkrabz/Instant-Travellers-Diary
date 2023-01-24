@@ -14,22 +14,23 @@ function assignMarkers(mar){
   for(var i=0; i<ev.length; i++){
     markers.push({id: parseFloat(ev[i].id),
       lat: parseFloat(ev[i].lat),
-      lng: parseFloat(ev[i].lng)
+      lng: parseFloat(ev[i].lng),
     });
   }
 }
 
-async function awaiting(id){ 
+async function awaiting(id,refresh){ 
 const res = await fetch("http://localhost:3000/api/Stages/" + id)
   const resJson = await res.json();
-  console.log(resJson);
+  refresh(true);
   assignMarkers(resJson);
 }
 
 
 const GoogleMapsStages = (props) => {
-  console.log(props);
-  awaiting(props.ids);
+	const [refresh,setRefresh]=useState(false);
+
+  awaiting(props.ids,setRefresh);
   //console.log(markers);
 const MyMapComponent = compose(
   withProps({
