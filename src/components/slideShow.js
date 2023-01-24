@@ -28,15 +28,15 @@ SwiperCore.use([EffectCoverflow, Pagination]);
 var globalSites=[0];
 var img;
 
-
 function changeImgs(imgs)
 {
 	var list = document.getElementsByClassName("site");
-	
+
 	for(var i=0;i<imgs.images.length;i++)
 	{
+		console.log(list[i].childNodes[0].childNodes[0]);
 		list[i].childNodes[0].childNodes[0].src=imgs.images[i];
-		list[i].childNodes[0].childNodes[0].setAttribute('id',imgs.imgsIds[i]);
+		list[i].childNodes[0].childNodes[0].setAttribute('id',imgs.ids[i]);
 	}
 	
 }
@@ -78,12 +78,24 @@ const Site = (props) => {
   
 useEffect(() => {
     (async () => {
-      const res = await fetch("http://localhost:3000/api/Sites/"+id); //retrive
-      const resJson = await res.json();
+		var imgs=[];
+	  var ids=[];
+	  
+      const res = await fetch("http://localhost:3000/api/journey/"+id+"/sites"); //retrive
+      const resJson = await res.json().then((r)=>{
+		  console.log(r.sites);
+		  for(var i=0;i<r.sites.length;i++)
+		 {
+			 imgs.push(r.sites[i].image);
+			 ids.push(r.sites[i].id);
+		 }
+		 return r;
+	  });
 
 	  setSites(resJson.sites);
 		globalSites=resJson.sites;
 	  resJ=resJson.sites;
+	  
 	  
 	  var tmp={
         name: "",
@@ -98,11 +110,14 @@ useEffect(() => {
 	  var siteId=[];
 
 	  siteId.push(getJourneyId());
-	
 	  
-	  var imagePaths=setImgs(siteId).then(text=>{
-			changeImgs(text);
-		});
+	  var temporary={
+		  images:imgs,
+		  ids:ids,
+	  }
+
+	  setTimeout(changeImgs,200,temporary);
+
       setEvent(tmp);
     })();
   }, []);
