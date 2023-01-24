@@ -207,7 +207,7 @@ const AddEvent = (props) => {
                         </div>
 						<div className="form-group">
                             <input
-                                type="text"
+                                type="number"
                                 className="form-control"
                                 id="price"
                                 placeholder="Price"
@@ -565,7 +565,7 @@ useEffect(() => {
 			changeImgs(text);
 		});
 		
-		const res1 = await fetch("http://localhost:3000/api/journey_info/"+getJourneyId())
+		const res1 = await fetch("http://localhost:3000/api/journey_info/"+GetJourneyCookie())
       const resJson1 = await res1.json();
       isJourneyPublic  = resJson1.public;
       authorID = resJson1.author_id;
@@ -632,9 +632,15 @@ if (authorID == getIDCookie()) {
                         </div>
                     </div>
                 </>
-            }
         </>
     );
+}else
+{
+	return (
+		<>
+			<p4>XD</p4>
+		</>
+	);
 }
 };
 
