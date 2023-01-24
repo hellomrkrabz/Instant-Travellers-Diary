@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./Sites.css";
 import { useKeenSlider } from "keen-slider/react";
 import { DropzoneOptions, useDropzone } from "react-dropzone";
@@ -319,8 +319,10 @@ const SiteComponent = (props) => {//mapa z 1 pinem(+edycja), koszty , wysyłanie
 	
     <div className="site">
 		<div>
-		<img id="" src={(globalSites.find(element => element.name==props.site.name)).image_path} />	
-		<span className="text-description">{props.site.description}</span>
+		<img id="" src={(globalSites.find(element => element.name==props.site.name)).image_path} />
+        <div className="box-description">
+        <span className="text-description">{props.site.description}</span>
+        </div>
 		</div>
 	  <button className="button-open" onClick={()=>
 	  {
