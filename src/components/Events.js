@@ -160,15 +160,15 @@ const AddEvent = (props) => {
     };
 
 
-    return (<div className="box-create-stage">
-            <div class="card-create-stage">
-                <div class="card-body" style={{backgroundColor: "white"}}>
+    return (<div className="box-create-event">
+            <div class="card-create-event">
+                <div class="card-body-event" style={{backgroundColor: "white"}}>
                     <form>
-                        <div class="form-group">
+                        <div class="form-group-events">
                             {files.length == 0 ?
                                 <IconButton onClick={open}>
                                     <input {...getInputProps()} />
-                                    <CloudUploadIcon sx={{fontSize: 60}}/>
+                                    <CloudUploadIcon sx={{fontSize: 130}}/>
                                 </IconButton>
                                 :
                                 <>
@@ -176,7 +176,7 @@ const AddEvent = (props) => {
 								</>
                             }
                         </div>
-                        <div class="form-group">
+                        <div class="form-group-events">
                             <input
                                 type="text"
                                 class="form-control-name"
@@ -186,7 +186,7 @@ const AddEvent = (props) => {
                                 onChange={(e) => setName(e.target.value)}
                             />
                         </div>
-                        <div class="form-group">
+                        <div class="form-group-events">
                             <input
                                 type="date"
                                 class="form-control-date"
@@ -195,7 +195,7 @@ const AddEvent = (props) => {
                                 onChange={(e) => setDate(e.target.value)}
                             />
                         </div>
-                        <div class="form-group">
+                        <div class="form-group-events">
 							<textarea
 								class="form-control-description"
 								id="description"
@@ -205,7 +205,7 @@ const AddEvent = (props) => {
 								onChange={(e) => setDescription(e.target.value)}
 							></textarea>
                         </div>
-						<div className="form-group">
+						<div className="form-group-events">
                             <input
                                 type="number"
                                 className="form-control"
@@ -214,7 +214,7 @@ const AddEvent = (props) => {
                                 onChange={(e) => setPrice(e.target.value)}
                             />
                         </div>
-                        <div className="form-group">
+                        <div className="form-group-events">
                             <input
                                 type="text"
                                 className="form-control"
@@ -224,7 +224,7 @@ const AddEvent = (props) => {
                             />
                         </div>
 
-                        <div className="form-group">
+                        <div className="form-group-events">
                             <input
                                 type="text"
                                 className="form-control"
@@ -235,7 +235,7 @@ const AddEvent = (props) => {
                         </div>
 
                     </form>
-                    <button className="button-create" onClick={createEvent}>CREATE EVENT</button>
+                    <button className="button-create-event" onClick={createEvent}>CREATE EVENT</button>
                 </div>
             </div>
         </div>
@@ -421,7 +421,7 @@ console.log(globalEvents);
           {fileUrl == "" ?
             <IconButton onClick={open}>
               <input {...getInputProps()} />
-              <CloudUploadIcon sx={{ fontSize: 60 }} />
+              <CloudUploadIcon sx={{ fontSize: 130 }} />
             </IconButton>
             :
             <>
@@ -470,7 +470,7 @@ console.log(globalEvents);
           />
           </div>
           <div>
-            <Popup trigger={<button className="button-edit">EDIT LOCATION</button>}
+            <Popup trigger={<button className="button-edit-event">EDIT LOCATION</button>}
                  position="right center"
                  modal
                  nested
@@ -492,8 +492,8 @@ console.log(globalEvents);
           </Popup>
         </div>
         </div>
-        <button className="button-edit" onClick={editEvent}>EDIT EVENT</button>
-        <button className="button-edit" onClick={() => {
+        <button className="button-edit-event" onClick={editEvent}>EDIT EVENT</button>
+        <button className="button-edit-event" onClick={() => {
 		  reloadPage();
           props.setEdit(false);
         }}>BACK</button>
@@ -601,10 +601,13 @@ if (authorID == getIDCookie()) {
       </>
       :
 	  <>
+          <div className="center">
 		  <AddEvent setStage={setStage} stage={stage} addEvent={addEvent} />
+          </div>
 		  <div className="box-create-map">
 			<Map setCoords={setCoords} />
 		  </div>
+
 	  </>
     }
 

@@ -30,14 +30,18 @@ body{
     width: 200px;
 }
 
-.box-create-stage{
+.box-create-event{
     display: flex;
     margin-top: 50px;
     justify-content: center;
     flex-direction: row;
+    min-height: 460px;
+    background-color: white;
+    width: 400px;
+    border-radius: 3%;
 }
 
-.box-create-stage.*{
+.box-create-event.*{
     display: flex;
     justify-content: center;
     break-before: always;
@@ -52,10 +56,9 @@ body{
     width: 100%;
 }
 
-.card-create-stage{
-    border: 2px solid black;
-    height: 450px;
-    width: 300px;
+.card-create-event{
+    height: 500px;
+    width: 630px;
     display: flex;
     justify-content: center;
 }
@@ -73,7 +76,7 @@ body{
 }
 
 .card-edit-event{
-    height: 800px;
+    height: 700px;
     width: 450px;
     display: flex;
     justify-content: center;
@@ -84,11 +87,11 @@ text-align: center;
 margin-top: 20px;
 }
 
-.button-edit{
+.button-edit-event{
     color: white;
     background-color: rgb(59, 41, 127);
     border-radius: 5px;
-    margin-top: 15px;
+    margin-top: 10px;
     padding: 10px;
     width: 150px;
     margin-left: 75px;
@@ -117,6 +120,10 @@ margin-top: 20px;
     
 }
 
+.card-body-event{
+    padding: 5px;
+}
+
 
 .edit-card-body{
     padding: 20px;
@@ -124,8 +131,8 @@ margin-top: 20px;
 
 .form-edit-group {
   box-sizing: border-box;
-  margin-top: 10px;
-  padding: 10px;
+  margin-top: 5px;
+  padding: 5px;
   font-family: 'PT Sans', sans-serif;
   display: flex;
   justify-content: center;
@@ -137,37 +144,39 @@ margin-top: 20px;
     justify-content: center;
 }
 
-.button-edit{
+
+
+.form-edit-group img {
+    width: 130px;
+    height: 130px;
+}
+
+.form-group-events{
+  box-sizing: border-box;
+  margin-top: 10px;
+  padding: 0;
+  font-family: 'PT Sans', sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+.form-group-events img{
+    width: 130px;
+    height: 130px;
+}
+
+.button-create-event{
     color: white;
     background-color: rgb(59, 41, 127);
     border-radius: 5px;
     margin-top: 15px;
     padding: 10px;
     width: 150px;
-    margin-left: 75px;
+    margin-left: 70px;
     height: 40px;
     border-color: rgba(255, 255, 255, 0);
     display: flex;
     justify-content: center;
-}
-
-.form-edit-group img {
-    width: 180px;
-    height: 180px;
-}
-
-
-.form-group img{
-    width: 30px;
-    height: 30px;
-}
-
-.button-create{
-    color: white;
-    background-color: rgb(59, 41, 127);
-    display: flex;
-    justify-content: center;
-    border-color: rgba(255, 255, 255, 0);
 }
 
 .box-events{

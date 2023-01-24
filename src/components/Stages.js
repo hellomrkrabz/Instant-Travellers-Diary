@@ -151,9 +151,9 @@ const AddStage = (props) => {
 return (
 	<div className="box-create-stage">
     <div class="card-create-stage">
-        <div class="card-body" style={{backgroundColor: "white"}}>
+        <div class="card-body-stage" style={{backgroundColor: "white"}}>
         <form>
-          <div class="form-group">
+          <div class="form-group-stages">
           {files.length == 0 ?
             <IconButton onClick={open}>
               <input {...getInputProps()} />
@@ -165,7 +165,7 @@ return (
             </>
           }
           </div>
-          <div class="form-group">
+          <div class="form-group-stages">
             <input
               type="text"
               class="form-control-name"
@@ -175,7 +175,7 @@ return (
               onChange={(e) => setName(e.target.value)}
            />
           </div>
-          <div class="form-group">
+          <div class="form-group-stages">
             <input
               type="date"
               class="form-control-date"
@@ -184,7 +184,7 @@ return (
               onChange={(e) => setDate(e.target.value)}
            />
            </div>
-          <div class="form-group">
+          <div class="form-group-stages">
             <textarea
               class="form-control-description"
               id="description"
@@ -195,7 +195,7 @@ return (
             ></textarea>
           </div>
         </form>
-        <button className="button-create" onClick={createStage}>CREATE STAGE</button>
+        <button className="button-create-stage" onClick={createStage}>CREATE STAGE</button>
       </div>
     </div>
     </div>
@@ -516,7 +516,9 @@ if (authorID == getIDCookie()) {
 		</div>
       </>
       :
+          <div className="center">
       <AddStage setJourney={setJourney} journey={journey} addStage={addStage}/>
+          </div>
     
 	}
 

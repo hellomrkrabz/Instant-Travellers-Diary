@@ -129,15 +129,15 @@ const AddSite = (props) => {
     };
 
 
-    return (<div className="box-create-stage">
-            <div class="card-create-stage">
-                <div class="card-body" style={{backgroundColor: "white"}}>
+    return (<div className="box-create-site">
+            <div class="card-create-site">
+                <div class="card-body-site" style={{backgroundColor: "white"}}>
                     <form>
-                        <div class="form-group">
+                        <div class="form-group-sites">
                             {files.length == 0 ?
                                 <IconButton onClick={open}>
                                     <input {...getInputProps()} />
-                                    <CloudUploadIcon sx={{fontSize: 60}}/>
+                                    <CloudUploadIcon sx={{fontSize: 150}}/>
                                 </IconButton>
                                 :
                                 <>
@@ -145,7 +145,7 @@ const AddSite = (props) => {
 								</>
                             }
                         </div>
-                        <div class="form-group">
+                        <div class="form-group-sites">
 							<textarea
 								class="form-control-description"
 								id="description"
@@ -156,7 +156,7 @@ const AddSite = (props) => {
 							></textarea>
                         </div>
                     </form>
-                    <button className="button-create" onClick={createSite}>CREATE SITE</button>
+                    <button className="button-create-site" onClick={createSite}>CREATE SITE</button>
                 </div>
             </div>
         </div>
@@ -464,7 +464,9 @@ useEffect(() => {
       </>
       :
 	  <>
+          <div className="center">
 		  <AddSite setEvent={setEvent} event={event} addSite={addSite} />
+          </div>
 	  </>
     }
 
