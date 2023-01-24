@@ -49,8 +49,9 @@ body{
 }
 
 .form-group-sites img{
-    width: 130px;
-    height: 130px;
+    margin-top: 30px;
+    width: 250px;
+    height: 250px;
 }
 
 .box-edit-site{

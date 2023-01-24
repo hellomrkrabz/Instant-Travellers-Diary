@@ -1,28 +1,14 @@
 import { useState, useEffect } from "react";
-import "./Sites.css";
-import { useKeenSlider } from "keen-slider/react";
-import { DropzoneOptions, useDropzone } from "react-dropzone";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { IconButton } from "@mui/material";
-import getJourneyCookie from "./getJourneyCookie"
+import "./SlideShow.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import setImgs from "./setImgsInSites"
 import { Link } from "react-router-dom";
 import getJourneyId from "./getJourneyIdFromSites"
-import getJourneyIdOld from "./getJourneyIdv2"
-import Map from "./GoogleMapsWithCoords"
-
 import { useParams } from "react-router-dom";
-import axios from "axios";
 import setCSS from "./setCSS";
-import GetJourneyCookie from "./getJourneyCookie";
-import GoogleMapsWith1Pin from "./GoogleMaps1Pin";
-import Popup from 'reactjs-popup';
-
-
 import "swiper/swiper.min.css";
 import SwiperCore, { EffectCoverflow, Pagination } from "swiper/core";
+
 SwiperCore.use([EffectCoverflow, Pagination]);
 
 var globalSites=[0];
@@ -30,7 +16,7 @@ var img;
 
 function changeImgs(imgs)
 {
-	var list = document.getElementsByClassName("site");
+	var list = document.getElementsByClassName("slide");
 
 	for(var i=0;i<imgs.images.length;i++)
 	{
@@ -38,7 +24,7 @@ function changeImgs(imgs)
 		list[i].childNodes[0].childNodes[0].src=imgs.images[i];
 		list[i].childNodes[0].childNodes[0].setAttribute('id',imgs.ids[i]);
 	}
-	
+
 }
 
 const SiteComponent = (props) => {
@@ -46,11 +32,11 @@ const SiteComponent = (props) => {
 
 	return (
 	<>
-	
-    <div className="site">
+
+    <div className="slide">
 		<div>
-		<img id="" src={(globalSites.find(element => element.name==props.site.name)).image_path} />	
-		<span className="text-description">{props.site.description}</span>
+		<img id="" src={(globalSites.find(element => element.name==props.site.name)).image_path} />
+		<span className="box-description-slide">{props.site.description}</span>
 		</div>
     </div>
     </>
@@ -68,19 +54,19 @@ const Site = (props) => {
 		userId: "",
         sites: [],
       });
-	  
+
 
 	var [sites,setSites]=useState([]);
 
   const [createSite, setCreateSite] = useState(false)
 
 	var {resJ} = [];
-  
+
 useEffect(() => {
     (async () => {
 		var imgs=[];
 	  var ids=[];
-	  
+
       const res = await fetch("http://localhost:3000/api/journey/"+id+"/sites"); //retrive
       const resJson = await res.json().then((r)=>{
 		  console.log(r.sites);
@@ -95,8 +81,8 @@ useEffect(() => {
 	  setSites(resJson.sites);
 		globalSites=resJson.sites;
 	  resJ=resJson.sites;
-	  
-	  
+
+
 	  var tmp={
         name: "",
         description: "",
@@ -106,11 +92,11 @@ useEffect(() => {
 		userId: "",
         events: resJ
       };
-	  
+
 	  var siteId=[];
 
 	  siteId.push(getJourneyId());
-	  
+
 	  var temporary={
 		  images:imgs,
 		  ids:ids,
@@ -121,7 +107,7 @@ useEffect(() => {
       setEvent(tmp);
     })();
   }, []);
-  
+
   return (
     <>
     {setCSS()}
@@ -130,7 +116,7 @@ useEffect(() => {
 		  <Link to={`/Journeys`}>
 			<button className="button-add">GO BACK</button>
 		  </Link>
-		  
+
 		  <div className="box-events">
 			  <div className="events">
 				  <br/>
@@ -151,7 +137,7 @@ useEffect(() => {
 					  </SwiperSlide>
 					))}
 				  </Swiper>
-				  
+
 				</div>
 			</div>
       </>
