@@ -10,7 +10,7 @@ import EditProfile from './components/EditProfile';
 import Logout from './components/Logout';
 import NoPage1 from './components/NoPage1';
 import NoPage2 from './components/NoPage2';
-import GoogleMaps from './components/GoogleMaps';
+
 
 import { useState, useEffect } from "react";
 import axios, {isCancel, AxiosError} from 'axios';
@@ -19,6 +19,8 @@ import Journeys from './components/Journeys';
 import Stages from './components/Stages';
 import Events from './components/Events';
 import Sites from  './components/Sites';
+import GoogleMaps from './components/GoogleMaps';
+import SlideShow from './components/slideShow';
 
 function App() {
 	
@@ -85,6 +87,7 @@ function App() {
 				  <Route path="/Events/:id" exact component={Events}/>
 				  <Route path="/GoogleMaps" exact component={GoogleMaps}/>
 				  <Route path="/Sites/:id" exact component={Sites}/>
+				  <Route path="/SlideShow/:id" exact component={SlideShow}/>
 				  <Route path="*" exact component={NoPage2}/>
 
 			</Switch>
