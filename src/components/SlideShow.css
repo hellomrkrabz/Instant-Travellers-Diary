@@ -33,15 +33,18 @@ body{
 .box-description-slide{
     margin-top: 20px;
     position: relative;
-    bottom: 600px;
-    left:1430px;
+    bottom: 675px;
+    left:1450px;
     margin-right: 60px;
-    width: 300px;
-    min-height: 100px;
+    width: 225px;
+    //min-height: 100px;
+	height:670px;
     background-color: rgb(239, 238, 244);
     word-wrap: break-word;
     border-radius: 5px;
-
+	display:block;
+	overflow:hidden;
+	text-align:center;
 }
 
 .form-group-sites img{
