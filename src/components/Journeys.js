@@ -148,17 +148,17 @@ const AddJourney = (props) => {
         <div class="card-body" style={{backgroundColor: "white"}}>
         <form>
 
-          <div class="form-group">
+          <div class="form-group-journeys">
           {files.length == 0 ?
             <IconButton onClick={open}>
               <input {...getInputProps()} />
-              <CloudUploadIcon sx={{ fontSize: 60 }} />
+              <CloudUploadIcon sx={{ fontSize: 150 }} />
             </IconButton>
             :
             <img src={fileUrl} />
           }
           </div>
-          <div class="form-group">
+          <div class="form-group-journeys">
             <input
               type="text"
               class="form-control-name"
@@ -168,7 +168,7 @@ const AddJourney = (props) => {
               onChange={(e) => setName(e.target.value)}
             />
           </div>
-          <div class="form-group">
+          <div class="form-group-journeys">
             <input
               type="date"
               class="form-control-date"
@@ -177,7 +177,7 @@ const AddJourney = (props) => {
               onChange={(e) => setDateInit(e.target.value)}
             />
           </div>
-          <div class="form-group">
+          <div class="form-group-journeys">
             <input
               type="date"
               class="form-control-date"
@@ -186,7 +186,7 @@ const AddJourney = (props) => {
               onChange={(e) => setDateEnd(e.target.value)}
             />
           </div>
-          <div class="form-group">
+          <div class="form-group-journeys">
             <textarea
               class="form-control-description"
               id="description"
@@ -197,7 +197,7 @@ const AddJourney = (props) => {
             ></textarea>
           </div>
         </form>
-        <button className="button-create" onClick={createJourney}>CREATE JOURNEY</button>
+        <button className="button-create-journey" onClick={createJourney}>CREATE JOURNEY</button>
       </div>
     </div>
     </div>

@@ -149,15 +149,15 @@ const AddStage = (props) => {
  
 
 return (
-	<div className="box-create-journey">
-    <div class="card-create-journey">
+	<div className="box-create-stage">
+    <div class="card-create-stage">
         <div class="card-body" style={{backgroundColor: "white"}}>
         <form>
           <div class="form-group">
           {files.length == 0 ?
             <IconButton onClick={open}>
               <input {...getInputProps()} />
-              <CloudUploadIcon sx={{ fontSize: 60 }} />
+              <CloudUploadIcon sx={{ fontSize: 150 }} />
             </IconButton>
             :
             <>
