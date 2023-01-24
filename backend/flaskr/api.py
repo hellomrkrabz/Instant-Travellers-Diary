@@ -31,6 +31,27 @@ def get_user_data(u_id):
     })
 
 
+@bp.route('/journey/<j_id>/sites', methods=['GET'])
+def get_journey_site_info(j_id):
+    sites = []
+    j_events = Event.query.filter_by(journey_id=j_id).all()
+    for event in j_events:
+        sites += VisitedSite.query.filter_by(event_id=event.get_id()).all()
+
+    sites_json = [{
+        'id': s.get_id(),
+        'description': s.get_description(),
+        'event_id': s.get_event_id(),
+        'public': s.is_public(),
+        'image': Image.query.filter_by(
+            relationship_id=s.get_id(),
+            type="site"
+        ).first().get_filename()
+    } for s in sites]
+
+    return jsonify({'sites': sites_json})
+
+
 @bp.route('/journey_info/<j_id>', methods=['GET'])
 def get_journey_info(j_id):
     journey = Journey.query.filter_by(id=j_id).first()
@@ -90,6 +111,7 @@ def get_user_all_event_ids(user_id):
     } for e in events]
 
     return jsonify({'ids': ids_json})
+
 
 @bp.route('/Stages/<journey_id>', methods=['GET'])
 def get_journey_stages(journey_id):
