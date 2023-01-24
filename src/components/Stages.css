@@ -3,6 +3,11 @@ body{
 	background-repeat: no-repeat;
 }
 
+.center {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }
 
 .stage,.event {
     background-color: white;
@@ -31,9 +36,8 @@ body{
 }
 
 .card-create-stage{
-    border: 2px solid black;
-    height: 450px;
-    width: 300px;
+    height: 500px;
+    width: 630px;
     display: flex;
     justify-content: center;
 }
@@ -47,7 +51,17 @@ body{
     width: 450px;
     border: 2px solid black;
     border-radius: 3%;
+}
 
+.box-create-stage{
+    display: flex;
+    margin-top: 50px;
+    justify-content: center;
+    flex-direction: row;
+    min-height: 460px;
+    background-color: white;
+    width: 400px;
+    border-radius: 3%;
 }
 
 .card-header-stage{
@@ -55,6 +69,10 @@ body{
     font-size:larger;
     display: flex;
     justify-content: center;
+}
+
+.card-body-stage{
+    padding: 5px;
 }
 
 .card-edit-stage{
@@ -78,6 +96,23 @@ margin-top: 20px;
   justify-content: center;
 }
 
+.form-group-stages{
+  box-sizing: border-box;
+  margin-top: 10px;
+  padding: 0;
+  font-family: 'PT Sans', sans-serif;
+  display: flex;
+  justify-content: center;
+}
+
+.form-group-stages img{
+    margin-top: 10px;
+    height: 150px;
+    width: 150px;
+    display: flex;
+    justify-content: center;
+}
+
 .button-edit-stage{
     color: white;
     background-color: rgb(59, 41, 127);
@@ -97,12 +132,18 @@ margin-top: 20px;
     height: 180px;
 }
 
-.button-create{
+.button-create-stage{
     color: white;
     background-color: rgb(59, 41, 127);
+    border-radius: 5px;
+    margin-top: 15px;
+    padding: 10px;
+    width: 150px;
+    margin-left: 70px;
+    height: 40px;
+    border-color: rgba(255, 255, 255, 0);
     display: flex;
     justify-content: center;
-    border-color: rgba(255, 255, 255, 0);  
 }
 
 .box-stages{
