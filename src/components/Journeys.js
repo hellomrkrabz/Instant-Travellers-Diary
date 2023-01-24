@@ -413,15 +413,19 @@ console.log(typeof isPublic);
 
 const Journey = (props) => {
   const [showStages, setShowStages] = useState(false);
-	const [edit, setEdit] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [updated, setUpdated] = useState('');
 
+  const setLink = () => {
+    setUpdated("http://localhost:3000/Stages/"+props.journey.id);
+  };
   return (
 	<>
-	{edit == false ? 
+	{edit == false ?
     <div className="journey">
       <h1 className="title-journey">{props.journey.name}</h1>
       <img src={props.journey.image_path} />
-  
+
       <h4 className="date-journey">{props.journey.initial_date} to {props.journey.end_date}</h4>
 	  <h4 className="price-journey">{props.journey.price}</h4>
       <div className="box-description">
@@ -431,8 +435,8 @@ const Journey = (props) => {
       <Link to={`/Stages/${props.journey.id}`}>
         <button className="button-open">OPEN</button>
       </Link>
-	  
-		<button className="button-open" onClick={() => 
+
+		<button className="button-open" onClick={() =>
 		{
 			var localJourneys=props.journeys;
 		    console.log(localJourneys);
@@ -443,25 +447,34 @@ const Journey = (props) => {
 
 			setEdit(true)
 		}}>EDIT</button>
-	  
+
 		<button className="button-open" onClick={()=>
-				{	
+				{
 					var information = {
 						id: props.journey.id
 					}
-					
+
 					fetch("http://localhost:5000/api/journey/delete", {
 						method: "POST",
 						headers: { "Content-Type": "application/json" },
 						body: JSON.stringify(information)//,
 					}).then(setTimeout(reloadPage,500));
-					
+
 				}
 			}>DELETE</button>
+          <button className="button-open" onClick={setLink}>SHARE</button>
+         <input
+             type="text"
+             className="box-link"
+             id="link"
+             placeholder="link"
+             value={updated}
+             readOnly={'readOnly'}
+         />
 	  </div>
    </div>
     :
-    <EditJourney 
+    <EditJourney
       setJourneys={props.setJourneys}
       journey={props.journey}
       setEdit={setEdit}
