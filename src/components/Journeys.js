@@ -525,8 +525,6 @@ function Journeys() {
           
           <button className="button-add" onClick={() => setCreateJourney(1)}>ADD JOURNEYS</button>
 
-
-
           <Popup trigger={<button className="button-add">SHOW ON MAP</button>}
                  position="right center"
                  modal
@@ -545,6 +543,25 @@ function Journeys() {
                 </div>
             )}
           </Popup>
+		   <input type="text" onChange={(e)=>{
+			
+			const list=document.getElementsByClassName("journey");
+			
+			for(var i=0;i<list.length;i++)
+			{
+				var input = list[i].children[0].innerHTML;
+				var reg=e.target.value;
+				var result = input.match(reg);
+				
+				if(reg.length>0 && result && result.length>0)
+				{
+					list[i].style.backgroundColor="magenta";
+				}else
+				{
+					list[i].style.backgroundColor="white";
+				}
+			}
+		  }}/>
          
           <div className="box-journeys">
           <div className="journeys">
