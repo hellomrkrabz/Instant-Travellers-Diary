@@ -1,7 +1,5 @@
-import { TextField, Typography } from '@mui/material'
-import { Box, Button } from '@mui/material'
+import { TextField, Typography, Box, Button } from '@mui/material'
 import React from 'react'
-//import { Button } from './Button'
 import './Auth.css'
 
 function Auth() {

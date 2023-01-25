@@ -1,5 +1,4 @@
 function getCookie() {
-	
 	var name='user_id',userId;
 	var i, c, ca, nameEQ = name + "=";
     ca = document.cookie.split(';');
@@ -11,9 +10,7 @@ function getCookie() {
         if (c.indexOf(nameEQ) === 0) {
             userId= c.substring(nameEQ.length,c.length);
         }
-    }
-	
-	
+    }	
 	return userId;
 }
 	
