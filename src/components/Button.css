@@ -1,63 +1,63 @@
 :root {
-    --primary: #fff;
-  }
+  --primary: #fff;
+}
   
-  .btn {
-    padding: 8px 20px;
-    border-radius: 2px;
-    outline: none;
-    border: none;
-    cursor: pointer;
-    margin-top: 15px;
-  }
+.btn {
+  padding: 8px 20px;
+  border-radius: 2px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  margin-top: 15px;
+}
   
-  .btn--primary {
-    background-color: var(--primary);
-    color: #242424;
-    border: 1px solid var(--primary);
-  }
+.btn--primary {
+  background-color: var(--primary);
+  color: #242424;
+  border: 1px solid var(--primary);
+}
   
-  .btn--2 {
-    background-color:rgb(230, 67, 129);
-	color:white;
-    border: 1px solid rgb(230, 67, 129);
-	border-radius:4px;
-	box-shadow:0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
-	transition:background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-  }
-  
-  
-  
-  .btn--outline {
-    background-color: transparent;
-    color: #fff;
-    padding: 8px 20px;
-    border: 1px solid var(--primary);
-    transition: all 0.3s ease-out;
-  }
+.btn--2 {
+  background-color:rgb(230, 67, 129);
+  color:white;
+  border: 1px solid rgb(230, 67, 129);
+  border-radius:4px;
+  box-shadow:0px 3px 1px -2px rgb(0 0 0 / 20%), 0px 2px 2px 0px rgb(0 0 0 / 14%), 0px 1px 5px 0px rgb(0 0 0 / 12%);
+  transition:background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,border-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+}
+
   
   
-  .btn--medium {
-    padding: 8px 20px;
-    font-size: 18px;
-  }
+.btn--outline {
+  background-color: transparent;
+  color: #fff;
+  padding: 8px 20px;
+  border: 1px solid var(--primary);
+  transition: all 0.3s ease-out;
+}
   
-  .btn--large {
-    padding: 12px 26px;
-    font-size: 20px;
-  }
   
-  .btn--large:hover,
-  .btn--medium:hover {
-    transition: all 0.3s ease-out;
-    background: #fff;
-    color: #242424;
-    transition: 250ms;
-  }
+.btn--medium {
+  padding: 8px 20px;
+  font-size: 18px;
+}
   
-  .btn--2:hover {
-	transition: all 0.3s ease-out;
-    background: rgb(230, 67, 129);
-    color: #242424;
-    transition: 250ms;
-  }
+.btn--large {
+  padding: 12px 26px;
+  font-size: 20px;
+}
+  
+.btn--large:hover,
+.btn--medium:hover {
+  transition: all 0.3s ease-out;
+  background: #fff;
+  color: #242424;
+  transition: 250ms;
+}
+  
+.btn--2:hover {
+  transition: all 0.3s ease-out;
+  background: rgb(230, 67, 129);
+  color: #242424;
+  transition: 250ms;
+}

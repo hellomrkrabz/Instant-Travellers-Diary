@@ -1,6 +1,5 @@
-body{
-	//height:1000px;
-	background-repeat: no-repeat;
+body {
+    background-repeat: no-repeat;
 }
 
 
@@ -13,7 +12,7 @@ body{
     padding-bottom: 10px;
 }
 
-.stage img,.event img{
+.stage img,.event img {
     margin-top: 20px;
     margin-left: 25px;
     width: 300px;
@@ -21,16 +20,16 @@ body{
     left: 50%;
 }
 
-.stages-slide{
+.stages-slide {
     width: 600px;
     background-color: red;
 }
 
-.slider-test{
+.slider-test {
     width: 200px;
 }
 
-.box-create-event{
+.box-create-event {
     display: flex;
     margin-top: 50px;
     justify-content: center;
@@ -41,14 +40,14 @@ body{
     border-radius: 3%;
 }
 
-.box-create-event.*{
+.box-create-event.* {
     display: flex;
     justify-content: center;
     break-before: always;
     justify-content: center;
 }
 
-.box-create-map{
+.box-create-map {
     margin-top: 50px;
     justify-content: center;
     flex-direction: row;
@@ -56,14 +55,14 @@ body{
     width: 100%;
 }
 
-.card-create-event{
+.card-create-event {
     height: 500px;
     width: 630px;
     display: flex;
     justify-content: center;
 }
 
-.box-edit-event{
+.box-edit-event {
     background-color: white;
     display: flex;
     justify-content: center;
@@ -72,22 +71,21 @@ body{
     width: 450px;
     border: 2px solid black;
     border-radius: 3%;
-
 }
 
-.card-edit-event{
+.card-edit-event {
     height: 700px;
     width: 450px;
     display: flex;
     justify-content: center;
 }
 
-.title-event{
-text-align: center;
-margin-top: 20px;
+.title-event {
+    text-align: center;
+    margin-top: 20px;
 }
 
-.button-edit-event{
+.button-edit-event {
     color: white;
     background-color: rgb(59, 41, 127);
     border-radius: 5px;
@@ -102,43 +100,41 @@ margin-top: 20px;
 }
 
 
-.date-event{
+.date-event {
     margin-top: 10px;
     margin-right: 20px;
     font-size: 10px;
     text-align: right;
     color: rgba(53, 48, 48, 0.65);
-
 }
 
-.price-event{
+.price-event {
     margin-top: 10px;
     margin-right: 20px;
     font-size: 15px;
     text-align: right;
-    color: rgba(53, 48, 48, 0.9);
-    
+    color: rgba(53, 48, 48, 0.9);   
 }
 
-.card-body-event{
+.card-body-event {
     padding: 5px;
 }
 
 
-.edit-card-body{
+.edit-card-body {
     padding: 20px;
 }
 
 .form-edit-group {
-  box-sizing: border-box;
-  margin-top: 5px;
-  padding: 5px;
-  font-family: 'PT Sans', sans-serif;
-  display: flex;
-  justify-content: center;
+    box-sizing: border-box;
+    margin-top: 5px;
+    padding: 5px;
+    font-family: 'PT Sans', sans-serif;
+    display: flex;
+    justify-content: center;
 }
 
-.edit-card-header{
+.edit-card-header {
     font-size:larger;
     display: flex;
     justify-content: center;
@@ -151,21 +147,21 @@ margin-top: 20px;
     height: 130px;
 }
 
-.form-group-events{
-  box-sizing: border-box;
-  margin-top: 10px;
-  padding: 0;
-  font-family: 'PT Sans', sans-serif;
-  display: flex;
-  justify-content: center;
+.form-group-events {
+    box-sizing: border-box;
+    margin-top: 10px;
+    padding: 0;
+    font-family: 'PT Sans', sans-serif;
+    display: flex;
+    justify-content: center;
 }
 
-.form-group-events img{
+.form-group-events img {
     width: 130px;
     height: 130px;
 }
 
-.button-create-event{
+.button-create-event {
     color: white;
     background-color: rgb(59, 41, 127);
     border-radius: 5px;
@@ -179,8 +175,7 @@ margin-top: 20px;
     justify-content: center;
 }
 
-.box-events{
-
+.box-events {
     width: 100%;
     height: 100%;
     margin-left: 50px;
@@ -194,7 +189,7 @@ margin-top: 20px;
     min-height: 100%;
 }
 
-.box-description{
+.box-description {
     margin-top: 20px;
     margin-left: 25px;
     width: 300px;
@@ -203,16 +198,15 @@ margin-top: 20px;
     background-color: rgb(239, 238, 244);
     word-wrap: break-word;
     border-radius: 5px;
-
 }
-.text-description{
+
+.text-description {
     margin-left: 20px;
     color: rgb(51, 51, 58);
-
 }
 
 
-.button-open{
+.button-open {
     color: white;
     background-color: rgb(59, 41, 127);
     border-radius: 5px;

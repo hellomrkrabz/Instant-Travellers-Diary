@@ -1,18 +1,13 @@
-import { TextField, Typography , TextareaAutosize } from '@mui/material'
-import { Box } from '@mui/material'
+import { TextField, Typography , TextareaAutosize, Box } from '@mui/material'
 import React from 'react'
 import {Button} from './Button'
 import './EditProfile.css'
-//import avatar from './default.png'
-
 import { useState, useEffect } from "react";
 import axios, {isCancel, AxiosError} from 'axios';
-
 import reScale from './func'
 import setAvatar from './setAvatar'
 
-function handleSubmit() {
-	
+function handleSubmit() {	
   const IDCookie = document
   	.cookie
 	.split('; ')
@@ -26,12 +21,11 @@ function handleSubmit() {
     password: document.getElementById("password").value,
 	newPassword: document.getElementById("newPassword").value,
 	bio: document.getElementById("bio").value
-  }).then((response) => { setTimeout(redirect(response.data), 1000)})
+  }).then((response) => {setTimeout(redirect(response.data), 1000)})
     .catch((error) => console.error('[FAIL] :: ' + error))
 }
 
 function redirect(response) {
-	console.log(response)
 	if(response.msg === "User edited successfully") {
 		window.location.href = "/Profile"
 	}
@@ -42,64 +36,8 @@ function redirect(response) {
 
 
 function Profile() {
-
-	const [data, setData] = useState([])
-	
+	const [data, setData] = useState([])	
 	var xhr = new XMLHttpRequest();
-
-	xhr.onreadystatechange = function () {
-		if (this.readyState == 4 && this.status == 200) {
-			var response = this.responseText;
-		
-		var avatarPath, username, email, bio, sB, sE;
-		
-		var res=response.replace(/"/,'d');
-		
-		const obj = JSON.parse(response);
-		res=res.replace(/"/,'d');
-		sB= res.search(/"/);
-		res=res.replace(/"/,'d');
-		sE= res.search(/"/);
-		
-		res=res.replace(/"/,'d');
-		res=res.replace(/"/,'d');
-		res=res.replace(/"/,'d');
-		
-		sB= res.search(/"/);
-		res=res.replace(/"/,'d');
-		sE= res.search(/"/);
-		
-		bio=res.slice(sB+1,sE);
-
-		res=res.replace(/"/,'d');
-		res=res.replace(/"/,'d');
-		res=res.replace(/"/,'d');
-		
-		sB= res.search(/"/);
-		res=res.replace(/"/,'d');
-		sE= res.search(/"/);
-		
-		email=res.slice(sB+1,sE);
-		
-		res=res.replace(/"/,'d');
-		res=res.replace(/"/,'d');
-		res=res.replace(/"/,'d');
-		
-		sB= res.search(/"/);
-		res=res.replace(/"/,'d');
-		sE= res.search(/"/);
-		
-		username=res.slice(sB+1,sE);
-		
-		console.log(avatarPath);
-
-		document.getElementById('username').value=obj.username;
-		document.getElementById('email').value=obj.email;
-		document.getElementById('bio').value=obj.bio;
-		//avatar=setAvatar(avatarPath);
-		document.getElementById('avatar').src=setAvatar(obj.avatar);
-		}
-	};
 
 	function handleUploadImage(ev)
 	{
@@ -107,14 +45,10 @@ function Profile() {
               .cookie
 	          .split('; ')
 	          .find((row) => row.startsWith('user_id='))?.split('=')[1];
-		// console.log("handled");
 
 		let data = new FormData();
 		data.append('file', document.getElementById("image").files[0]);
         data.append('userID', IDCookie)
-		console.log(document.getElementById("image").files[0]);
-		// console.log("=====");
-		// console.log(data);
 
 		axios.post('http://localhost:5000/api/upload/avatar', data).then(response => {
             console.log(response);
@@ -122,7 +56,6 @@ function Profile() {
             console.log(error);
         });
 	}
-
 
 	var name='user_id',userId;
 	var i, c, ca, nameEQ = name + "=";
@@ -137,38 +70,33 @@ function Profile() {
         }
     }
 	let url="http://localhost:5000/api/users/"+userId.toString();
-
 	xhr.open('GET', url, true);
-	xhr.send();
-
-
+	xhr.send();	
 	
-	
-  return (
-
-    <div>
-        <form method="POST" style={{height: reScale()+'px'}}>
-            <Box className='sign-up-form2'>
-				<img id='avatar' height="150px" width="150px"/>
-				<p4>Username:</p4>
-				<TextField margin='normal' id='username' type={'text'} variant='outlined' placeholder='Nick' value={data.nick}/>
-                <p4>email:</p4>
-				<TextField margin='normal' id='email' type={'email'} variant='outlined' placeholder='Email' value={data.email}/>
-				<p4>bio:</p4>
-				<div><TextareaAutosize  margin='normal' id='bio' type={'text'} variant='outlined' minRows="3" placeholder='Bio' value={data.bio}/></div>
-				<p4>New password:</p4>
-				<TextField margin='normal' id='newPassword' type={'password'} variant='outlined' placeholder='New password'/>
-				<p4>Password:</p4>
-				<TextField margin='normal' id='password' type={'password'} variant='outlined' placeholder='Password (required)'/>
-				<p4>Avatar:</p4>
-				<div>
-				<input type="file" name="file" id='image' onChange={handleUploadImage} />
-				</div>
-				<Button onClick={handleSubmit} buttonStyle='btn--2' buttonSize="btn--medium">Save changes</Button>
-            </Box>
-       </form>
-    </div>
-  )
+  	return (
+    	<div>
+        	<form method="POST" style={{height: reScale()+'px'}}>
+            	<Box className='sign-up-form2'>
+					<img id='avatar' height="150px" width="150px"/>
+					<p4>Username:</p4>
+					<TextField margin='normal' id='username' type={'text'} variant='outlined' placeholder='Nick' value={data.nick}/>
+                	<p4>email:</p4>
+					<TextField margin='normal' id='email' type={'email'} variant='outlined' placeholder='Email' value={data.email}/>
+					<p4>bio:</p4>
+					<div><TextareaAutosize  margin='normal' id='bio' type={'text'} variant='outlined' minRows="3" placeholder='Bio' value={data.bio}/></div>
+					<p4>New password:</p4>
+					<TextField margin='normal' id='newPassword' type={'password'} variant='outlined' placeholder='New password'/>
+					<p4>Password:</p4>
+					<TextField margin='normal' id='password' type={'password'} variant='outlined' placeholder='Password (required)'/>
+					<p4>Avatar:</p4>
+					<div>
+						<input type="file" name="file" id='image' onChange={handleUploadImage} />
+					</div>
+					<Button onClick={handleSubmit} buttonStyle='btn--2' buttonSize="btn--medium">Save changes</Button>
+            	</Box>
+       		</form>
+    	</div>
+  	)
 }
 
 export default Profile

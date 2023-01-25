@@ -1,5 +1,4 @@
 function getJourneyCookie() {
-
 	var name='journey_id',journeyId;
 	var i, c, ca, nameEQ = name + "=";
     ca = document.cookie.split(';');
@@ -12,8 +11,6 @@ function getJourneyCookie() {
             journeyId= c.substring(nameEQ.length,c.length);
         }
     }
-
-
 	return journeyId;
 }
 

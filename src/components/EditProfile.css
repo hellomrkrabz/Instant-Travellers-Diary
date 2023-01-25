@@ -1,12 +1,9 @@
-body
-{
+body {
 	background: linear-gradient(150deg, rgb(9, 5, 110) 0%, rgb(46, 43, 43) 100%);
-	background-size: fill;
-	
+    background-size: fill;	
 }
 
-.sign-up-form2{
-    
+.sign-up-form2 { 
     display: flex;
     flex-direction: column;
     max-width: 800px;
@@ -22,31 +19,12 @@ body
 	height:80%;
 }
 
-.sign-up-form2>*
-{
+.sign-up-form2>* {
 	position:relative;
 	top:200px;
 }
 
-
-.typography{
+.typography {
     padding: 10px;
     text-align: center;
-    
-
 }
-
-
-/*
-
-sx= {{":hover": {
-boxShadow: "10px 10px 10px #ccc"
-}}}
-
-display={"flex"} 
-            flexDirection={"column"} 
-            maxWidth={400} 
-            alignContent={"center"} 
-            justifyContent={"center"}
-            margin="auto"
-*/
