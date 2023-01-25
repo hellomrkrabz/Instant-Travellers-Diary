@@ -11,18 +11,14 @@ import SwiperCore, { EffectCoverflow, Pagination } from "swiper/core";
 
 SwiperCore.use([EffectCoverflow, Pagination]);
 
-var globalSites=[0];
-var img;
+var globalSites = [0];
 
-function changeImgs(imgs)
-{
+function changeImgs(imgs) {
 	var list = document.getElementsByClassName("slide");
 
-	for(var i=0;i<imgs.images.length;i++)
-	{
-		console.log(list[i].childNodes[0].childNodes[0]);
-		list[i].childNodes[0].childNodes[0].src=imgs.images[i];
-		list[i].childNodes[0].childNodes[0].setAttribute('id',imgs.ids[i]);
+	for(var i = 0; i < imgs.images.length; i++) {
+		list[i].childNodes[0].childNodes[0].src = imgs.images[i];
+		list[i].childNodes[0].childNodes[0].setAttribute('id', imgs.ids[i]);
 	}
 
 }
@@ -31,118 +27,118 @@ const SiteComponent = (props) => {
 	const [edit, setEdit] = useState(false)
 
 	return (
-	<>
-
-    <div className="slide">
+		<>
+		<div className = "slide">
 		<div>
-		<img id="" src={(globalSites.find(element => element.name==props.site.name)).image_path} />
-		<span className="box-description-slide">{props.site.description}</span>
+		<img id = ""
+		src = {
+			(globalSites.find(element => element.name == props.site.name)).image_path }/>
+		<span className = "box-description-slide" > { props.site.description } </span>
 		</div>
-    </div>
-    </>
-  );
+		</div>
+		</>
+	);
 }
 
 const Site = (props) => {
-  let { id } = useParams();
+	let { id } = useParams();
 
-  var [event, setEvent] = useState({
-        name: "",
-        description: "",
-        timestamp: "",
-        picturePath: "",
+	var [event, setEvent] = useState({
+		name: "",
+		description: "",
+		timestamp: "",
+		picturePath: "",
 		userId: "",
-        sites: [],
-      });
+		sites: [],
+	});
 
+	var [sites, setSites] = useState([]);
 
-	var [sites,setSites]=useState([]);
+	const [createSite, setCreateSite] = useState(false)
 
-  const [createSite, setCreateSite] = useState(false)
+	var { resJ } = [];
 
-	var {resJ} = [];
+	useEffect(() => {
+		(async () => {
+			var imgs = [];
+			var ids = [];
 
-useEffect(() => {
-    (async () => {
-		var imgs=[];
-	  var ids=[];
+			const res = await fetch("http://localhost:3000/api/journey/" + id + "/sites");
+			const resJson = await res.json().then((r) => {
+				for(var i = 0; i < r.sites.length; i++) {
+					imgs.push(r.sites[i].image);
+					ids.push(r.sites[i].id);
+				}
+				return r;
+			});
 
-      const res = await fetch("http://localhost:3000/api/journey/"+id+"/sites"); //retrive
-      const resJson = await res.json().then((r)=>{
-		  console.log(r.sites);
-		  for(var i=0;i<r.sites.length;i++)
-		 {
-			 imgs.push(r.sites[i].image);
-			 ids.push(r.sites[i].id);
-		 }
-		 return r;
-	  });
+			setSites(resJson.sites);
+			globalSites = resJson.sites;
+			resJ = resJson.sites;
 
-	  setSites(resJson.sites);
-		globalSites=resJson.sites;
-	  resJ=resJson.sites;
+			var tmp = {
+				name: "",
+				description: "",
+				initialDate: "",
+				endDate: "",
+				picturePath: "",
+				userId: "",
+				events: resJ
+			};
 
+			var siteId = [];
 
-	  var tmp={
-        name: "",
-        description: "",
-        initialDate: "",
-        endDate: "",
-        picturePath: "",
-		userId: "",
-        events: resJ
-      };
+			siteId.push(getJourneyId());
 
-	  var siteId=[];
+			var temporary = {
+				images: imgs,
+				ids: ids,
+			}
 
-	  siteId.push(getJourneyId());
+			setTimeout(changeImgs, 200, temporary);
 
-	  var temporary={
-		  images:imgs,
-		  ids:ids,
-	  }
+			setEvent(tmp);
+		})();
+	}, []);
 
-	  setTimeout(changeImgs,200,temporary);
+	return (
+		<>
+		{ setCSS() }
+		<>
 
-      setEvent(tmp);
-    })();
-  }, []);
+		<Link to = { `/Journeys` }>
+		<button className = "button-add"> GO BACK
+		</button>
+		</Link>
 
-  return (
-    <>
-    {setCSS()}
-      <>
+		<div className = "box-events">
+		<div className = "events">
+		<br/>
+		<Swiper effect = { "coverflow" } grabCursor = { true } centeredSlides = { true } slidesPerView = { "auto" } coverflowEffect = {
+			{
+				rotate: 0,
+				stretch: 5,
+				depth: 100,
+				modifier: 3,
+				slideShadows: true,
+			}
+		}>
+			{
+			Array.from(globalSites).map((site) => ( <
+				SwiperSlide >
+				<
+				SiteComponent site = { site } globalSites = { globalSites }
+				/> <
+				/SwiperSlide>
+			))
+		}
+		</Swiper>
 
-		  <Link to={`/Journeys`}>
-			<button className="button-add">GO BACK</button>
-		  </Link>
-
-		  <div className="box-events">
-			  <div className="events">
-				  <br/>
-				  <Swiper  effect={"coverflow"}
-        grabCursor={true}
-        centeredSlides={true}
-        slidesPerView={"auto"}
-        coverflowEffect={{
-          rotate: 0,
-          stretch: 5,
-          depth: 100,
-          modifier: 3,
-          slideShadows: true,
-        }}>
-					{Array.from(globalSites).map((site) => (
-					  <SwiperSlide>
-						<SiteComponent site={site} globalSites={globalSites}/>
-					  </SwiperSlide>
-					))}
-				  </Swiper>
-
-				</div>
-			</div>
-      </>
-    </>
-  );
+		</div>
+		</div>
+		</>
+		</>
+	);
 };
 
 export default Site;

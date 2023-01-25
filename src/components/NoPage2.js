@@ -1,5 +1,4 @@
 function NoPage2() {
-	
 	window.location.href = "/Profile"
 }
 
