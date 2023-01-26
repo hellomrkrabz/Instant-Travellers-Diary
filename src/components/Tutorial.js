@@ -28,16 +28,21 @@ function Tutorial() {
             <img src="/images_tutorial\addingjourney.png" alt="addingjourney" width="400" class="center"></img>
             You can add multiple journeys:
             <img src="/images_tutorial\journeyview.png" alt="journeyview" width="500" class="center"></img>
-            And in each journey you can add stage to it:
+            And in each journey you can add a stage to it:
             <img src="/images_tutorial\addingstage.png" alt="addingstage" width="400" class="center"></img>
             Now you can see each stage of your journey to remember it even better:
             <img src="/images_tutorial\stagesview.png" alt="stagesview" width="200" class="center"></img>
-            What's more? You can add view to your stage to document it more accurately by adding exact place and expense of it:
-            <img src="/images_tutorial\creatingview.png" alt="creatingview" width="500" class="center"></img>
+            What's more? You can add event to your stage to document it more accurately by adding exact place and expense of it:
+            <img src="/images_tutorial\creatingevent.png" alt="creatingevent" width="500" class="center"></img>
             It looks very similar to other parts:
             <img src="/images_tutorial\eventview.png" alt="eventview" width="200" class="center"></img>
-            To be more accurate, you can add site to your event and describe it however you like:
+            To be more accurate, you can add a site to your event and describe it however you like:
             <img src="/images_tutorial\site.png" alt="site" width="300" class="center"></img>
+            At the end, you can additionally look for marked events on map:
+            <img src="/images_tutorial\map.png" alt="map" width="300" class="center"></img>
+            And of course, you can search through your journeys using search option:
+            <img src="/images_tutorial\search.png" alt="search" width="200" class="center"></img>
+            Enjoy your memories!
       </Box>
     </div>
   )
