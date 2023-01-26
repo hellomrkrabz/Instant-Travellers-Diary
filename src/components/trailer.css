@@ -1,0 +1,12 @@
+.video-container{
+	display:flex;
+	justify-content:center;
+	margin-top:60px;
+}
+
+.video-trailer{
+	height:720px;
+	width:1280px;
+	border:3px solid black;
+	border-radius:15px;
+}
