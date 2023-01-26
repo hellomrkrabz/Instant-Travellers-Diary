@@ -10,6 +10,7 @@ import EditProfile from './components/EditProfile';
 import Logout from './components/Logout';
 import NoPage1 from './components/NoPage1';
 import NoPage2 from './components/NoPage2';
+import Trailer from './components/Trailer';
 
 
 import { useState, useEffect } from "react";
@@ -25,20 +26,7 @@ import SlideShow from './components/slideShow';
 function App() {
 	
   const [data, setData] = useState([])
-
-  // useEffect(() => {
-  //   axios.get("/api/test")
-  //     .then((response) => {
-  //       console.log(response)
-  //       const data = response.data
-  //       console.log(data)
-  //       setData(data)
-  //     })
-  //     .catch(error => {
-  //       // alert(error)
-  //     })
-  // }, [])
-  
+ 
   
   var name='user_id',userId;
 	var i, c, ca, nameEQ = name + "=";
@@ -65,6 +53,7 @@ function App() {
 					<Route path="/Register" exact component={Register}/>
 					<Route path="/Tutorial" exact component={Tutorial}/>
 					<Route path="/Login" exact component={Login}/>
+					<Route path="/Trailer" exact component={Trailer}/>
 					<Route path="*" exact component={NoPage1}/>
 			</Switch>
 		  </Router>
