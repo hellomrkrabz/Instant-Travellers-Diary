@@ -38,9 +38,10 @@ function Navbar() {
 		{setCss()}
 			<nav className='navbar'>
 				<div className='navbar-container'>
-				<Link to='/Tutorial' className='navbar-logo' onClick={closeMobileMenu}>
+				<Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
 					<img src={logo} width="280" height="50"/>
 				</Link>
+					
 				<div className='menu-icon' onClick={handleClick}>
 					
 					{click ? <CloseIcon className='fa-times'/> : <MenuIcon className='fa-bars'/>}
@@ -70,7 +71,7 @@ function Navbar() {
 	{setCss()}
 		<nav className='navbar'>
 			<div className='navbar-container'>
-			<Link to='/Tutorial' className='navbar-logo' onClick={closeMobileMenu}>
+			<Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
 				<img src={logo} width="280" height="50"/>
 				</Link>
 				<div className='menu-icon' onClick={handleClick}>

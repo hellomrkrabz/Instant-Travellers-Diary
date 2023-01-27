@@ -88,46 +88,25 @@ function Profile() {
 	xhr.open('GET', url, true);
 	xhr.send();
 
-	return ( <
-		div >
-		<
-		form method = "POST"
-		style = { { height: reScale() + 'px' } } >
-		<
-		Box className = 'sign-up-form3' >
-		<
-		Typography className = 'typography'
-		variant = 'h2' > Your profile! < /Typography> <
-		img id = 'avatar'
-		height = "150px"
-		width = "150px" / >
-		<
-		TextField margin = 'normal'
-		id = 'username'
-		type = { 'text' } variant = 'outlined'
-		placeholder = 'Nick'
-		value = { data.nick }
-		/> <
-		TextField margin = 'normal'
-		id = 'email'
-		type = { 'email' } variant = 'outlined'
-		placeholder = 'Email'
-		value = { data.email }
-		/> <
-		div > < TextareaAutosize margin = 'normal'
-		id = 'bio'
-		type = { 'text' } variant = 'outlined'
-		minRows = "3"
-		placeholder = 'Bio'
-		value = { data.bio }
-		/></div >
-		<Button buttonStyle = 'btn--2'
-		buttonSize = "btn--medium"
-		path = "/EditProfile" > Edit profile < /Button>
-		</Box>
-		</form>
-		</div>
-	)
+	return (
+    	<div>
+        	<form method="POST" style={{height: reScale()+'px'}}>
+            	<Box className='sign-up-form3'>
+					<div className='sign-up-form2-edit'>
+						<div className='sign-up-form3-section'>
+							<img id='avatar' height="150px" width="150px"/>
+						</div>
+						<div className='sign-up-form3-section'>
+							<TextField margin='normal' id='username' type={'text'} variant='outlined' placeholder='Nick' value={data.nick}/>
+							<TextField margin='normal' id='email' type={'email'} variant='outlined' placeholder='Email' value={data.email}/>
+							<TextField margin='normal' id='bio' type={'text'} variant='outlined' placeholder='Bio' value={data.bio} multiline minRows={3} maxRows={7}/>
+						</div>
+					</div>
+						<Button buttonStyle='btn--2' buttonSize="btn--medium" path="/EditProfile">Edit Profile</Button>
+            	</Box>
+       		</form>
+    	</div>
+  	)
 }
 
 export default Profile
