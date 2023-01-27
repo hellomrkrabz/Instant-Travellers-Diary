@@ -38,10 +38,9 @@ function Navbar() {
 		{setCss()}
 			<nav className='navbar'>
 				<div className='navbar-container'>
-				<Link to='/' className='navbar-logo' onClick={closeMobileMenu}>
+				<Link to='/Tutorial' className='navbar-logo' onClick={closeMobileMenu}>
 					<img src={logo} width="280" height="50"/>
 				</Link>
-					
 				<div className='menu-icon' onClick={handleClick}>
 					
 					{click ? <CloseIcon className='fa-times'/> : <MenuIcon className='fa-bars'/>}
@@ -71,7 +70,7 @@ function Navbar() {
 	{setCss()}
 		<nav className='navbar'>
 			<div className='navbar-container'>
-			<Link to='/Profile' className='navbar-logo' onClick={closeMobileMenu}>
+			<Link to='/Tutorial' className='navbar-logo' onClick={closeMobileMenu}>
 				<img src={logo} width="280" height="50"/>
 				</Link>
 				<div className='menu-icon' onClick={handleClick}>
@@ -81,6 +80,11 @@ function Navbar() {
 					<li className='nav-item'>
 						<a href= '/Journeys' className='nav-links' onClick={closeMobileMenu}>
 							Journeys
+						</a>
+					</li>
+					<li className='nav-item'>
+						<a href= '/EditProfile' className='nav-links' onClick={closeMobileMenu}>
+							Profile
 						</a>
 					</li>
 					<li className='nav-item'>

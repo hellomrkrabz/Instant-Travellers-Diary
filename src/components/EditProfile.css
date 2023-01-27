@@ -6,22 +6,30 @@ body {
 .sign-up-form2 { 
     display: flex;
     flex-direction: column;
-    max-width: 800px;
+    max-width: 1000px;
     align-items: center;
-    justify-content: center;
     margin: 0 auto;
     margin-top: 50px;
-    padding: 5px;
-    border-radius: 5px;
-    box-shadow: 5px 5px 5px #ccc;
-	background-color:white;
-	overflow-x:hidden;
-	height:80%;
+    padding: 30px 5px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 20px rgb(83, 126, 190);
+	background-color: aliceblue;
 }
 
-.sign-up-form2>* {
-	position:relative;
-	top:200px;
+.sign-up-form2-edit { 
+    display: flex;
+    flex-direction: row;
+    column-gap: 30px;
+}
+
+.sign-up-form2-section { 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.sign-up-form2-choose-file{
+    margin-top: 30px;
 }
 
 .typography {
