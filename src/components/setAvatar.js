@@ -1,5 +1,4 @@
 function setAvatar(arg) {
-	console.log(arg);
 	if(arg && arg != null) {
 		return arg;
 	}

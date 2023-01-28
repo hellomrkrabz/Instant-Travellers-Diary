@@ -24,44 +24,6 @@ function Profile() {
 			var avatarPath, username, email, bio, sB, sE;
 			const obj = JSON.parse(response);
 
-			var res = response.replace(/"/, 'd');
-			res = res.replace(/"/, 'd');
-			sB = res.search(/"/);
-			res = res.replace(/"/, 'd');
-			sE = res.search(/"/);
-
-			avatarPath = res.slice(sB + 1, sE);
-
-			res = res.replace(/"/, 'd');
-			res = res.replace(/"/, 'd');
-			res = res.replace(/"/, 'd');
-
-			sB = res.search(/"/);
-			res = res.replace(/"/, 'd');
-			sE = res.search(/"/);
-
-			bio = res.slice(sB + 1, sE);
-
-			res = res.replace(/"/, 'd');
-			res = res.replace(/"/, 'd');
-			res = res.replace(/"/, 'd');
-
-			sB = res.search(/"/);
-			res = res.replace(/"/, 'd');
-			sE = res.search(/"/);
-
-			email = res.slice(sB + 1, sE);
-
-			res = res.replace(/"/, 'd');
-			res = res.replace(/"/, 'd');
-			res = res.replace(/"/, 'd');
-
-			sB = res.search(/"/);
-			res = res.replace(/"/, 'd');
-			sE = res.search(/"/);
-
-			username = res.slice(sB + 1, sE);
-
 			document.getElementById('username').value = obj.username;
 			document.getElementById('email').value = obj.email;
 			document.getElementById('bio').value = obj.bio;

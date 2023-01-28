@@ -23,7 +23,6 @@ export async function setImgsInEvents(eventId) {
 		images: images,
 		imgsIds: ids,
 	}
-	console.log(tmp);
 
 	return tmp;
 }

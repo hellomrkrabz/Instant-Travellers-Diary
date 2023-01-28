@@ -37,8 +37,7 @@ function redirect(response) {
 
 function Profile() {
 	const [data, setData] = useState([])	
-	var xhr = new XMLHttpRequest();
-
+	
 	function handleUploadImage(ev)
 	{
         const IDCookie = document
@@ -70,9 +69,15 @@ function Profile() {
         }
     }
 	let url="http://localhost:5000/api/users/"+userId.toString();
-	xhr.open('GET', url, true);
-	xhr.send();	
-	
+
+	fetch(url).then((response) => response.json()).then((text) => {
+			document.getElementById("email").value=text.email;
+			document.getElementById("username").value=text.username;
+			document.getElementById("bio").value=text.bio;
+			document.getElementById("avatar").src=text.avatar;
+		}
+	);
+		
   	return (
     	<div>
         	<form method="POST" style={{height: reScale()+'px'}}>

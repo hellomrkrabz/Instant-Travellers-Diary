@@ -69,6 +69,13 @@ function handleUploadImage(res) {
         .cookie
         .split('; ')
         .find((row) => row.startsWith('user_id='))?.split('=')[1];
+		
+	if(isNaN(res.id))
+	{
+		console.log(res.id);
+		return;
+	}
+		
     let data = new FormData();
     data.append('file', img);
     data.append('id', res.id);
@@ -88,8 +95,8 @@ const AddEvent = (props) => {
     const [description, setDescription] = useState("");
     const [files, setFiles] = useState([]);
     const [fileUrl, setFileUrl] = useState("")
-    const [lat, setLat] = useState(1);
-    const [lng, setLng] = useState(1);
+    const [lat, setLat] = useState("");
+    const [lng, setLng] = useState("");
 	const [price, setPrice] = useState(0);
 
     const {fileRejections, getRootProps, getInputProps, open} = useDropzone({
@@ -113,7 +120,7 @@ const AddEvent = (props) => {
     });
 
     const createEvent = async () => {
-        if (files.length > 0 && fileUrl != "" && name != "" && date != "" && description != "") {
+        if (files.length > 0 && fileUrl != "" && name != "" && date != "" && description != "" && price != "" && lat != "" && lng != "") {
             const events = JSON.parse(JSON.stringify(props.stage.events));
             const event = {
                 name: name,
@@ -131,7 +138,7 @@ const AddEvent = (props) => {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(event),
-            }).then((response) => response.json()).then((resp) => handleUploadImage(resp)).then(setTimeout(reloadPage, 1000));
+            }).then((response) => response.json()).then((resp) => handleUploadImage(resp)).then(setTimeout(reloadPage, 500));
             props.addEvent();
         }
     };

@@ -66,6 +66,12 @@ function handleUploadImage(res) {
 		.cookie
 		.split('; ')
 		.find((row) => row.startsWith('user_id='))?.split('=')[1];
+		
+	if(isNaN(res.id))
+	{
+		console.log(res.id);
+		return;
+	}
 
 	let data = new FormData();
 	data.append('file', img);

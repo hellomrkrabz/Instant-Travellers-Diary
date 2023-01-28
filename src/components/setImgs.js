@@ -54,7 +54,6 @@ export async function setImgs(type) {
 		images: images,
 		imgsIds: imgIds,
 	}
-	console.log(tmp);
 
 	return tmp;
 }
