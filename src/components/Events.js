@@ -120,6 +120,9 @@ const AddEvent = (props) => {
     });
 
     const createEvent = async () => {
+		setLat(document.getElementById("lat").value);
+        setLng(document.getElementById("lng").value);
+
         if (files.length > 0 && fileUrl != "" && name != "" && date != "" && description != "" && price != "" && lat != "" && lng != "") {
             const events = JSON.parse(JSON.stringify(props.stage.events));
             const event = {
