@@ -7,25 +7,28 @@ body {
     display: flex;
     flex-direction: column;
     max-width: 1000px;
-    align-items: center;
+    //align-items: center;
     margin: 0 auto;
     margin-top: 50px;
     padding: 30px 5px;
     border-radius: 15px;
     box-shadow: 0px 0px 20px rgb(83, 126, 190);
 	background-color: rgb(255, 255, 255);
+	height: 669px
 }
 
 .sign-up-form2-edit { 
     display: flex;
     flex-direction: row;
     column-gap: 30px;
+
 }
 
 .sign-up-form2-section { 
     display: flex;
     flex-direction: column;
     justify-content: center;
+	margin-left:40px;
 }
 
 .sign-up-form2-choose-file{
@@ -35,4 +38,24 @@ body {
 .typography {
     padding: 10px;
     text-align: center;
+}
+
+.section3{
+	margin-left:240px;
+}
+
+label{
+	margin-top:16px;
+}
+
+.btn-mobile5{
+	margin-left: 330px;
+    width: fit-content;
+	margin-top:50px;
+}
+
+.btn--5{
+	margin-left:80px;
+    width:fit-content;
+	margin-bottom:50px;
 }

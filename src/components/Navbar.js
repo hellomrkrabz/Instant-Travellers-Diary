@@ -67,42 +67,6 @@ function Navbar()
 			</>
 		)
 	}
-	else if(document.URL == 'http://localhost:3000/Profile')
-	{
-		return ( 
-			<>
-				{ setCss() } 
-				<nav className = 'navbar' >
-					<div className = 'navbar-container' >
-						<Link to = '/' className = 'navbar-logo' onClick = { closeMobileMenu } >
-							<img src = { logo } width = "280" height = "50" />
-						</Link>
-
-						<div className = 'menu-icon' onClick = { handleClick } >
-							{ click ? 
-								<CloseIcon className = 'fa-times' /> 
-								:
-								< MenuIcon className = 'fa-bars' /> 
-							}
-						</div> 
-						<ul className = { click ? 'nav-menu active' : 'nav-menu' } >
-							<li className = 'nav-item' >
-								<Link to = '/Journeys' className = 'nav-links' onClick = { closeMobileMenu }>Journeys </Link> 
-							</li> 
-							<li className = 'nav-item' >
-								<Link to = '/EditProfile' className = 'nav-links' onClick = { closeMobileMenu } >Edit Profile</Link> 
-							</li> 
-							<li className='nav-item'>
-								<Link to= '/Logout' className='nav-links' onClick={closeMobileMenu}>
-									Logout
-								</Link>
-							</li>
-						</ul>
-					</div> 
-				</nav> 
-			</>
-		)
-	}
 	else
 	{
 		return ( 
@@ -123,7 +87,7 @@ function Navbar()
 						</div> 
 						<ul className = { click ? 'nav-menu active' : 'nav-menu' } >
 							<li className = 'nav-item' >
-								<Link to = '/' className = 'nav-links' onClick = { closeMobileMenu }>Home </Link> 
+								<Link to = '/Journeys' className = 'nav-links' onClick = { closeMobileMenu }>Journeys </Link> 
 							</li> 
 							<li className = 'nav-item' >
 								<Link to = '/Profile' className = 'nav-links' onClick = { closeMobileMenu } >Profile</Link> 

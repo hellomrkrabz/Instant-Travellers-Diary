@@ -83,23 +83,27 @@ function Profile() {
         	<form method="POST" style={{height: reScale()+'px'}}>
             	<Box className='sign-up-form2'>
 					<div className='sign-up-form2-edit'>
+						
 						<div className='sign-up-form2-section'>
-							<img id='avatar' height="150px" width="150px"/>
+							<><label>Username</label></>
+							<TextField margin='normal' id='username' type={'text'} variant='outlined' placeholder='Nick' value={data.nick} style={{margin: "0px 0px 0px 0px"}}/>
+							<><label>Email</label></>
+							<TextField margin='normal' id='email' type={'email'} variant='outlined' placeholder='Email' value={data.email} style={{margin: "0px 0px 0px 0px"}}/>
+							<><label>Bio</label></>
+							<TextField margin='normal' id='bio' type={'text'} variant='outlined' placeholder='Bio' value={data.bio} multiline minRows={3} maxRows={7} style={{margin: "0px 0px 0px 0px"}}/>
+							<><label>New password</label></>
+							<TextField margin='normal' id='newPassword' type={'password'} variant='outlined' placeholder='New password' style={{margin: "0px 0px 0px 0px"}}/>
+							<><label>Password</label></>
+							<TextField margin='normal' id='password' type={'password'} variant='outlined' placeholder='Password (required)' style={{margin: "0px 0px 0px 0px"}}/>
+						</div>
+						<div className='sign-up-form2-section section3'>
+							<img id='avatar' height="350px" width="350px"/>
 							<div className='sign-up-form2-choose-file'>
 								<input type="file" name="file" id='image' onChange={handleUploadImage} />
 							</div>
 						</div>
-						<div className='sign-up-form2-section'>
-							<TextField margin='normal' id='username' type={'text'} variant='outlined' placeholder='Nick' value={data.nick}/>
-							<TextField margin='normal' id='email' type={'email'} variant='outlined' placeholder='Email' value={data.email}/>
-							{/* <div><TextareaAutosize  margin='normal' id='bio' type={'text'} variant='outlined' minRows="3" placeholder='Bio' value={data.bio}/></div> */}
-							<TextField margin='normal' id='bio' type={'text'} variant='outlined' placeholder='Bio' value={data.bio} multiline minRows={3} maxRows={7}/>
-							<TextField margin='normal' id='newPassword' type={'password'} variant='outlined' placeholder='New password'/>
-							<TextField margin='normal' id='password' type={'password'} variant='outlined' placeholder='Password (required)'/>
-
-						</div>
 					</div>
-						<Button onClick={handleSubmit} buttonStyle='btn--2' buttonSize="btn--medium">Save changes</Button>
+						<Button onClick={handleSubmit} buttonStyle='btn--5' buttonSize="btn--medium" >Save changes</Button>
             	</Box>
        		</form>
     	</div>

@@ -55,13 +55,17 @@ function Profile() {
         	<form method="POST" style={{height: reScale()+'px'}}>
             	<Box className='sign-up-form3'>
 					<div className='sign-up-form2-edit'>
+						
 						<div className='sign-up-form3-section'>
-							<img id='avatar' height="150px" width="150px"/>
+							<><label>Username</label></>
+							<TextField margin='normal' className="textfield" id='username' type={'text'} variant='outlined' placeholder='Nick' value={data.nick} style={{margin: "0px 0px 0px 0px"}}/>
+							<><label>Email</label></>
+							<TextField margin='normal' id='email' type={'email'} variant='outlined' placeholder='Email' value={data.email} style={{margin: "0px 0px 0px 0px"}}/>
+							<><label>Bio</label></>
+							<TextField margin='normal' id='bio' type={'text'} variant='outlined' placeholder='Bio' value={data.bio} multiline minRows={3} maxRows={7} style={{margin: "0px 0px 0px 0px"}}/>
 						</div>
-						<div className='sign-up-form3-section'>
-							<TextField margin='normal' id='username' type={'text'} variant='outlined' placeholder='Nick' value={data.nick}/>
-							<TextField margin='normal' id='email' type={'email'} variant='outlined' placeholder='Email' value={data.email}/>
-							<TextField margin='normal' id='bio' type={'text'} variant='outlined' placeholder='Bio' value={data.bio} multiline minRows={3} maxRows={7}/>
+						<div className='sign-up-form3-section section2'>
+							<img id='avatar' height="325px" width="325px"/>
 						</div>
 					</div>
 						<Button buttonStyle='btn--2' buttonSize="btn--medium" path="/EditProfile">Edit Profile</Button>
