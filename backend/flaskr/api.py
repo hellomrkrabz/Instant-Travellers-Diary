@@ -464,6 +464,16 @@ def delete_orphan_images():
                 print(f"[INFO] Deleting image: {image.filename}")
                 db.session.delete(image)
 
+        elif image.type == 'site':
+            exists = db.session.query(
+                db.session.query(VisitedSite).filter_by(
+                    id=image.relationship_id
+                ).exists()
+            ).scalar()
+            if not exists:
+                print(f"[INFO] Deleting image: {image.filename}")
+                db.session.delete(image)
+
         db.session.commit()
 
 
