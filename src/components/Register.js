@@ -29,7 +29,7 @@ function Register() {
 		<form method = "POST" >
 		<Box className = 'sign-up-form' >
 		<Typography className = 'typography'
-		variant = 'h2' > Sign - up < /Typography>
+		variant = 'h2' > Sign-up < /Typography>
         <TextField margin = 'normal'
 		id = "email"
 		name = 'email'

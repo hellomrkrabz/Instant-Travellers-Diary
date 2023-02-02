@@ -31,12 +31,11 @@ export const Button = ({
 				</button>
 			</Link>
 		);
-	}else{
-
+	}else if (buttonStyle=="btn--6") {
 		return (
-			<Link to={path} className='btn-mobile'>
+			<Link to={path} className='btn-mobile6'>
 				<button
-					className={`btn ${checkButtonStyle} ${checkButtonSize}`}
+					className={`btn btn--6 ${checkButtonSize}`}
 					onClick={onClick}
 					type={type}
 					>
@@ -44,5 +43,20 @@ export const Button = ({
 				</button>
 			</Link>
 		);
+
 	}
+	else {
+
+			return (
+				<Link to={path} className='btn-mobile'>
+					<button
+						className={`btn ${checkButtonStyle} ${checkButtonSize}`}
+						onClick={onClick}
+						type={type}
+					>
+						{children}
+					</button>
+				</Link>
+			);
+		}
 };

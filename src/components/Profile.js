@@ -68,7 +68,7 @@ function Profile() {
 							<img id='avatar' height="325px" width="325px"/>
 						</div>
 					</div>
-						<Button buttonStyle='btn--2' buttonSize="btn--medium" path="/EditProfile">Edit Profile</Button>
+						<Button buttonStyle='btn--6' buttonSize="btn--medium" path="/EditProfile">Edit Profile</Button>
             	</Box>
        		</form>
     	</div>
